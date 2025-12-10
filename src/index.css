@@ -1,0 +1,93 @@
+:root {
+  --font-family-Bold: "ManropeBold", sans-serif;
+  --font-family-Medium: "ManropeMedium", sans-serif;
+  --font-family-Regular: "ManropeRegular", sans-serif;
+  --font-family-Light: "ManropeLight", sans-serif;
+  --font-Sonder-Regular: "SonderRegular", sans-serif;
+
+  --font-size-small: 12px;
+  --font-size-regular: 16px;
+  --font-size-medium: 18px;
+  --font-size-large: 20px;
+  --font-size-xlarge: 22px;
+  --font-size-xxlarge: 40px;
+  --font-size-xxxlarge: 55px;
+
+  --bg-light-color: #fff;
+  --bg-dark-color: #000;
+  --btn-color-muted: rgba(0, 0, 0, 0.090);
+  --opacity-hover: 0.7;
+
+  --text-color-dark: #000;
+  --text-color-muted: rgba(0, 0, 0, 0.6);
+  --text-color-light: #fff;
+
+  --section-gap-small: 6rem;
+  --section-gap-medium: 10rem;
+  --section-gap-large: 15rem;
+  --element-gap-small: 3rem;
+  --element-gap: 4rem;
+  --element-gap-h: 10rem;
+  --footer-h: 900px;
+
+  color-scheme: light dark;
+  background-color: var(--bg-light-color);
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Responsive CSS variables */
+@media (max-width: 900px) {
+  :root {
+    --footer-h: 700px;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --footer-h: 600px;
+  }
+}
+
+@media (max-width: 400px) {
+  :root {
+    --footer-h: 550px;
+  }
+}
+
+@font-face {
+  font-family: "ManropeBold";
+  src: url("/src/assets/fonts/Manrope-Bold.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ManropeMedium";
+  src: url("/src/assets/fonts/Manrope-Medium.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ManropeRegular";
+  src: url("/src/assets/fonts/Manrope-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ManropeLight";
+  src: url("/src/assets/fonts/Manrope-Light.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SonderRegular";
+  src: url("/src/assets/fonts/SonderRegular.otf");
+  font-weight: normal;
+  font-style: normal;
+}

@@ -1,0 +1,230 @@
+.not-found-page {
+  min-height: calc(100vh - 100px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.not-found-container {
+  width: 100%;
+  max-width: 1800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.not-found-content {
+  text-align: center;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.not-found-code {
+  font-family: var(--font-family-Medium);
+  font-size: 180px;
+  color: var(--text-color-dark);
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  opacity: 0.1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.not-found-title {
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-xxxlarge);
+  color: var(--text-color-dark);
+  margin: 0 0 1.5rem 0;
+}
+
+.not-found-message {
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  color: var(--text-color-muted);
+  margin: 0 0 3rem 0;
+  line-height: 1.6;
+}
+
+.not-found-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.not-found-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.1rem 2rem;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-medium);
+  border-radius: 99px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.not-found-button p {
+  margin: 0;
+}
+
+.not-found-button:hover {
+  opacity: var(--opacity-hover);
+}
+
+.not-found-button:active {
+  transform: scale(0.98);
+}
+
+.not-found-button.primary {
+  background-color: var(--bg-dark-color);
+  color: var(--text-color-light);
+}
+
+.not-found-button.secondary {
+  background-color: var(--btn-color-muted);
+  color: var(--text-color-dark);
+}
+
+/* Decorative elements */
+.not-found-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+
+/* ===== LARGE SCREENS (1400px and below) ===== */
+@media (max-width: 1400px) {
+  .not-found-code {
+    font-size: 160px;
+  }
+}
+
+
+/* ===== MEDIUM-LARGE SCREENS (1100px and below) ===== */
+@media (max-width: 1100px) {
+  .not-found-code {
+    font-size: 140px;
+  }
+  
+  .not-found-title {
+    font-size: calc(var(--font-size-xxxlarge) * 0.85);
+  }
+  
+  .not-found-message {
+    font-size: var(--font-size-medium);
+  }
+  
+}
+
+
+/* ===== TABLET (900px and below) ===== */
+@media (max-width: 900px) {
+  .not-found-page {
+    min-height: calc(100vh - 80px);
+    padding: 0 1.5rem;
+  }
+  
+  .not-found-code {
+    font-size: 120px;
+  }
+  
+  .not-found-title {
+    font-size: 42px;
+  }
+  
+  .not-found-message {
+    font-size: var(--font-size-regular);
+    margin-bottom: 2.5rem;
+  }
+  
+  .not-found-button {
+    padding: 1rem 1.75rem;
+    font-size: var(--font-size-regular);
+  }
+  
+  .circle-3 {
+    display: none;
+  }
+}
+
+
+/* ===== MOBILE (600px and below) ===== */
+@media (max-width: 600px) {
+  .not-found-page {
+    min-height: calc(100vh - 70px);
+    padding: 0 1rem;
+  }
+  
+  .not-found-code {
+    font-size: 100px;
+  }
+  
+  .not-found-title {
+    font-size: 32px;
+    margin-bottom: 1rem;
+  }
+  
+  .not-found-message {
+    font-size: 15px;
+    margin-bottom: 2rem;
+  }
+  
+  .not-found-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .not-found-button {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.9rem 1.5rem;
+  }
+  
+}
+
+
+/* ===== SMALL MOBILE (400px and below) ===== */
+@media (max-width: 400px) {
+  .not-found-code {
+    font-size: 80px;
+  }
+  
+  .not-found-title {
+    font-size: 28px;
+  }
+  
+  .not-found-message {
+    font-size: 14px;
+  }
+  
+}

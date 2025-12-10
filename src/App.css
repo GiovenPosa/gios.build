@@ -1,0 +1,39 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  min-height: 100vh;
+  overscroll-behavior: none;
+}
+
+#root {
+  background-color: transparent;
+}
+
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.site-content {
+  position: relative;
+  z-index: 1;
+  background-color: var(--bg-light-color);
+  margin-bottom: var(--footer-h);
+}
+
+.main-content {
+  padding-top: 100px;
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    padding-top: 80px;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-content {
+    padding-top: 70px;
+  }
+}

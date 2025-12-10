@@ -1,0 +1,273 @@
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  background-color: transparent;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+.top-header.visible {
+  transform: translateY(0);
+}
+
+.top-header.hidden {
+  transform: translateY(-100%);
+}
+
+.top-header-container {
+  width: 100%;
+  max-width: 1800px;
+  color: var(--text-color-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-regular);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.top-header.dark-bg .top-header-container {
+  color: var(--text-color-light);
+  text-shadow: 
+    0 0 10px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.top-header.dark-bg .top-header-button {
+  background-color: var(--bg-light-color);
+  color: var(--text-color-dark);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.top-header-logo {
+  font-family: var(--font-Sonder-Regular);
+  font-size: var(--font-size-xxlarge);
+}
+
+.top-header-logo > p {
+  cursor: pointer;
+  margin: 0;
+  transition: opacity 0.2s ease;
+}
+
+.top-header-logo > p:hover {
+  opacity: var(--opacity-hover);
+}
+
+.top-header-links {
+  display: flex;
+  justify-content: space-between;
+  min-width: 400px;
+  align-items: center;
+  gap: 2rem;
+}
+
+.top-header-links span {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.top-header-links span p {
+  margin: 0;
+}
+
+.top-header-links span:hover {
+  opacity: var(--opacity-hover);
+}
+
+.top-header-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.1rem;
+  font-size: var(--font-size-regular);
+  border-radius: 99px;
+  background-color: var(--bg-dark-color);
+  color: var(--text-color-light);
+  cursor: pointer;
+  transition: opacity 0.2s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  text-shadow: none;
+}
+
+.top-header-button p {
+  color: inherit;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.top-header-button svg {
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.top-header-button:hover {
+  opacity: var(--opacity-hover);
+}
+
+/* Mobile menu button - hidden by default */
+.mobile-menu-button {
+  display: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: opacity 0.2s ease;
+}
+
+.mobile-menu-button:hover {
+  opacity: var(--opacity-hover);
+}
+
+.mobile-menu-button svg {
+  font-size: 1.5rem;
+}
+
+/* Mobile menu overlay */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-light-color);
+  z-index: 100;  
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-menu-overlay span {
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-xxlarge);
+  color: var(--text-color-dark); 
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.mobile-menu-overlay span:hover {
+  opacity: var(--opacity-hover);
+}
+
+.mobile-menu-overlay span p {
+  margin: 0;
+  color: var(--text-color-dark); 
+}
+
+.mobile-menu-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: var(--text-color-dark); 
+  transition: opacity 0.2s ease;  
+}
+
+.mobile-menu-close:hover {
+  opacity: var(--opacity-hover); 
+}
+
+.mobile-menu-close svg {
+  font-size: 1.5rem;
+  color: var(--text-color-dark); 
+}
+
+
+/* ===== LARGE SCREENS (1400px and below) ===== */
+@media (max-width: 1400px) {
+  .top-header-links {
+    min-width: 380px;
+    gap: 1.5rem;
+  }
+}
+
+
+/* ===== MEDIUM-LARGE SCREENS (1100px and below) ===== */
+@media (max-width: 1100px) {
+  .top-header-links {
+    min-width: 350px;
+    gap: 1.25rem;
+  }
+  
+  .top-header-logo {
+    font-size: 32px;
+  }
+}
+
+
+/* ===== TABLET (900px and below) ===== */
+@media (max-width: 900px) {
+  .top-header {
+    padding: 0 1.5rem;
+    height: 80px;
+  }
+  
+  .top-header-logo {
+    font-size: 28px;
+  }
+  
+  .top-header-links {
+    display: none;
+  }
+  
+  .mobile-menu-button {
+    display: block;
+  }
+  
+  .mobile-menu-overlay {
+    display: flex;
+  }
+}
+
+
+/* ===== MOBILE (600px and below) ===== */
+@media (max-width: 600px) {
+  .top-header {
+    padding: 0 1rem;
+    height: 70px;
+  }
+  
+  .top-header-logo {
+    font-size: 26px;
+  }
+  
+  .mobile-menu-overlay span {
+    font-size: 32px;
+  }
+  
+  .mobile-menu-close {
+    top: 1.5rem;
+    right: 1rem;
+  }
+}
+
+
+/* ===== SMALL MOBILE (400px and below) ===== */
+@media (max-width: 400px) {
+  .top-header-logo {
+    font-size: 24px;
+  }
+  
+  .mobile-menu-overlay span {
+    font-size: 28px;
+  }
+}
