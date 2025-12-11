@@ -16,8 +16,12 @@
   margin-top: var(--section-gap-small);
   color: var(--text-color-dark);
   font-family: var(--font-family-Medium);
-  font-size: var(--font-size-regular);
   margin-bottom: var(--section-gap-small);
+}
+
+.home-page-hero-section > h1 {
+  font-family: var(--font-family-Light);
+  font-size: var(--font-size-medium);
 }
 
 .hero-main-text {
@@ -436,6 +440,10 @@
   .home-page-hero-section {
     margin-top: 3rem;
     margin-bottom: 3rem;
+  }
+
+  .home-page-hero-section > h1 {
+   font-size: var(--font-size-regular);
   }
   
   .hero-main-text {

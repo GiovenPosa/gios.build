@@ -27,4 +27,8 @@ export default defineConfig({
     copy404Plugin()
   ],
   base: '/',
+  build: {
+    minify: "esbuild",
+    sourcemap: false,
+  }
 })
