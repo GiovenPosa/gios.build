@@ -135,9 +135,26 @@ export function BookingForm() {
     setIsSubmitting(true);
 
     try {
+      // 1) Get/create contact
+      const { data: contactId, error: contactErr } = await supabase.rpc(
+        "get_or_create_contact",
+        {
+          p_email: formData.email,
+          p_name: formData.name || null,
+          p_phone: formData.phone || null,
+        }
+      );
+
+      if (contactErr) {
+        console.error("Error creating/fetching contact:", contactErr);
+        alert("Something went wrong. Please try again.");
+        return;
+      }
+
       const payload = {
-        name: formData.name,
-        email: formData.email,
+        contact_id: contactId,
+        name: formData.name, // keep if you want (handy snapshot)
+        email: formData.email, // keep if you want (handy snapshot)
         phone: formData.phone || null,
         selected_types: formData.selectedTypes,
         selected_package: formData.selectedPackage || null,
@@ -147,13 +164,12 @@ export function BookingForm() {
         source_page: window.location.pathname,
       };
 
-      const { error } = await supabase
-        .from('booking_inquiries')
-        .insert(payload);
+      // 2) Insert inquiry
+      const { error } = await supabase.from("booking_inquiries").insert(payload);
 
       if (error) {
-        console.error('Error saving inquiry:', error);
-        alert('Something went wrong. Please try again.');
+        console.error("Error saving inquiry:", error);
+        alert("Something went wrong. Please try again.");
         return;
       }
 
