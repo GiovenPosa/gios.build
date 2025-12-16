@@ -139,9 +139,9 @@ export function BookingForm() {
       const { data: contactId, error: contactErr } = await supabase.rpc(
         "get_or_create_contact",
         {
-          p_email: formData.email,
-          p_name: formData.name || null,
-          p_phone: formData.phone || null,
+          p_email: formData.email.trim(),
+          p_name: formData.name.trim() || null,
+          p_phone: formData.phone.trim() || null,
         }
       );
 
