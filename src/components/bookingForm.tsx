@@ -3,7 +3,6 @@ import { useBooking } from '../context/bookingContext';
 import { IoCloseOutline, IoCheckmarkCircle } from "react-icons/io5";
 import { useState, useEffect } from 'react';
 import { GoArrowUpRight } from "react-icons/go";
-import { supabase } from '../lib/supabaseClient';
 
 const websiteTypes = [
   'Portfolio',
@@ -66,7 +65,7 @@ export function BookingForm() {
           selectedPackage: '',
           budget: ''
         });
-      }, 300); // Match the CSS transition duration
+      }, 300);
       
       return () => clearTimeout(timer);
     }
@@ -135,53 +134,60 @@ export function BookingForm() {
     setIsSubmitting(true);
 
     try {
-      // 1) Get/create contact
-      const { data: contactId, error: contactErr } = await supabase.rpc(
-        "get_or_create_contact",
+      // Get honeypot value (bots fill this, humans don't see it)
+      const honeypotValue = (document.getElementById("website") as HTMLInputElement)?.value || "";
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/submit-inquiry`,
         {
-          p_email: formData.email.trim(),
-          p_name: formData.name.trim() || null,
-          p_phone: formData.phone.trim() || null,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim() || null,
+            selected_types: formData.selectedTypes,
+            selected_package: formData.selectedPackage,
+            budget: formData.budget || null,
+            message: formData.message.trim() || null,
+            source_page: window.location.pathname,
+            user_agent: window.navigator.userAgent,
+            // Honeypot field - bots fill this, real users won't see it
+            website: honeypotValue,
+          }),
         }
       );
 
-      if (contactErr) {
-        console.error("Error creating/fetching contact:", contactErr);
-        alert("Something went wrong. Please try again.");
-        return;
-      }
+      const result = await response.json();
 
-      const payload = {
-        contact_id: contactId,
-        name: formData.name, // keep if you want (handy snapshot)
-        email: formData.email, // keep if you want (handy snapshot)
-        phone: formData.phone || null,
-        selected_types: formData.selectedTypes,
-        selected_package: formData.selectedPackage || null,
-        budget: formData.budget ? Number(formData.budget) : null,
-        message: formData.message || null,
-        user_agent: window.navigator.userAgent,
-        source_page: window.location.pathname,
-      };
-
-      // 2) Insert inquiry
-      const { error } = await supabase.from("booking_inquiries").insert(payload);
-
-      if (error) {
-        console.error("Error saving inquiry:", error);
-        alert("Something went wrong. Please try again.");
+      if (!response.ok) {
+        if (response.status === 429) {
+          // Rate limited
+          alert(result.error || "You've already submitted recently. Please wait a few minutes.");
+        } else if (response.status === 400) {
+          // Validation error from server
+          alert(result.error || "Please check your form and try again.");
+        } else {
+          // Server error
+          alert(result.error || "Something went wrong. Please try again.");
+        }
         return;
       }
 
       // Show success panel
       setIsSuccess(true);
 
+    } catch (err) {
+      console.error("Submit error:", err);
+      alert("Network error. Please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Handle closing - just close the modal, state resets via useEffect
   const handleClose = () => {
     closeBooking();
   };
@@ -239,6 +245,24 @@ export function BookingForm() {
             </div>
 
             <form className='booking-form-content' onSubmit={handleSubmit} noValidate>
+              {/* Honeypot field - hidden from real users, bots will fill it */}
+              <input
+                type="text"
+                name="website"
+                id="website"
+                autoComplete="off"
+                tabIndex={-1}
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  left: '-9999px',
+                  opacity: 0,
+                  height: 0,
+                  width: 0,
+                  pointerEvents: 'none',
+                }}
+              />
+
               <div className='form-group'>
                 <label htmlFor='name'>Name <span className='required-asterisk'>*</span></label>
                 <input
