@@ -1,22 +1,22 @@
 import './page-styles/workPage.css';
 import LeadTracker from '../assets/project-images/lead-tracker.png';
-import IbmAnimate from '../assets/project-images/IbmAnimate.mov';
+import IbmAnimate from '../assets/project-images/IbmAnimate.mp4';
 import Rinfo from '../assets/project-images/rinfo-image-placeholder.png';
 import { GoArrowUpRight } from "react-icons/go";
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import { useBooking } from '../context/bookingContext';
 
 export function WorkPage() {
-  const navigate = useNavigate();
+  const { openBooking } = useBooking();
 
   return (
     <>
       <Helmet>
-        <title>Work — gios.build | Web Design, UI/UX & Software Engineering Projects</title>
+        <title>Work — gios.build | Websites & Software Built by Gio Posa</title>
 
         <meta
           name="description"
-          content="Explore selected projects by gios.build — including UI/UX design, frontend engineering, backend systems, and digital product development for brands like Vanaways, IBM, and Rinfo."
+          content="Selected projects by Gio Posa: a sales lead tracker for Vanaways, an AI travel app built during an IBM internship, and a RingCentral extension for Rinfo."
         />
 
         <meta
@@ -32,9 +32,9 @@ export function WorkPage() {
 
           <section className='work-page-hero-section'>
             <p className='work-hero-label'>Work</p>
-            <h1 className='work-hero-title'>Designing Success</h1>
+            <h1 className='work-hero-title'>Recent work</h1>
             <p className='work-hero-text'>
-              Great digital experiences blend many disciplines. I bring all of them together into one clean, consistent vision.
+              A few of the products I've designed and built, from a sales team's lead tracker at Vanaways to an AI travel app during my IBM internship.
             </p>
           </section>
 
@@ -46,9 +46,6 @@ export function WorkPage() {
                   alt="Lead Tracker web app — UI/UX design and full-stack integration for Vanaways"
                   className='work-project-image'
                 />
-                <span className='project-button'>
-                  <GoArrowUpRight />
-                </span>
               </div>
               <p className='work-project-company'>Vanaways.</p>
               <p className='work-project-title'>Lead Tracker Design + Integration</p>
@@ -64,11 +61,8 @@ export function WorkPage() {
                   muted 
                   playsInline
                 />
-                <span className='project-button'>
-                  <GoArrowUpRight />
-                </span>
               </div>
-              <p className='work-project-company'>IBM</p>
+              <p className='work-project-company'>IBM Internship</p>
               <p className='work-project-title'>AI Travel App</p>
             </div>
 
@@ -79,36 +73,22 @@ export function WorkPage() {
                   alt="Rinfo RingCentral extension — UI/UX and integration work"
                   className='work-project-image'
                 />
-                <span className='project-button'>
-                  <GoArrowUpRight />
-                </span>
               </div>
               <p className='work-project-company'>Rinfo.</p>
               <p className='work-project-title'>Ring Central Extension</p>
             </div>
-
-            <div className='work-project-container'>
-              <div className='work-project-placeholder'>
-                {/* No image for this one yet */}
-                <span className='project-button'>
-                  <GoArrowUpRight />
-                </span>
-              </div>
-              <p className='work-project-company'>Contact Journey.</p>
-              <p className='work-project-title'>DotDigital Extension</p>
-            </div>
           </section>
 
           <section className='work-project-info-section'>
-            <p className='section-label'>My Story</p>
+            <p className='section-label'>Your Project</p>
             <p className='section-value'>
-              Fast, flexible, and detail-obsessed. Elevate your brand's presence while your team continues shipping product.
+              Want something like this for your business? I'll design your new homepage for free, so you can see it before you commit.
             </p>
             <span
               className='block-action'
-              onClick={() => navigate('/about')}
+              onClick={() => openBooking()}
             >
-              <p>About Me</p>
+              <p>Get a free mockup</p>
               <GoArrowUpRight/>
             </span>
           </section>

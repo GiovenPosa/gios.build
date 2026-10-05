@@ -1,8 +1,8 @@
 :root {
-  --font-family-Bold: "ManropeBold", sans-serif;
-  --font-family-Medium: "ManropeMedium", sans-serif;
-  --font-family-Regular: "ManropeRegular", sans-serif;
-  --font-family-Light: "ManropeLight", sans-serif;
+  --font-family-Bold: "JakartaBold", sans-serif;
+  --font-family-Medium: "JakartaMedium", sans-serif;
+  --font-family-Regular: "JakartaRegular", sans-serif;
+  --font-family-Light: "JakartaLight", sans-serif;
   --font-Sonder-Regular: "SonderRegular", sans-serif;
 
   --font-size-small: 12px;
@@ -38,6 +38,25 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Pill button labels: drop the font's uneven built-in line spacing so the
+   text sits optically centred. Browsers without text-box support (Firefox)
+   fall back to line-height: 1. */
+:is(
+  .hero-action-button,
+  .block-action,
+  .package-card-button,
+  .footer-button,
+  .contact-cta,
+  .booking-submit,
+  .success-button,
+  .not-found-button,
+  .top-header-button
+) p {
+  margin: 0;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+}
+
 /* Responsive CSS variables */
 @media (max-width: 900px) {
   :root {
@@ -58,31 +77,35 @@
 }
 
 @font-face {
-  font-family: "ManropeBold";
-  src: url("/src/assets/fonts/Manrope-Bold.ttf");
+  font-family: "JakartaBold";
+  src: url("/src/assets/fonts/PlusJakartaSans-Bold.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "ManropeMedium";
-  src: url("/src/assets/fonts/Manrope-Medium.ttf");
+  font-family: "JakartaMedium";
+  src: url("/src/assets/fonts/PlusJakartaSans-Medium.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "ManropeRegular";
-  src: url("/src/assets/fonts/Manrope-Regular.ttf");
+  font-family: "JakartaRegular";
+  src: url("/src/assets/fonts/PlusJakartaSans-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "ManropeLight";
-  src: url("/src/assets/fonts/Manrope-Light.ttf");
+  font-family: "JakartaLight";
+  src: url("/src/assets/fonts/PlusJakartaSans-Light.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {

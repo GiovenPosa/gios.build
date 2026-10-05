@@ -2,68 +2,69 @@ import './page-styles/aboutPage.css';
 import { GoArrowUpRight } from "react-icons/go";
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import VanawaysAnimate from '../assets/project-images/VanawaysAnimate.mov';
+import { servicesData } from '../data/services';
+import VanawaysAnimate from '../assets/project-images/VanawaysAnimate.mp4';
 import ProcessCard from '../assets/project-images/process-cards.svg';
-import GiosBuildFontsAnimate from '../assets/project-images/gios-build-fonts.mov';
+import GiosBuildFontsAnimate from '../assets/project-images/gios-build-fonts.mp4';
 
 export function AboutPage() {
   const navigate = useNavigate();
 
-  const servicesData = [
+  const journeyData = [
     {
-      title: 'Design',
-      items: ['UI/UX Design', 'Wireframing', 'Prototyping', 'Design Systems']
+      title: "Master's in Computer Science",
+      text: "University of Bristol. Where I learned to engineer things properly, and found I cared just as much about how they look and feel."
     },
     {
-      title: 'Engineering',
-      items: ['Frontend Development', 'Backend Development', 'API Integration', 'Database Design']
+      title: "Software Engineering Intern",
+      text: "IBM. Worked on an AI travel app and learned how big teams design, build and ship."
     },
     {
-      title: 'Branding',
-      items: ['Logo Design', 'Brand Strategy', 'Visual Identity', 'Brand Guidelines']
+      title: "Lead Software Engineer",
+      text: "Vanaways, Bristol. Almost two years building the tools a van sales team uses to track and convert every lead."
     },
     {
-      title: 'Interaction',
-      items: ['Micro-interactions', 'User Flows', 'Accessibility', 'Responsive Design']
-    },
+      title: "Founder, gios.build",
+      text: "Bath. Bringing all of it to small businesses that deserve better than a template."
+    }
   ];
 
   const howWeWorkData = [
     {
       id: "01",
       title: "Discover",
-      text: "Understand what matters: your goals, your users, and the problem your product solves and the insights that drive great design."
+      text: "We talk about your business, your customers and what the website needs to do. Then I design a free mockup of your new homepage."
     },
     {
       id: "02",
       title: "Design",
-      text: "Create clean, high-impact visuals and interactions that feel intentional, modern, and engineered—not just styled."
+      text: "If you love the mockup, we agree the pages, features and price, and I design the rest of the site around it."
     },
     {
       id: "03",
       title: "Refine",
-      text: "Iterate quickly. Pixel-level polish until everything feels seamless and unmistakably yours."
+      text: "You see progress as I build and we refine it together. How many rounds depends on how bespoke the project is, and we agree that upfront."
     },
     {
       id: "04",
       title: "Deliver",
-      text: "You get a final product that's cohesive, fast, and built to perform—something your team is proud to ship and your users love to experience."
+      text: "I set up hosting and your domain, then launch. A simple website is usually live in about 4 weeks, and I can look after it monthly from there."
     }
   ];
 
   return (
     <>
       <Helmet>
-        <title>About — gios.build | Digital Design, Engineering & Brand Experience</title>
+        <title>About Gio Posa — Web Designer & Software Engineer in Bath | gios.build</title>
 
         <meta
           name="description"
-          content="Learn about gios.build — a modern digital design and engineering studio delivering UI/UX design, web development, branding, and high-performance digital experiences for ambitious teams and modern brands."
+          content="I'm Gio, a software engineer and designer in Bath. Computer Science Master's from the University of Bristol, IBM intern, and former lead software engineer at Vanaways. Now I build websites for small businesses."
         />
 
         <meta
           name="keywords"
-          content="about gios.build, designer bio, ui ux designer, web designer uk, frontend engineer, digital studio, design portfolio, product designer, brand designer"
+          content="gio posa, web designer bath, web developer bath, software engineer bath, small business websites, gios.build"
         />
 
         <link rel="canonical" href="https://www.gios.build/about" />
@@ -75,9 +76,9 @@ export function AboutPage() {
           {/* HERO */}
           <section className='about-page-hero-section'>
             <p className='about-hero-label'>About</p>
-            <h1 className='about-hero-title'>Create products that move</h1>
+            <h1 className='about-hero-title'>Hi, I'm Gio</h1>
             <p className='about-hero-text'>
-              Fast, flexible, and detail-obsessed. Elevate your brand's presence while your team continues shipping product.
+              A software engineer and designer from Bath. I build websites for small businesses that look the part and bring in customers.
             </p>
           </section>
 
@@ -96,15 +97,35 @@ export function AboutPage() {
               </div>
             </div>
           
+            {/* STORY */}
+            <div className='about-services-block'>
+              <p className='section-label'>My Story</p>
+              <div className='section-values-wrapper'>
+                <p className='section-value'>
+                  I've always cared about two things: how software works, and how it feels to use.
+                </p>
+                <p className='section-value'>
+                  Building lead tools for a sales team taught me what makes someone get in touch, and how easily a clunky website loses them. gios.build is where I put that to work for small businesses.
+                </p>
+
+                {journeyData.map((step) => (
+                  <div key={step.title} className='about-process-list'>
+                    <p className='process-title'>{step.title}</p>
+                    <p className='process-text'>{step.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* SERVICES */}
             <div className='about-services-block'>
               <p className='section-label'>Services</p>
               <div className='section-values-wrapper'>
                 <p className='section-value'>
-                  Most teams can't ship product and build a standout site. That's where I step in.
+                  Everything a small business needs to look professional online and turn visitors into customers.
                 </p>
                 <p className='section-value'>
-                  Everything I offer is simple, intentional, and focused on what moves your brand forward.
+                  One person from first sketch to launch, so nothing gets lost between a designer and a developer.
                 </p>
 
                 {servicesData.map((service) => (
@@ -142,7 +163,7 @@ export function AboutPage() {
               <p className='section-label'>Process</p>
               <div className='section-values-wrapper'>
                 <p className='section-value'>
-                  Join me in a process where clarity guides every choice and simplicity brings each design to life.
+                  Simple and transparent. You see your new homepage before you commit to anything.
                 </p>
                 {howWeWorkData.map((process) => (
                   <div key={process.title} className='about-process-list'>
@@ -155,9 +176,9 @@ export function AboutPage() {
 
             {/* CTA */}
             <div className='about-mission-block'>
-              <p className='section-label'>Built for momentum</p>
+              <p className='section-label'>Work With Me</p>
               <p className='section-value'>
-                Turn your website into your strongest asset. Pick a package, tell me your vision, and we'll ship something beautiful and built to grow.
+                Pick a package, or just tell me what you need. I'll get back to you within 24 hours.
               </p>
               <span className='block-action' onClick={() => navigate('/packages')}>
                 <p>Packages</p>

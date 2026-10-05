@@ -94,6 +94,11 @@
   opacity: var(--opacity-hover);
 }
 
+.footer-links a {
+  color: inherit;
+  text-decoration: none;
+}
+
 
 /* ===== LARGE SCREENS (1400px and below) ===== */
 @media (max-width: 1400px) {

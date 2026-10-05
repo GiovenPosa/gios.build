@@ -28,7 +28,8 @@
 }
 
 .about-hero-title {
-  font-family: var(--font-family-Medium);
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
   font-size: var(--font-size-xxxlarge);
   margin: 0;
 }

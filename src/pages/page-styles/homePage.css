@@ -20,14 +20,38 @@
 }
 
 .home-page-hero-section > h1 {
-  font-family: var(--font-family-Light);
-  font-size: var(--font-size-medium);
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-regular);
+  font-weight: normal;
+  margin-bottom: 2.5rem;
 }
 
 .hero-main-text {
   font-size: var(--font-size-xxxlarge);
   width: 60%;
-  margin-bottom: var(--element-gap);
+  margin-bottom: 2rem;
+}
+
+.hero-main-text p {
+  margin: 0;
+}
+
+.hero-sub {
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  color: var(--text-color-muted);
+  margin: 0 0 var(--element-gap) 0;
+}
+
+.hero-sub-price {
+  font-family: var(--font-family-Medium);
+  color: var(--text-color-dark);
+}
+
+.hero-action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .hero-action-button {
@@ -41,6 +65,11 @@
   color: var(--text-color-light);
   cursor: pointer;
   transition: opacity 0.2s ease;
+}
+
+.hero-action-button.secondary {
+  background-color: var(--btn-color-muted);
+  color: var(--text-color-dark);
 }
 
 .hero-action-button:hover {
@@ -79,35 +108,6 @@
   border-radius: 30px;
   margin-bottom: 1rem;
   overflow: hidden;
-  cursor: pointer;
-}
-
-.project-button {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.project-button svg {
-  font-size: 1.25rem;
-  color: var(--text-color-dark);
-}
-
-.project-button:hover,
-.project-placeholder:hover .project-button {
-  background: rgba(255, 255, 255, 0.85);
-  transform: scale(1.15);
 }
 
 .project-image {
@@ -172,7 +172,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.3rem 1.8rem;
+  padding: 1.4rem 1.8rem;
   font-size: var(--font-size-medium);
   background-color: var(--btn-color-muted);
   border-radius: 99px;
@@ -201,6 +201,9 @@
   flex-direction: column;
   font-family: var(--font-family-Medium);
   font-size: var(--font-size-xxlarge);
+  /* Own compositing layer so the open/close animation repaints cleanly
+     instead of leaving faint copies of the row borders behind */
+  transform: translateZ(0);
 }
 
 .service-item {
@@ -234,19 +237,23 @@
 }
 
 .service-dropdown {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
 }
 
 .service-dropdown.expanded {
-  max-height: 300px;
-  padding-bottom: 1rem;
+  grid-template-rows: 1fr;
+}
+
+.service-dropdown-inner {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .service-list {
   list-style: none;
-  padding: 0;
+  padding: 0 0 1rem 0;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -279,6 +286,14 @@
   transform: translateX(0);
 }
 
+.clients-label {
+  text-align: center;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-regular);
+  color: var(--text-color-muted);
+  margin: 0;
+}
+
 .clients-block {
   display: flex;
   align-items: center;
@@ -294,7 +309,6 @@
   color: var(--text-color-dark);
   transition: fill 0.2s ease;
 }
-
 
 /* ===== LARGE SCREENS (1400px and below) ===== */
 @media (max-width: 1400px) {
@@ -315,7 +329,6 @@
     gap: 12rem;
   }
 }
-
 
 /* ===== MEDIUM-LARGE SCREENS (1100px and below) ===== */
 @media (max-width: 1100px) {
@@ -356,7 +369,6 @@
     gap: 8rem;
   }
 }
-
 
 /* ===== TABLET (900px and below) ===== */
 @media (max-width: 900px) {
@@ -430,7 +442,6 @@
   }
 }
 
-
 /* ===== MOBILE (600px and below) ===== */
 @media (max-width: 600px) {
   .home-page {
@@ -442,13 +453,13 @@
     margin-bottom: 3rem;
   }
 
-  .home-page-hero-section > h1 {
-   font-size: var(--font-size-regular);
+  .hero-sub {
+   font-size: var(--font-size-medium);
   }
   
   .hero-main-text {
     font-size: 32px;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.25rem;
   }
   
   .hero-main-text p {
@@ -473,14 +484,7 @@
   .project-container:not(:first-child) .project-placeholder {
     height: 350px;
   }
-  
-  .project-button {
-    width: 44px;
-    height: 44px;
-    bottom: 1rem;
-    left: 1rem;
-  }
-  
+
   .project-company {
     font-size: var(--font-size-medium);
   }
@@ -531,7 +535,6 @@
     height: 28px;
   }
 }
-
 
 /* ===== SMALL MOBILE (400px and below) ===== */
 @media (max-width: 400px) {

@@ -54,10 +54,10 @@ export function Footer() {
       <div className='footer-container'>
         <div className='footer-contact footer-animate-item' style={getItemStyle(0)}>
           <p className='footer-label'>Contact</p>
-          <p className='footer-text'>Give your product the full digital experience it deserves</p>
+          <p className='footer-text'>Got a business that deserves a better website?</p>
           <span className='footer-button'
           onClick={() => navigate('/contact')} >
-            <p>Lets talk</p>
+            <p>Let's talk</p>
             <GoArrowUpRight/>
           </span>
         </div>
@@ -68,14 +68,17 @@ export function Footer() {
           <p onClick={() => navigate('/contact')} >Contact</p>
         </div>
         <div className='footer-links footer-animate-item' style={getItemStyle(2)}>
-          <p>LinkedIn</p>
-          <p>Instagram</p>
-          <p>Github</p>
+          <a href='https://www.linkedin.com/in/gio-posa-200541240' target='_blank' rel='noopener noreferrer'>
+            <p>LinkedIn</p>
+          </a>
+          <a href='https://github.com/GiovenPosa' target='_blank' rel='noopener noreferrer'>
+            <p>GitHub</p>
+          </a>
         </div>
         <p className='footer-tag footer-animate-item' style={{
           ...getItemStyle(3),
           opacity: getItemStyle(3).opacity * 0.8 
-        }}>2025 crafted by Gio Posa</p>
+        }}>{new Date().getFullYear()} crafted by Gio Posa</p>
       </div>
     </div>
   )

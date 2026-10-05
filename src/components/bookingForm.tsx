@@ -4,13 +4,13 @@ import { IoCloseOutline, IoCheckmarkCircle } from "react-icons/io5";
 import { useState, useEffect } from 'react';
 import { GoArrowUpRight } from "react-icons/go";
 
-const websiteTypes = [
-  'Portfolio',
-  'E-commerce',
-  'Landing Page',
-  'Blog',
-  'SaaS',
-  'Agency',
+const businessTypes = [
+  'Trades & Home Services',
+  'Food & Hospitality',
+  'Health & Beauty',
+  'Retail & E-commerce',
+  'Professional Services',
+  'Creative & Portfolio',
   'Startup',
   'Other'
 ];
@@ -18,16 +18,17 @@ const websiteTypes = [
 const packages = [
   { id: 'starter', name: 'Starter Website', price: '£500-£800' },
   { id: 'redesign', name: 'Website Redesign', price: '£800-£1,500' },
-  { id: 'lead-system', name: 'Lead System', price: '£1,500+' },
+  { id: 'lead-system', name: 'Growth Website', price: '£1,500+' },
   { id: 'not-sure', name: "Not sure yet", price: '' }
 ];
 
 export function BookingForm() {
-  const { isBookingOpen, closeBooking } = useBooking();
+  const { isBookingOpen, initialPackage, closeBooking } = useBooking();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
+    currentSite: '',
     selectedTypes: [] as string[],
     selectedPackage: '',
     budget: '',
@@ -44,6 +45,13 @@ export function BookingForm() {
     budget: ''
   });
 
+  // Preselect the package the visitor clicked on
+  useEffect(() => {
+    if (isBookingOpen && initialPackage) {
+      setFormData(prev => ({ ...prev, selectedPackage: initialPackage }));
+    }
+  }, [isBookingOpen, initialPackage]);
+
   // Reset form state when modal closes (after animation)
   useEffect(() => {
     if (!isBookingOpen) {
@@ -53,6 +61,7 @@ export function BookingForm() {
           name: '',
           email: '',
           phone: '',
+          currentSite: '',
           selectedTypes: [],
           selectedPackage: '',
           budget: '',
@@ -113,9 +122,9 @@ export function BookingForm() {
         : !validateEmail(formData.email) 
           ? 'Please enter a valid email' 
           : '',
-      selectedTypes: formData.selectedTypes.length === 0 ? 'Please select at least one type' : '',
+      selectedTypes: formData.selectedTypes.length === 0 ? 'Please choose at least one' : '',
       selectedPackage: formData.selectedPackage === '' ? 'Please select a package' : '',
-      budget: formData.budget.trim() === '' ? 'Please enter your budget' : ''
+      budget: ''
     };
     
     setErrors(newErrors);
@@ -152,7 +161,11 @@ export function BookingForm() {
             selected_types: formData.selectedTypes,
             selected_package: formData.selectedPackage,
             budget: formData.budget || null,
-            message: formData.message.trim() || null,
+            // No dedicated column for the current site yet, so it travels in the message
+            message: [
+              formData.currentSite.trim() && `Current website: ${formData.currentSite.trim()}`,
+              formData.message.trim(),
+            ].filter(Boolean).join('\n\n') || null,
             source_page: window.location.pathname,
             user_agent: window.navigator.userAgent,
             // Honeypot field - bots fill this, real users won't see it
@@ -299,9 +312,21 @@ export function BookingForm() {
               </div>
 
               <div className='form-group'>
-                <label>What type of website? <span className='required-asterisk'>*</span></label>
+                <label htmlFor='currentSite'>Current website (if you have one)</label>
+                <input
+                  type='text'
+                  id='currentSite'
+                  inputMode='url'
+                  placeholder='yourbusiness.co.uk'
+                  value={formData.currentSite}
+                  onChange={(e) => setFormData(prev => ({ ...prev, currentSite: e.target.value }))}
+                />
+              </div>
+
+              <div className='form-group'>
+                <label>What kind of business? <span className='required-asterisk'>*</span></label>
                 <div className='type-tags'>
-                  {websiteTypes.map((type) => (
+                  {businessTypes.map((type) => (
                     <button
                       key={type}
                       type='button'
@@ -334,7 +359,7 @@ export function BookingForm() {
               </div>
 
               <div className='form-group'>
-                <label htmlFor='budget'>Your budget <span className='required-asterisk'>*</span></label>
+                <label htmlFor='budget'>Rough budget (optional)</label>
                 <div className='budget-input-wrapper'>
                   <span className='budget-prefix'>£</span>
                   <input
@@ -353,7 +378,7 @@ export function BookingForm() {
                 <label htmlFor='message'>Tell me more (optional)</label>
                 <textarea
                   id='message'
-                  placeholder='Share any details about your project...'
+                  placeholder="What does your business do, and what should the website help with?"
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}

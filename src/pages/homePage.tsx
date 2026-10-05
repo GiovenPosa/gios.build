@@ -5,30 +5,13 @@ import RinfoIcon from '../assets/icons/rinfo.svg?react';
 import VanawaysIcon from '../assets/icons/vanaways.svg?react';
 import IbmIcon from '../assets/icons/ibm.svg?react';
 import LeadTracker from '../assets/project-images/lead-tracker.png';
-import IbmAnimate from '../assets/project-images/IbmAnimate.mov';
+import IbmAnimate from '../assets/project-images/IbmAnimate.mp4';
 import Rinfo from '../assets/project-images/rinfo-image-placeholder.png';
 import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../context/bookingContext';
 import { Helmet } from 'react-helmet-async';
+import { servicesData } from '../data/services';
 
-const servicesData = [
-  {
-    title: 'Design',
-    items: ['UI/UX Design', 'Wireframing', 'Prototyping', 'Design Systems']
-  },
-  {
-    title: 'Engineering',
-    items: ['Frontend Development', 'Backend Development', 'API Integration', 'Database Design']
-  },
-  {
-    title: 'Branding',
-    items: ['Logo Design', 'Brand Strategy', 'Visual Identity', 'Brand Guidelines']
-  },
-  {
-    title: 'Interaction',
-    items: ['Micro-interactions', 'User Flows', 'Accessibility', 'Responsive Design']
-  },
-];
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -43,17 +26,17 @@ export function HomePage() {
     <>
       <Helmet>
         <title>
-          gios.build — Web Design, UI/UX & Software Engineering for Modern Brands
+          gios.build — Websites for Small Businesses in Bath & Across the UK | Gio Posa
         </title>
 
         <meta
           name="description"
-          content="gios.build designs and builds high-impact digital experiences for modern brands — from visual identity and UI/UX design to full-stack web development and backend systems."
+          content="I'm Gio, a web designer and software engineer in Bath. I build new websites and redesign old ones for small businesses across the UK, from £500, with a free homepage mockup before you commit."
         />
 
         <meta
           name="keywords"
-          content="web design, ui ux designer, software engineer, frontend developer, web developer uk, portfolio, modern websites, gios.build"
+          content="web designer bath, web developer bath, small business website, website redesign, web design uk, gios.build"
         />
 
         <link rel="canonical" href="https://www.gios.build/" />
@@ -62,16 +45,22 @@ export function HomePage() {
       <div className='home-page'>
         <div className='home-page-container'>
           <section className='home-page-hero-section'>
-            <h1>Software Engineer • UI & UX Designer</h1>
+            <h1>Hi, I'm Gio. Web designer & developer for small businesses</h1>
             <div className='hero-main-text'>
               <p>
-                From the visual identity, to the backend systems powering it all. I design and build everything your product needs to shine.
+                I design and build new websites, or rebuild tired old ones, so your business looks professional and turns visitors into enquiries.
               </p>
             </div>
+            <p className='hero-sub'>
+              Websites <span className='hero-sub-price'>from £500</span>. See a free mockup of your new homepage before you commit.
+            </p>
             <div className='hero-action'>
-              <span className='hero-action-button' onClick={openBooking}>
-                <p>Book a call </p>
+              <span className='hero-action-button' onClick={() => openBooking()}>
+                <p>Get a free mockup</p>
                 <GoArrowUpRight/>
+              </span>
+              <span className='hero-action-button secondary' onClick={() => navigate('/work')}>
+                <p>See my work</p>
               </span>
             </div>
           </section>
@@ -84,9 +73,6 @@ export function HomePage() {
                   alt="Lead Tracker web app for Vanaways – sales call tracking dashboard"
                   className='project-image'
                 />
-                <span className='project-button'>
-                  <GoArrowUpRight />
-                </span>
               </div>
               <p className='project-company'>Vanaways.</p>
               <p className='project-title'>Lead Tracker Design + Integration</p>
@@ -102,11 +88,8 @@ export function HomePage() {
                   muted
                   playsInline
                 />
-                <span className='project-button'>
-                  <GoArrowUpRight />
-                </span>
               </div>
-              <p className='project-company'>IBM</p>
+              <p className='project-company'>IBM Internship</p>
               <p className='project-title'>AI Travel App</p>
             </div>
 
@@ -117,9 +100,6 @@ export function HomePage() {
                   alt="Rinfo RingCentral extension interface"
                   className='project-image'
                 />
-                <span className='project-button'>
-                  <GoArrowUpRight />
-                </span>
               </div>
               <p className='project-company'>Rinfo.</p>
               <p className='project-title'>Ring Central Extension</p>
@@ -128,9 +108,9 @@ export function HomePage() {
 
           <section className='home-page-info-section'>
             <div className='design-info-block'>
-              <p className='section-label'>Designing Success</p>
+              <p className='section-label'>Recent Work</p>
               <p className='section-value'>
-                Great digital experiences blend many disciplines. I bring all of them together into one clean, consistent vision.
+                Websites and tools built for real businesses, designed with care and engineered to last.
               </p>
               <span
                 className='block-action'
@@ -156,11 +136,13 @@ export function HomePage() {
                       />
                     </span>
                     <div className={`service-dropdown ${expandedService === service.title ? 'expanded' : ''}`}>
-                      <ul className='service-list'>
-                        {service.items.map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
+                      <div className='service-dropdown-inner'>
+                        <ul className='service-list'>
+                          {service.items.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -170,7 +152,7 @@ export function HomePage() {
             <div className='story-block'>
               <p className='section-label'>My Story</p>
               <p className='section-value'>
-                I move fast, stay flexible, and obsess over craft, detail, and performance. Your brand gets the presence it deserves while your team keeps doing what they do best.
+                A Master's in Computer Science from Bristol, then almost two years as lead software engineer at Vanaways. Now I build websites for small businesses in Bath and across the UK.
               </p>
               <span
                 className='block-action'
@@ -181,6 +163,7 @@ export function HomePage() {
               </span>
             </div>
 
+            <p className='clients-label'>Where I've worked and built</p>
             <div className='clients-block'>
               <VanawaysIcon className='client-icon'/>
               <IbmIcon className='client-icon'/>

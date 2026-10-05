@@ -28,7 +28,8 @@
 }
 
 .work-hero-title {
-  font-family: var(--font-family-Medium);
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
   font-size: var(--font-size-xxxlarge);
   margin: 0;
 }
@@ -44,6 +45,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   margin-bottom: var(--section-gap-small);
+}
+
+/* An odd project out spans the full row instead of leaving a gap */
+.work-project-container:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 .work-project-container {
@@ -63,35 +69,6 @@
   border-radius: 30px;
   margin-bottom: 1rem;
   overflow: hidden;
-  cursor: pointer;
-}
-
-.project-button {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.project-button svg {
-  font-size: 1.25rem;
-  color: var(--text-color-dark);
-}
-
-.project-button:hover,
-.work-project-placeholder:hover .project-button {
-  background: rgba(255, 255, 255, 0.85);
-  transform: scale(1.15);
 }
 
 .work-project-image {
@@ -150,7 +127,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.3rem 1.8rem;
+  padding: 1.4rem 1.8rem;
   font-size: var(--font-size-medium);
   background-color: var(--btn-color-muted);
   border-radius: 99px;
@@ -166,7 +143,6 @@
   opacity: var(--opacity-hover);
 }
 
-
 /* ===== LARGE SCREENS (1400px and below) ===== */
 @media (max-width: 1400px) {
   .work-page-hero-section {
@@ -181,7 +157,6 @@
     margin-left: 6rem;
   }
 }
-
 
 /* ===== MEDIUM-LARGE SCREENS (1100px and below) ===== */
 @media (max-width: 1100px) {
@@ -213,7 +188,6 @@
     margin-left: 4rem;
   }
 }
-
 
 /* ===== TABLET (900px and below) ===== */
 @media (max-width: 900px) {
@@ -268,7 +242,6 @@
   }
 }
 
-
 /* ===== MOBILE (600px and below) ===== */
 @media (max-width: 600px) {
   .work-page {
@@ -303,14 +276,7 @@
     height: 350px;
     border-radius: 16px;
   }
-  
-  .project-button {
-    width: 44px;
-    height: 44px;
-    bottom: 1rem;
-    left: 1rem;
-  }
-  
+
   .work-project-company {
     font-size: var(--font-size-medium);
   }
@@ -328,11 +294,10 @@
   }
   
   .work-project-info-section .block-action {
-    padding: 0.5rem 1.5rem;
+    padding: 1rem 1.5rem;
     font-size: var(--font-size-regular);
   }
 }
-
 
 /* ===== SMALL MOBILE (400px and below) ===== */
 @media (max-width: 400px) {

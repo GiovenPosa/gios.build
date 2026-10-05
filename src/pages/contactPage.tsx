@@ -1,9 +1,12 @@
 import './page-styles/contactPage.css';
 import { SiGithub } from "react-icons/si";
-import { FaLinkedinIn, FaInstagram } from "react-icons/fa";
+import { FaLinkedinIn } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
+import { GoArrowUpRight } from "react-icons/go";
+import { useBooking } from "../context/bookingContext";
 
 export function ContactPage() {
+  const { openBooking } = useBooking();
 
   // Schema Markup for Contact Page
   const contactSchema = {
@@ -11,7 +14,7 @@ export function ContactPage() {
     "@type": "ContactPage",
     "name": "Contact — gios.build",
     "url": "https://www.gios.build/contact",
-    "description": "Reach out to gios.build to explore your next website, redesign, or digital product project.",
+    "description": "Get in touch with Gio Posa at gios.build about a new website or a redesign for your business.",
     "isPartOf": {
       "@type": "WebSite",
       "name": "gios.build",
@@ -24,8 +27,7 @@ export function ContactPage() {
       "email": "contact@gios.build",
       "sameAs": [
         "https://github.com/GiovenPosa",
-        "https://www.linkedin.com/in/gio-posa-200541240",
-        "https://www.instagram.com/YOUR_HANDLE"
+        "https://www.linkedin.com/in/gio-posa-200541240"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
@@ -38,11 +40,11 @@ export function ContactPage() {
   return (
     <>
       <Helmet>
-        <title>Contact — gios.build | Start Your Next Web or Digital Project</title>
+        <title>Contact — gios.build | Get a Website for Your Business</title>
 
         <meta
           name="description"
-          content="Reach out to gios.build to explore your next website, redesign, or digital product experience. Let's build something intentional, modern, and high-impact together."
+          content="Need a new website or a redesign? Get in touch with Gio, a web designer in Bath working with small businesses across the UK. Replies within 24 hours."
         />
 
         <meta
@@ -67,9 +69,13 @@ export function ContactPage() {
             <p className='contact-title'>Get in touch</p>
 
             <p className='contact-text'>
-              Planning a new website, a redesign, or a digital experience that feels modern and intentional?
-              Let’s start a conversation.
+              Need a new website, or a refresh of the one you've got? Tell me about your business and I'll get back to you within 24 hours.
             </p>
+
+            <span className='contact-cta' onClick={() => openBooking()}>
+              <p>Get a free mockup</p>
+              <GoArrowUpRight/>
+            </span>
 
             <p className='contact-p'>Email</p>
             <a href='mailto:contact@gios.build' className='contact-email'>
@@ -88,15 +94,6 @@ export function ContactPage() {
               </a>  
 
               <a 
-                href="https://www.instagram.com/YOUR_HANDLE"
-                target="_blank"
-                rel="noopener noreferrer"
-                className='contact-link'
-              >
-                <FaInstagram />
-              </a>
-
-              <a 
                 href="https://github.com/GiovenPosa"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -105,6 +102,9 @@ export function ContactPage() {
                 <SiGithub />
               </a>  
             </div>
+
+            <p className='contact-p'>Based in</p>
+            <p className='contact-email'>Bath, UK. Working with businesses across the UK.</p>
           </section>
 
         </div>

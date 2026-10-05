@@ -80,7 +80,8 @@
 }
 
 .booking-title {
-  font-family: var(--font-family-Medium);
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
   font-size: var(--font-size-xxlarge);
   color: var(--text-color-dark);
   margin: 0 0 0.75rem 0;
@@ -337,7 +338,8 @@
 }
 
 .success-title {
-  font-family: var(--font-family-Medium);
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
   font-size: var(--font-size-xxlarge);
   color: var(--text-color-dark);
   margin: 0 0 1rem 0;

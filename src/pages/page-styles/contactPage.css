@@ -39,6 +39,29 @@
   margin-top: 1.5rem;
 }
 
+.contact-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 1.2rem 1.5rem;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-medium);
+  border-radius: 99px;
+  background-color: var(--bg-dark-color);
+  color: var(--text-color-light);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.contact-cta p {
+  margin: 0;
+}
+
+.contact-cta:hover {
+  opacity: var(--opacity-hover);
+}
+
 .contact-p {
   margin-top: 2rem;
   font-family: var(--font-family-Medium);
