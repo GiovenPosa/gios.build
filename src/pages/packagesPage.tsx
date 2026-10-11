@@ -17,6 +17,7 @@ import {
 import { GoArrowUpRight } from "react-icons/go";
 import { Helmet } from 'react-helmet-async';
 import { useBooking } from '../context/bookingContext';
+import { Reveal } from '../components/reveal';
 
 const faqData = [
   {
@@ -69,17 +70,17 @@ export function PackagesPage() {
       <div className='packages-page'>
         <div className='packages-page-container'>
           <section className='packages-page-hero-section'>
-            <p className='packages-hero-label'>Packages</p>
-            <h1 className='packages-hero-title'>
+            <Reveal as="p" className='packages-hero-label'>Packages</Reveal>
+            <Reveal as="h1" className='packages-hero-title' delay={80}>
               Simple, honest pricing
-            </h1>
-            <p className='packages-hero-text'>
+            </Reveal>
+            <Reveal as="p" className='packages-hero-text' delay={160}>
               Clear starting prices for small businesses. Every project starts with a free homepage mockup, so you see the direction before you spend a penny.
-            </p>
+            </Reveal>
           </section>
 
           <section className='packages-card-wrapper'>
-            <div className='packages-card'>
+            <Reveal as="div" className='packages-card'>
               <div className='packages-card-title'>
                 <h2>01 Starter Website</h2>
                 <p>For new businesses that need to look professional online.</p>
@@ -109,9 +110,9 @@ export function PackagesPage() {
                   <GoArrowUpRight/>
                 </span>
               </div>
-            </div>
+            </Reveal>
 
-            <div className='packages-card'>
+            <Reveal as="div" className='packages-card featured' delay={100}>
               <div className='packages-card-title'>
                 <h2>02 Website Redesign</h2>
                 <p>For sites that look dated or don't bring in enquiries.</p>
@@ -145,9 +146,9 @@ export function PackagesPage() {
                   <GoArrowUpRight/>
                 </span>
               </div>
-            </div>
+            </Reveal>
 
-            <div className='packages-card'>
+            <Reveal as="div" className='packages-card' delay={200}>
               <div className='packages-card-title'>
                 <h2>03 Growth Website</h2>
                 <p>For businesses ready to make their website a source of leads.</p>
@@ -189,51 +190,51 @@ export function PackagesPage() {
                   <GoArrowUpRight/>
                 </span>
               </div>
-            </div>
+            </Reveal>
           </section>
 
           <div className='packages-note-block'>
-            <p className='packages-note'>Exact price depends on pages, features, and content.</p>
-            <p>→ A clear quote within 24 hours</p>
-            <p>→ A free homepage mockup before you commit</p>
+            <Reveal as="p" className='packages-note'>Exact price depends on pages, features, and content.</Reveal>
+            <Reveal as="p" delay={60}>→ A clear quote within 24 hours</Reveal>
+            <Reveal as="p" delay={120}>→ A free homepage mockup before you commit</Reveal>
             <div className='package-card-action'>
-              <span className='package-card-button' onClick={() => openBooking('not-sure')}>
+              <Reveal as="span" className='package-card-button' delay={180} onClick={() => openBooking('not-sure')}>
                 <p>Not sure? Get a quote</p>
                 <GoArrowUpRight/>
-              </span>
+              </Reveal>
             </div>
           </div>
 
           <section className='package-info-section'>
-            <p className='section-label'>Free Mockup</p>
-            <p className='section-value'>
+            <Reveal as="p" className='section-label'>Free Mockup</Reveal>
+            <Reveal as="p" className='section-value' delay={80}>
               Most people can't picture a new website until they see it. Tell me about your business and I'll design your new homepage for free. If you love it, we build the full site.
-            </p>
-            <span className='block-action' onClick={() => openBooking()}>
+            </Reveal>
+            <Reveal as="span" className='block-action' delay={160} onClick={() => openBooking()}>
               <p>Request Free Mockup</p>
               <GoArrowUpRight/>
-            </span>
+            </Reveal>
           </section>
 
           <section className='package-info-section'>
-            <p className='section-label'>Hosting & Care</p>
-            <p className='section-value'>
+            <Reveal as="p" className='section-label'>Hosting & Care</Reveal>
+            <Reveal as="p" className='section-value' delay={80}>
               I can host your site and look after your domain, priced to what your site needs. After launch, a monthly maintenance plan keeps it secure, backed up and up to date.
-            </p>
-            <span className='block-action' onClick={() => openBooking('not-sure')}>
+            </Reveal>
+            <Reveal as="span" className='block-action' delay={160} onClick={() => openBooking('not-sure')}>
               <p>Ask About Care</p>
               <GoArrowUpRight/>
-            </span>
+            </Reveal>
           </section>
 
           <section className='package-faq-section'>
-            <p className='section-label'>FAQ</p>
+            <Reveal as="p" className='section-label'>FAQ</Reveal>
             <div className='package-faq-list'>
               {faqData.map((faq) => (
-                <div key={faq.question} className='package-faq-item'>
+                <Reveal as="div" key={faq.question} className='package-faq-item'>
                   <h3 className='faq-question'>{faq.question}</h3>
                   <p className='faq-answer'>{faq.answer}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
           </section>

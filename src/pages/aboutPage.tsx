@@ -6,6 +6,7 @@ import { servicesData } from '../data/services';
 import VanawaysAnimate from '../assets/project-images/VanawaysAnimate.mp4';
 import ProcessCard from '../assets/project-images/process-cards.svg';
 import GiosBuildFontsAnimate from '../assets/project-images/gios-build-fonts.mp4';
+import { Reveal } from '../components/reveal';
 
 export function AboutPage() {
   const navigate = useNavigate();
@@ -75,107 +76,107 @@ export function AboutPage() {
           
           {/* HERO */}
           <section className='about-page-hero-section'>
-            <p className='about-hero-label'>About</p>
-            <h1 className='about-hero-title'>Hi, I'm Gio</h1>
-            <p className='about-hero-text'>
+            <Reveal as="p" className='about-hero-label'>About</Reveal>
+            <Reveal as="h1" className='about-hero-title' delay={80}>Hi, I'm Gio</Reveal>
+            <Reveal as="p" className='about-hero-text' delay={160}>
               A software engineer and designer from Bath. I build websites for small businesses that look the part and bring in customers.
-            </p>
+            </Reveal>
           </section>
 
           {/* INTRO VISUAL */}
           <section className='about-page-info-section'>
-            <div className='about-project-container'>
-              <div className='about-project-placeholder'>    
-                <video 
+            <Reveal as="div" className='about-project-container'>
+              <div className='about-project-placeholder'>
+                <video
                   src={VanawaysAnimate}
                   className='work-project-video'
-                  autoPlay 
-                  loop 
-                  muted 
+                  autoPlay
+                  loop
+                  muted
                   playsInline
-                />        
+                />
               </div>
-            </div>
-          
+            </Reveal>
+
             {/* STORY */}
             <div className='about-services-block'>
-              <p className='section-label'>My Story</p>
+              <Reveal as="p" className='section-label'>My Story</Reveal>
               <div className='section-values-wrapper'>
-                <p className='section-value'>
+                <Reveal as="p" className='section-value'>
                   I've always cared about two things: how software works, and how it feels to use.
-                </p>
-                <p className='section-value'>
+                </Reveal>
+                <Reveal as="p" className='section-value'>
                   Building lead tools for a sales team taught me what makes someone get in touch, and how easily a clunky website loses them. gios.build is where I put that to work for small businesses.
-                </p>
+                </Reveal>
 
                 {journeyData.map((step) => (
-                  <div key={step.title} className='about-process-list'>
+                  <Reveal as="div" key={step.title} className='about-process-list'>
                     <p className='process-title'>{step.title}</p>
                     <p className='process-text'>{step.text}</p>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             </div>
 
             {/* SERVICES */}
             <div className='about-services-block'>
-              <p className='section-label'>Services</p>
+              <Reveal as="p" className='section-label'>Services</Reveal>
               <div className='section-values-wrapper'>
-                <p className='section-value'>
+                <Reveal as="p" className='section-value'>
                   Everything a small business needs to look professional online and turn visitors into customers.
-                </p>
-                <p className='section-value'>
+                </Reveal>
+                <Reveal as="p" className='section-value'>
                   One person from first sketch to launch, so nothing gets lost between a designer and a developer.
-                </p>
+                </Reveal>
 
                 {servicesData.map((service) => (
-                  <div key={service.title} className='about-services-list'>
+                  <Reveal as="div" key={service.title} className='about-services-list'>
                     <p className='services-title'>{service.title}</p>
                     <p className='services-text'>{service.items.join(' / ')}</p>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             </div>
 
             {/* PROCESS VISUAL */}
             <div className='about-project-container process'>
-              <div className='about-project-placeholder process-half'>
+              <Reveal as="div" className='about-project-placeholder process-half'>
                 <img
                   src={ProcessCard}
                   alt="Four-step design and development process — Discover, Design, Refine, Deliver"
                   className='about-project-image'
-                />         
-              </div>
-              <div className='about-project-placeholder process-half'>  
-                <video 
+                />
+              </Reveal>
+              <Reveal as="div" className='about-project-placeholder process-half' delay={100}>
+                <video
                   src={GiosBuildFontsAnimate}
                   className='gios-build-font-animate'
-                  autoPlay 
-                  loop 
-                  muted 
+                  autoPlay
+                  loop
+                  muted
                   playsInline
-                />                  
-              </div>
+                />
+              </Reveal>
             </div>
 
             {/* PROCESS LIST */}
             <div className='about-how-block'>
-              <p className='section-label'>Process</p>
+              <Reveal as="p" className='section-label'>Process</Reveal>
               <div className='section-values-wrapper'>
-                <p className='section-value'>
+                <Reveal as="p" className='section-value'>
                   Simple and transparent. You see your new homepage before you commit to anything.
-                </p>
+                </Reveal>
                 {howWeWorkData.map((process) => (
-                  <div key={process.title} className='about-process-list'>
+                  <Reveal as="div" key={process.title} className='about-process-list'>
                     <p className='process-title'>{process.id} {process.title}</p>
                     <p className='process-text'>{process.text}</p>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             </div>
 
             {/* CTA */}
-            <div className='about-mission-block'>
+            <Reveal as="div" className='about-mission-block'>
               <p className='section-label'>Work With Me</p>
               <p className='section-value'>
                 Pick a package, or just tell me what you need. I'll get back to you within 24 hours.
@@ -184,7 +185,7 @@ export function AboutPage() {
                 <p>Packages</p>
                 <GoArrowUpRight/>
               </span>
-            </div>
+            </Reveal>
 
           </section>
         </div>

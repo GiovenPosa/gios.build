@@ -51,6 +51,7 @@
 }
 
 .packages-card {
+  --card-hover-scale: 1.05;
   width: calc(33.333% - 2rem);
   max-width: 380px;
   min-width: 280px;
@@ -67,9 +68,37 @@
 }
 
 .packages-card:hover {
-  transform: scale(1.05);
+  transform: scale(var(--card-hover-scale));
   border-color: var(--bg-dark-color);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Middle package defaults to the hovered look, popping into it shortly
+   after its scroll-reveal fade-in settles rather than together with it. */
+.packages-card.featured.reveal-in {
+  animation: packages-card-featured-pop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+}
+
+@keyframes packages-card-featured-pop {
+  from {
+    transform: scale(1);
+    border-color: transparent;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+  to {
+    transform: scale(var(--card-hover-scale));
+    border-color: var(--bg-dark-color);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .packages-card.featured.reveal-in {
+    animation: none;
+    transform: scale(var(--card-hover-scale));
+    border-color: var(--bg-dark-color);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .packages-card-title {
@@ -301,13 +330,10 @@
   }
   
   .packages-card {
+    --card-hover-scale: 1.03;
     width: calc(50% - 1rem);
     max-width: none;
     min-width: 260px;
-  }
-  
-  .packages-card:hover {
-    transform: scale(1.03);
   }
   
   .packages-page-hero-section {
@@ -366,16 +392,11 @@
   }
   
   .packages-card {
+    --card-hover-scale: 1;
     width: 100%;
     max-width: 500px;
     height: auto;
     min-height: 350px;
-  }
-  
-  .packages-card:hover {
-    transform: none;
-    border-color: var(--bg-dark-color);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   }
   
   .packages-card-content {

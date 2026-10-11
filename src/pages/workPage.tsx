@@ -5,6 +5,7 @@ import Rinfo from '../assets/project-images/rinfo-image-placeholder.png';
 import { GoArrowUpRight } from "react-icons/go";
 import { Helmet } from 'react-helmet-async';
 import { useBooking } from '../context/bookingContext';
+import { Reveal } from '../components/reveal';
 
 export function WorkPage() {
   const { openBooking } = useBooking();
@@ -31,16 +32,16 @@ export function WorkPage() {
         <div className='work-page-container'>
 
           <section className='work-page-hero-section'>
-            <p className='work-hero-label'>Work</p>
-            <h1 className='work-hero-title'>Recent work</h1>
-            <p className='work-hero-text'>
+            <Reveal as="p" className='work-hero-label'>Work</Reveal>
+            <Reveal as="h1" className='work-hero-title' delay={80}>Recent work</Reveal>
+            <Reveal as="p" className='work-hero-text' delay={160}>
               A few of the products I've designed and built, from a sales team's lead tracker at Vanaways to an AI travel app during my IBM internship.
-            </p>
+            </Reveal>
           </section>
 
           <section className='work-page-project-section'>
-            <div className='work-project-container'>
-              <div className='work-project-placeholder'>                
+            <Reveal as="div" className='work-project-container'>
+              <div className='work-project-placeholder'>
                 <img
                   src={LeadTracker}
                   alt="Lead Tracker web app — UI/UX design and full-stack integration for Vanaways"
@@ -49,24 +50,24 @@ export function WorkPage() {
               </div>
               <p className='work-project-company'>Vanaways.</p>
               <p className='work-project-title'>Lead Tracker Design + Integration</p>
-            </div>
+            </Reveal>
 
-            <div className='work-project-container'>
+            <Reveal as="div" className='work-project-container' delay={80}>
               <div className='work-project-placeholder'>
-                <video 
+                <video
                   src={IbmAnimate}
                   className='work-project-video'
-                  autoPlay 
-                  loop 
-                  muted 
+                  autoPlay
+                  loop
+                  muted
                   playsInline
                 />
               </div>
               <p className='work-project-company'>IBM Internship</p>
               <p className='work-project-title'>AI Travel App</p>
-            </div>
+            </Reveal>
 
-            <div className='work-project-container'>
+            <Reveal as="div" className='work-project-container' delay={160}>
               <div className='work-project-placeholder'>
                 <img
                   src={Rinfo}
@@ -76,21 +77,23 @@ export function WorkPage() {
               </div>
               <p className='work-project-company'>Rinfo.</p>
               <p className='work-project-title'>Ring Central Extension</p>
-            </div>
+            </Reveal>
           </section>
 
           <section className='work-project-info-section'>
-            <p className='section-label'>Your Project</p>
-            <p className='section-value'>
+            <Reveal as="p" className='section-label'>Your Project</Reveal>
+            <Reveal as="p" className='section-value' delay={80}>
               Want something like this for your business? I'll design your new homepage for free, so you can see it before you commit.
-            </p>
-            <span
+            </Reveal>
+            <Reveal
+              as="span"
               className='block-action'
+              delay={160}
               onClick={() => openBooking()}
             >
               <p>Get a free mockup</p>
               <GoArrowUpRight/>
-            </span>
+            </Reveal>
           </section>
         </div>
       </div>

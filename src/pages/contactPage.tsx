@@ -4,6 +4,7 @@ import { FaLinkedinIn } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
 import { GoArrowUpRight } from "react-icons/go";
 import { useBooking } from "../context/bookingContext";
+import { Reveal } from "../components/reveal";
 
 export function ContactPage() {
   const { openBooking } = useBooking();
@@ -64,47 +65,50 @@ export function ContactPage() {
         <div className='contact-page-container'>
           
           <section className='contact-page-section'>
-            <p className='contact-label'>Contact</p>
+            <Reveal as="p" className='contact-label'>Contact</Reveal>
 
-            <p className='contact-title'>Get in touch</p>
+            <Reveal as="p" className='contact-title' delay={60}>Get in touch</Reveal>
 
-            <p className='contact-text'>
+            <Reveal as="p" className='contact-text' delay={120}>
               Need a new website, or a refresh of the one you've got? Tell me about your business and I'll get back to you within 24 hours.
-            </p>
+            </Reveal>
 
-            <span className='contact-cta' onClick={() => openBooking()}>
+            <Reveal as="span" className='contact-cta' delay={180} onClick={() => openBooking()}>
               <p>Get a free mockup</p>
               <GoArrowUpRight/>
-            </span>
+            </Reveal>
 
-            <p className='contact-p'>Email</p>
-            <a href='mailto:contact@gios.build' className='contact-email'>
+            <Reveal as="p" className='contact-p'>Email</Reveal>
+            <Reveal as="a" href='mailto:contact@gios.build' className='contact-email' delay={60}>
               contact@gios.build
-            </a>
+            </Reveal>
 
-            <p className='contact-p'>Connect</p>
+            <Reveal as="p" className='contact-p'>Connect</Reveal>
             <div className='contact-social'>
-              <a 
+              <Reveal
+                as="a"
                 href="https://www.linkedin.com/in/gio-posa-200541240"
                 target="_blank"
                 rel="noopener noreferrer"
                 className='contact-link'
               >
                 <FaLinkedinIn />
-              </a>  
+              </Reveal>
 
-              <a 
+              <Reveal
+                as="a"
                 href="https://github.com/GiovenPosa"
                 target="_blank"
                 rel="noopener noreferrer"
                 className='contact-link'
+                delay={80}
               >
                 <SiGithub />
-              </a>  
+              </Reveal>
             </div>
 
-            <p className='contact-p'>Based in</p>
-            <p className='contact-email'>Bath, UK. Working with businesses across the UK.</p>
+            <Reveal as="p" className='contact-p'>Based in</Reveal>
+            <Reveal as="p" className='contact-email' delay={60}>Bath, UK. Working with businesses across the UK.</Reveal>
           </section>
 
         </div>

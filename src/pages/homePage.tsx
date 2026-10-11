@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../context/bookingContext';
 import { Helmet } from 'react-helmet-async';
 import { servicesData } from '../data/services';
+import { Reveal } from '../components/reveal';
 
 
 export function HomePage() {
@@ -45,16 +46,16 @@ export function HomePage() {
       <div className='home-page'>
         <div className='home-page-container'>
           <section className='home-page-hero-section'>
-            <h1>Hi, I'm Gio. Web designer & developer for small businesses</h1>
-            <div className='hero-main-text'>
+            <Reveal as="h1">Hi, I'm Gio. Web designer & developer for small businesses</Reveal>
+            <Reveal as="div" className='hero-main-text' delay={80}>
               <p>
                 I design and build new websites, or rebuild tired old ones, so your business looks professional and turns visitors into enquiries.
               </p>
-            </div>
-            <p className='hero-sub'>
+            </Reveal>
+            <Reveal as="p" className='hero-sub' delay={160}>
               Websites <span className='hero-sub-price'>from £500</span>. See a free mockup of your new homepage before you commit.
-            </p>
-            <div className='hero-action'>
+            </Reveal>
+            <Reveal as="div" className='hero-action' delay={240}>
               <span className='hero-action-button' onClick={() => openBooking()}>
                 <p>Get a free mockup</p>
                 <GoArrowUpRight/>
@@ -62,12 +63,12 @@ export function HomePage() {
               <span className='hero-action-button secondary' onClick={() => navigate('/work')}>
                 <p>See my work</p>
               </span>
-            </div>
+            </Reveal>
           </section>
 
           <section className='home-page-project-section'>
-            <div className='project-container'>
-              <div className='project-placeholder'>               
+            <Reveal as="div" className='project-container'>
+              <div className='project-placeholder'>
                 <img
                   src={LeadTracker}
                   alt="Lead Tracker web app for Vanaways – sales call tracking dashboard"
@@ -76,9 +77,9 @@ export function HomePage() {
               </div>
               <p className='project-company'>Vanaways.</p>
               <p className='project-title'>Lead Tracker Design + Integration</p>
-            </div>
+            </Reveal>
 
-            <div className='project-container'>
+            <Reveal as="div" className='project-container' delay={0}>
               <div className='project-placeholder'>
                 <video
                   src={IbmAnimate}
@@ -91,9 +92,9 @@ export function HomePage() {
               </div>
               <p className='project-company'>IBM Internship</p>
               <p className='project-title'>AI Travel App</p>
-            </div>
+            </Reveal>
 
-            <div className='project-container'>
+            <Reveal as="div" className='project-container' delay={100}>
               <div className='project-placeholder'>
                 <img
                   src={Rinfo}
@@ -103,11 +104,11 @@ export function HomePage() {
               </div>
               <p className='project-company'>Rinfo.</p>
               <p className='project-title'>Ring Central Extension</p>
-            </div>
+            </Reveal>
           </section>
 
           <section className='home-page-info-section'>
-            <div className='design-info-block'>
+            <Reveal as="div" className='design-info-block'>
               <p className='section-label'>Recent Work</p>
               <p className='section-value'>
                 Websites and tools built for real businesses, designed with care and engineered to last.
@@ -119,13 +120,13 @@ export function HomePage() {
                 <p>My Work</p>
                 <GoArrowUpRight/>
               </span>
-            </div>
+            </Reveal>
 
             <div className='services-info-block'>
-              <p className='section-label '>Services</p>
+              <Reveal as="p" className='section-label '>Services</Reveal>
               <div className='services-bullets-container'>
-                {servicesData.map((service) => (
-                  <div key={service.title} className='service-item'>
+                {servicesData.map((service, index) => (
+                  <Reveal as="div" key={service.title} className='service-item' delay={index * 60}>
                     <span
                       className='service-header'
                       onClick={() => toggleService(service.title)}
@@ -144,12 +145,12 @@ export function HomePage() {
                         </ul>
                       </div>
                     </div>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             </div>
 
-            <div className='story-block'>
+            <Reveal as="div" className='story-block'>
               <p className='section-label'>My Story</p>
               <p className='section-value'>
                 A Master's in Computer Science from Bristol, then almost two years as lead software engineer at Vanaways. Now I build websites for small businesses in Bath and across the UK.
@@ -161,13 +162,13 @@ export function HomePage() {
                 <p>About Me</p>
                 <GoArrowUpRight/>
               </span>
-            </div>
+            </Reveal>
 
-            <p className='clients-label'>Where I've worked and built</p>
+            <Reveal as="p" className='clients-label'>Where I've worked and built</Reveal>
             <div className='clients-block'>
-              <VanawaysIcon className='client-icon'/>
-              <IbmIcon className='client-icon'/>
-              <RinfoIcon className='client-icon'/>
+              <Reveal as="span" delay={0}><VanawaysIcon className='client-icon'/></Reveal>
+              <Reveal as="span" delay={80}><IbmIcon className='client-icon'/></Reveal>
+              <Reveal as="span" delay={160}><RinfoIcon className='client-icon'/></Reveal>
             </div>
           </section>
         </div>
