@@ -1,6 +1,6 @@
 // Privacy-friendly analytics with Umami: totals only, no cookies, nothing
 // that follows a person around. The tracker is served from this site's own
-// /stats path (the Cloudflare Pages Functions in functions/stats pass it
+// /stats path (the Cloudflare Worker in worker/index.ts passes it
 // through to Umami Cloud), so ad blockers that block analytics domains leave
 // it alone.
 //

@@ -1,0 +1,17 @@
+// Cloudflare Worker that serves the site: the built files in dist/, with the
+// small script in worker/ in front of /stats only (the Umami pass-through).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gios-build",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // any path without a file gets index.html with a 200; the router shows
+    // the page, or the not-found page
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/stats/*"]
+  },
+  "observability": { "enabled": true }
+}
