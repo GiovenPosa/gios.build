@@ -63,7 +63,7 @@ export function PricingPage() {
             <button
               type='button'
               className='hero-action-button secondary pricing-care-button'
-              onClick={() => openBooking('not-sure', "I'd like to ask about hosting & care.")}
+              onClick={() => openBooking('Hosting & care', { packageId: 'not-sure', message: "I'd like to ask about hosting & care." })}
             >
               <p>Ask about care</p>
               <GoArrowUpRight aria-hidden />

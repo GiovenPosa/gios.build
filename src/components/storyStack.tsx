@@ -131,7 +131,7 @@ export function StoryStack() {
               <h3 className='story-title'>{step.title}</h3>
               <p className='story-text'>{step.text}</p>
               {index === last && (
-                <button type='button' className='hero-action-button story-cta' onClick={() => openBooking()}>
+                <button type='button' className='hero-action-button story-cta' onClick={() => openBooking('Story')}>
                   <p>Get a free mockup</p>
                   <GoArrowUpRight aria-hidden />
                 </button>

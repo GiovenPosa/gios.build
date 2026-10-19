@@ -121,7 +121,7 @@ export function HomePage() {
               I obsess over craft and motion. Great websites are just the side effect. See your free homepage mockup before you spend a penny.
             </Reveal>
             <Reveal as="div" className={`hero-action${heroBuild === 'done' ? '' : ' is-building'}`} delay={heroBuild === 'done' ? 240 : 1100}>
-              <button type='button' className='hero-action-button hero-cta-pulse' onClick={() => openBooking()}>
+              <button type='button' className='hero-action-button hero-cta-pulse' onClick={() => openBooking('Hero')}>
                 <p>Get a free mockup</p>
                 <GoArrowUpRight aria-hidden />
               </button>

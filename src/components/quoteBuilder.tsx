@@ -161,7 +161,10 @@ export function QuoteBuilder() {
   const book = () => {
     const lines = picked.map((choice) => choice.label).join(', ');
     track('Ask about this build', { package: pkg.id });
-    openBooking(pkg.id, `From the quote builder: ${pkg.name} (${priceRange(pkg)}). ${lines}.`);
+    openBooking('Quote builder', {
+      packageId: pkg.id,
+      message: `From the quote builder: ${pkg.name} (${priceRange(pkg)}). ${lines}.`,
+    });
   };
 
   return (

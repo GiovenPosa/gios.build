@@ -6,7 +6,11 @@ interface BookingContextType {
   initialPackage: string;
   /** Text to start the message with, e.g. the build a visitor priced up. */
   initialMessage: string;
-  openBooking: (packageId?: string, message?: string) => void;
+  /**
+   * Opens the enquiry form. `source` names the button that opened it (e.g.
+   * 'Hero', 'Footer'), so analytics shows which ones people use.
+   */
+  openBooking: (source: string, options?: { packageId?: string; message?: string }) => void;
   closeBooking: () => void;
 }
 
@@ -17,9 +21,9 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [initialPackage, setInitialPackage] = useState('');
   const [initialMessage, setInitialMessage] = useState('');
 
-  const openBooking = (packageId?: string, message?: string) => {
-    // every "Get a free mockup" button comes through here
-    track('Open enquiry form', { package: packageId || 'none', page: window.location.pathname });
+  const openBooking: BookingContextType['openBooking'] = (source, { packageId, message } = {}) => {
+    // every button that opens the form comes through here
+    track('Open enquiry form', { source, package: packageId || 'none', page: window.location.pathname });
     setInitialPackage(packageId ?? '');
     setInitialMessage(message ?? '');
     setIsBookingOpen(true);

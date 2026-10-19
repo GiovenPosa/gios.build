@@ -90,7 +90,7 @@ export function PackageStack() {
                   className='pk-choose'
                   onClick={(e) => {
                     e.stopPropagation();
-                    openBooking(pkg.id);
+                    openBooking('Package list', { packageId: pkg.id });
                   }}
                 >
                   Choose {pkg.name}

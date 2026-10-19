@@ -122,7 +122,7 @@ export function ClosingCta() {
 
       <div className='cta-actions'>
         <span className='cta-magnet' ref={magnetRef}>
-          <button type='button' className='hero-action-button hero-cta-pulse' onClick={() => openBooking()}>
+          <button type='button' className='hero-action-button hero-cta-pulse' onClick={() => openBooking('Closing CTA')}>
             <p>Get a free mockup</p>
             <GoArrowUpRight aria-hidden />
           </button>

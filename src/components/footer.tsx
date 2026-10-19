@@ -52,7 +52,7 @@ export function Footer() {
           <p className='footer-label'>Contact</p>
           <h2 className='footer-title'>Get in touch</h2>
           <p className='footer-text'>Tell me about your business. I'll reply within 24 hours.</p>
-          <button type='button' className='footer-button' onClick={() => openBooking()}>
+          <button type='button' className='footer-button' onClick={() => openBooking('Footer')}>
             <p>Get a free mockup</p>
             <GoArrowUpRight aria-hidden />
           </button>

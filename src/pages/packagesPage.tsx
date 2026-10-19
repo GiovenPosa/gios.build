@@ -79,7 +79,7 @@ export function PackagesPage() {
                 </span>
               </div>
               <div className='package-card-action'>
-                <span className='package-card-button' onClick={() => openBooking('starter')}>
+                <span className='package-card-button' onClick={() => openBooking('Old packages page', { packageId: 'starter' })}>
                   <p>Choose Starter</p>
                   <GoArrowUpRight/>
                 </span>
@@ -115,7 +115,7 @@ export function PackagesPage() {
                 </span>
               </div>
               <div className='package-card-action'>
-                <span className='package-card-button' onClick={() => openBooking('redesign')}>
+                <span className='package-card-button' onClick={() => openBooking('Old packages page', { packageId: 'redesign' })}>
                   <p>Choose Redesign</p>
                   <GoArrowUpRight/>
                 </span>
@@ -159,7 +159,7 @@ export function PackagesPage() {
                 </span>
               </div>
               <div className='package-card-action'>
-                <span className='package-card-button' onClick={() => openBooking('lead-system')}>
+                <span className='package-card-button' onClick={() => openBooking('Old packages page', { packageId: 'lead-system' })}>
                   <p>Choose Growth</p>
                   <GoArrowUpRight/>
                 </span>
@@ -172,7 +172,7 @@ export function PackagesPage() {
             <Reveal as="p" delay={60}>→ A clear quote within 24 hours</Reveal>
             <Reveal as="p" delay={120}>→ A free homepage mockup before you commit</Reveal>
             <div className='package-card-action'>
-              <Reveal as="span" className='package-card-button' delay={180} onClick={() => openBooking('not-sure')}>
+              <Reveal as="span" className='package-card-button' delay={180} onClick={() => openBooking('Old packages page', { packageId: 'not-sure' })}>
                 <p>Not sure? Get a quote</p>
                 <GoArrowUpRight/>
               </Reveal>
@@ -184,7 +184,7 @@ export function PackagesPage() {
             <Reveal as="p" className='section-value' delay={80}>
               You won't know if you love it until you see it. So I'll show you first. For free.
             </Reveal>
-            <Reveal as="span" className='block-action' delay={160} onClick={() => openBooking()}>
+            <Reveal as="span" className='block-action' delay={160} onClick={() => openBooking('Old packages page')}>
               <p>Request Free Mockup</p>
               <GoArrowUpRight/>
             </Reveal>
@@ -195,7 +195,7 @@ export function PackagesPage() {
             <Reveal as="p" className='section-value' delay={80}>
               Your site shouldn't need you to think about it again. I can host it, back it up, and keep it running. One simple monthly fee.
             </Reveal>
-            <Reveal as="span" className='block-action' delay={160} onClick={() => openBooking('not-sure')}>
+            <Reveal as="span" className='block-action' delay={160} onClick={() => openBooking('Old packages page', { packageId: 'not-sure' })}>
               <p>Ask About Care</p>
               <GoArrowUpRight/>
             </Reveal>
