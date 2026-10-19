@@ -4,6 +4,7 @@
   --font-family-Regular: "JakartaRegular", sans-serif;
   --font-family-Light: "JakartaLight", sans-serif;
   --font-Sonder-Regular: "SonderRegular", sans-serif;
+  --font-family-Mono: "FragmentMono", ui-monospace, monospace;
 
   --font-size-small: 12px;
   --font-size-regular: 16px;
@@ -55,6 +56,92 @@
   margin: 0;
   line-height: 1;
   text-box: trim-both cap alphabetic;
+}
+
+/* Primary pill buttons: a glass-reflection sweep on hover, adapted from
+   the shine effect on Van-Spec's primary CTAs and vehicle cards. A
+   skewed highlight band sits parked off-screen and sweeps across once
+   per hover, clipped to the pill's own rounded corners. */
+:is(
+  .hero-action-button:not(.secondary),
+  .package-card-button,
+  .contact-cta,
+  .booking-submit,
+  .success-button,
+  .not-found-button.primary,
+  .top-header-button
+) {
+  position: relative;
+  overflow: hidden;
+}
+
+:is(
+  .hero-action-button:not(.secondary),
+  .package-card-button,
+  .contact-cta,
+  .booking-submit,
+  .success-button,
+  .not-found-button.primary,
+  .top-header-button
+)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.15) 44%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0.15) 56%,
+    transparent 70%
+  );
+  transform: translateX(-100%) skewX(-20deg);
+  opacity: 0;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(
+  .hero-action-button:not(.secondary),
+  .package-card-button,
+  .contact-cta,
+  .booking-submit,
+  .success-button,
+  .not-found-button.primary,
+  .top-header-button
+):hover::after {
+    animation: btn-shimmer 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+}
+
+@keyframes btn-shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-20deg);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateX(200%) skewX(-20deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @media (hover: hover) and (pointer: fine) {
+    :is(
+    .hero-action-button:not(.secondary),
+    .package-card-button,
+    .contact-cta,
+    .booking-submit,
+    .success-button,
+    .not-found-button.primary,
+    .top-header-button
+  ):hover::after {
+      animation: none;
+    }
+  }
 }
 
 /* Responsive CSS variables */
@@ -109,15 +196,24 @@
 }
 
 @font-face {
+  font-family: "FragmentMono";
+  src: url("/src/assets/fonts/FragmentMono-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "SonderRegular";
   src: url("/src/assets/fonts/SonderRegular.otf");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Scroll reveal: each item (see src/components/reveal.tsx) fades in and
    sharpens out of a blur the moment it individually enters the viewport,
-   independent of its siblings — no section-level/grouped trigger. */
+   independent of its siblings. No section-level/grouped trigger. */
 .reveal {
   opacity: 0;
   filter: blur(10px);
@@ -142,4 +238,147 @@
     transform: none;
     transition: none;
   }
+}
+/* The section eyebrow, used everywhere (components/sectionBar.tsx):
+   dot + mono label, a hairline rule to the edge, an optional end piece */
+.section-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  align-self: stretch;
+  font-family: var(--font-family-Mono);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--text-color-dark);
+}
+
+.section-bar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.section-bar-label i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fe432a;
+}
+
+.section-bar-rule {
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.12;
+}
+
+.section-bar > :not(.section-bar-label):not(.section-bar-rule) {
+  white-space: nowrap;
+}
+
+/* read by search engines and screen readers, never shown */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* The £ and the + on poster-sized prices: half size, sitting on the
+   figures' baseline, so the number does the talking */
+.price-sign,
+.price-plus {
+  display: inline-block;
+  font-size: 0.5em;
+  vertical-align: baseline;
+  letter-spacing: 0;
+}
+
+.price-sign {
+  margin-right: 0.06em;
+}
+
+.price-plus {
+  margin-left: 0.06em;
+}
+
+/* ---- Touch screens ----
+   Phones have no hover: every hover effect above only applies with a real
+   mouse (hover: hover). In its place, anything tappable gets a press: it
+   dips while the finger is down and springs back with the site's soft stop.
+   `scale` is its own property, so the press stacks on top of an element's
+   own transforms; each keeps its own transitions (--own) with the press's
+   added on. */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none) {
+  html :is(.hero-action-button, .booking-submit, .success-button, .footer-button, .block-action,
+    .home-work-bar-link, .mobile-menu-button, .mobile-menu-close, .booking-close, .footer-nav a) {
+    --own: opacity 0.2s ease;
+  }
+  html .top-header-button { --own: opacity 0.2s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+  html .pk-choose { --own: background-color 0.3s ease, color 0.3s ease; }
+  html .qb-choice { --own: background-color 0.3s ease, color 0.3s ease, transform 0.5s cubic-bezier(0.12, 1.15, 0.3, 1); }
+  html .faq-pill { --own: transform 0.6s cubic-bezier(0.12, 1.15, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease; }
+  html .faq-composer { --own: border-color 0.2s ease, box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  html .work-viewer-close { --own: background-color 0.2s ease, transform 0.5s cubic-bezier(0.12, 1.15, 0.3, 1); }
+  html .not-found-button { --own: opacity 0.2s ease, transform 0.2s ease; }
+  html :is(.work-surface, .tool-surface) { --own: transform 0.7s cubic-bezier(0.12, 1.15, 0.3, 1), box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+
+  html :is(.hero-action-button, .booking-submit, .success-button, .footer-button, .block-action,
+    .home-work-bar-link, .mobile-menu-button, .mobile-menu-close, .booking-close, .footer-nav a,
+    .top-header-button, .pk-choose, .qb-choice, .faq-pill, .faq-composer, .work-viewer-close,
+    .not-found-button, .work-surface, .tool-surface) {
+    transition: var(--own), scale var(--press, 0.5s) cubic-bezier(0.12, 1.15, 0.3, 1);
+  }
+
+  /* the press: quick down, soft spring back */
+  html :is(.hero-action-button, .booking-submit, .success-button, .footer-button, .block-action,
+    .home-work-bar-link, .mobile-menu-button, .mobile-menu-close, .booking-close, .footer-nav a,
+    .top-header-button, .pk-choose, .qb-choice, .faq-pill, .work-viewer-close, .not-found-button):active {
+    scale: 0.95;
+    --press: 0.08s;
+  }
+
+  /* bigger things dip less */
+  html .faq-composer:active { scale: 0.98; --press: 0.08s; }
+  html :is(.work-card, .tool-card):active :is(.work-surface, .tool-surface) { scale: 0.97; --press: 0.08s; }
+}
+
+/* ---- Real buttons and links ----
+   Calls to action are <button>s and navigation is <a> links, so they work
+   with a keyboard and are announced properly. These resets carry no weight
+   (:where), so each component's own styles still decide how it looks; they
+   only strip the browser's default button and link styling. */
+:where(button.hero-action-button, button.footer-button, button.mobile-menu-button,
+  button.mobile-menu-close, button.pk-choose, button.not-found-button) {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+:where(a.hero-action-button, a.top-header-logo, a.top-header-button, a.nav-link,
+  a.home-work-bar-link, a.not-found-button, .footer-nav a) {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Keyboard focus: a clear red ring on anything you can tab to, unless a
+   component draws its own */
+:where(a, button, [role='button'], [tabindex]):focus-visible {
+  outline: 2px solid #fe432a;
+  outline-offset: 3px;
 }

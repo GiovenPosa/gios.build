@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Storyboard for the gios.build film "Yours won't." (version 2). Also published at
+     https://claude.ai/artifact/3FgWNMh12kbWbK5LpzxdvN, and the film itself at
+     https://claude.ai/artifact/QPdtRnPm34viDuyPyp5aHD. Open this file in a browser. -->
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Yours Won't Storyboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap">
+</head>
+<body>
+<style>
+/* Layout: a film storyboard set like a type-specimen sheet. A to-scale rhythm
+   strip up top, then one row per shot: the frame sketch on the left, the
+   shot's timing, technique and notes on the right. Frames stay white in both
+   themes because the film itself is white. */
+:root {
+  --bg: #fbfbfa;
+  --fg: #0c0c0c;
+  --muted: #6b6b70;
+  --faint: #a7a7ad;
+  --rule: rgba(12, 12, 12, 0.12);
+  --panel: #f1f1f2;
+  --accent: #fe432a;
+  /* the film's own colours: fixed, the frames are white paper in any theme */
+  --paper: #ffffff;
+  --ink: #0c0c0c;
+  --ghost: #d9d9dc;
+  --s-site: #7cc4e4;
+  --s-redesign: #95fc9c;
+  --s-leads: #e1ead9;
+  --s-found: #1c3b36;
+  --s-care: #e9e9eb;
+  --display: 'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'Fragment Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111112; --fg: #f2f2f0; --muted: #a3a3a8; --faint: #6c6c72;
+    --rule: rgba(255, 255, 255, 0.12); --panel: #1b1b1d; --accent: #ff5a40;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111112; --fg: #f2f2f0; --muted: #a3a3a8; --faint: #6c6c72;
+  --rule: rgba(255, 255, 255, 0.12); --panel: #1b1b1d; --accent: #ff5a40;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--display);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 3.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4.5rem;
+}
+
+/* ---- shared bits ---- */
+.label {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.bar i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+.bar span.rule { flex: 1; height: 1px; background: var(--rule); }
+.bar .end { color: var(--muted); white-space: nowrap; }
+
+/* ---- header ---- */
+header { display: flex; flex-direction: column; gap: 1.5rem; }
+h1 {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+h1 .stop { color: var(--accent); }
+.lede {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--fg);
+}
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.facts span {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.75rem;
+  border-radius: 99px;
+  background: var(--panel);
+}
+
+/* ---- rhythm strip, to scale over 60 seconds ---- */
+.rhythm { display: flex; flex-direction: column; gap: 1rem; }
+.rhythm h2, .rules h2, .shots-head h2, .open h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+.rhythm p { margin: 0; max-width: 62ch; color: var(--muted); }
+.strip-scroll { overflow-x: auto; padding-bottom: 0.25rem; }
+.strip { min-width: 640px; display: flex; flex-direction: column; gap: 0.4rem; }
+.acts, .segs { display: flex; gap: 3px; }
+.acts div {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.segs a {
+  position: relative;
+  height: 46px;
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--fg);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 0 5px 6px;
+  outline-offset: 2px;
+  transition: background-color 0.2s ease;
+}
+.segs a:hover, .segs a:focus-visible { background: var(--rule); }
+.segs a.burst {
+  background: repeating-linear-gradient(90deg, var(--accent) 0 2px, transparent 2px 6px), var(--panel);
+}
+.segs a.hold::after {
+  content: '';
+  position: absolute;
+  left: 6px; right: 6px; top: 8px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--fg);
+  opacity: 0.25;
+}
+.ticks { position: relative; height: 16px; }
+.ticks span {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+.ticks span:first-child { transform: none; }
+.ticks span:last-child { transform: translateX(-100%); }
+.legend { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+.legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+.legend b {
+  display: inline-block; width: 22px; height: 12px; border-radius: 3px;
+  background: var(--panel);
+}
+.legend b.burst { background: repeating-linear-gradient(90deg, var(--accent) 0 2px, transparent 2px 6px), var(--panel); }
+.legend b.hold { background: linear-gradient(var(--fg), var(--fg)) center / 70% 2px no-repeat, var(--panel); opacity: 0.85; }
+
+/* ---- motion rules ---- */
+.rules { display: flex; flex-direction: column; gap: 1.25rem; }
+.rule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+.rule-grid div {
+  min-width: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.rule-grid strong { font-size: 1.05rem; letter-spacing: -0.02em; }
+.rule-grid p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+/* ---- shots ---- */
+.shots-head { display: flex; flex-direction: column; gap: 1rem; }
+.shots { display: flex; flex-direction: column; }
+.shot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 2rem;
+  padding-block: 2.25rem;
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: 1rem;
+}
+.shot:last-child { border-bottom: 1px solid var(--rule); }
+.shot-copy { min-width: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+.shot-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem 1rem; }
+.shot-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--paper);
+  background: var(--accent);
+  border-radius: 99px;
+  padding: 0.2rem 0.6rem;
+}
+.shot-time {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.shot h3 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+.tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tech span {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.55rem;
+  border-radius: 99px;
+  border: 1px solid var(--rule);
+}
+.shot dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 0.55rem 1rem;
+}
+.shot dt {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 0.2rem;
+}
+.shot dd { margin: 0; min-width: 0; font-size: 0.97rem; }
+.shot dd q { quotes: none; font-weight: 700; }
+
+/* ---- the frame sketches ---- */
+.frame {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(12, 12, 12, 0.08), 0 18px 40px -26px rgba(12, 12, 12, 0.35);
+  overflow: hidden;
+  container-type: inline-size;
+  align-self: start;
+}
+/* the specimen-page margins every frame carries */
+.frame .m {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 1.15cqw;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a8a90;
+  white-space: nowrap;
+}
+.m.tl { top: 4.5cqw; left: 4.5cqw; }
+.m.tc { top: 4.5cqw; left: 50%; transform: translateX(-50%); }
+.m.bl { bottom: 4.5cqw; left: 4.5cqw; }
+.m.bc { bottom: 4.5cqw; left: 50%; transform: translateX(-50%); }
+.frame svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.frame .center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.type {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  white-space: nowrap;
+}
+.dot {
+  display: inline-block;
+  width: 1.1cqw; height: 1.1cqw;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.ghost { color: var(--ghost); }
+.red { color: var(--accent); }
+.cut-badge {
+  position: absolute;
+  right: 4.5cqw;
+  top: 4.5cqw;
+  font-family: var(--mono);
+  font-size: 1.3cqw;
+  letter-spacing: 0.05em;
+  color: var(--paper);
+  background: var(--ink);
+  border-radius: 99px;
+  padding: 0.35cqw 0.9cqw;
+}
+
+/* ---- open questions ---- */
+.open { display: flex; flex-direction: column; gap: 1.25rem; }
+.open ol { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.75rem; max-width: 70ch; }
+.open li::marker { font-family: var(--mono); color: var(--muted); }
+.source { color: var(--muted); font-size: 0.92rem; max-width: 70ch; margin: 0; }
+
+@media (max-width: 820px) {
+  .shot { grid-template-columns: 1fr; gap: 1.25rem; }
+  .shot dl { grid-template-columns: 1fr; gap: 0.15rem; }
+  .shot dd { margin-bottom: 0.5rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .frame .blink { animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+}
+
+/* ---- v2 frame parts: the film's own section bar, panels, chips ---- */
+.frame .eb { position:absolute; left:6cqw; right:6cqw; top:4.6cqw; display:flex; align-items:center; gap:1.1cqw;
+  font-family:var(--mono); font-size:1.15cqw; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink); }
+.frame .eb i { width:0.65cqw; height:0.65cqw; border-radius:50%; background:var(--accent); flex:none; }
+.frame .eb b { flex:1; height:1px; background:#e3e3e6; }
+.frame .eb .r { color:#8a8a90; }
+.frame .t { position:absolute; font-family:var(--display); font-weight:700; letter-spacing:-0.05em; line-height:0.94; color:var(--ink); white-space:nowrap; }
+.frame .pnl { position:absolute; background:#fff; border-radius:1.3cqw; box-shadow:0 0 0 1px #e6e6e9, 0 1.6cqw 3cqw -1.6cqw rgba(0,0,0,.3); overflow:hidden; }
+.frame .chr { height:2.8cqw; background:#f2f2f3; display:flex; align-items:center; gap:0.5cqw; padding:0 1.1cqw; }
+.frame .chr i { width:0.7cqw; height:0.7cqw; border-radius:50%; background:#d6d6da; }
+.frame .chip2 { position:absolute; display:inline-flex; align-items:center; gap:0.6cqw; padding:0.8cqw 1.3cqw; border-radius:99px; background:#efeff1;
+  font-family:var(--mono); font-size:1.2cqw; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink); white-space:nowrap; }
+.frame .chip2 i { width:0.6cqw; height:0.6cqw; border-radius:50%; background:var(--accent); }
+.frame .nt { background:#fff; border-radius:1.2cqw; box-shadow:0 0 0 1px #ececef, 0 1.2cqw 2.4cqw -1.4cqw rgba(0,0,0,.3); padding:1cqw 1.3cqw;
+  display:flex; align-items:center; gap:1cqw; }
+.frame .nt i { width:0.8cqw; height:0.8cqw; border-radius:50%; background:var(--accent); flex:none; }
+.frame .nt b { font-family:var(--display); font-size:1.6cqw; letter-spacing:-0.02em; }
+.frame .nt span { font-size:1.2cqw; color:#6b6b70; }
+.frame .nt em { margin-left:auto; font-style:normal; font-family:var(--mono); font-size:0.95cqw; color:#8a8a90; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="bar"><i></i><span>Storyboard</span><span class="rule"></span><span class="end">7 shots · 37.5s</span></div>
+    <h1>Yours won't<span class="stop">.</span></h1>
+    <p class="lede">A 37-second film for gios.build that answers what a small business owner actually wants to know: what's wrong with my website, what would you do about it, how does it work, what do I get and what does it cost. It follows an example business from a dated site with no enquiries to a crafted new one that brings them in, told in the site's own language: Plus Jakarta, Fragment Mono section bars, a red dot as the one accent, and the site's fast-then-soft-stop motion.</p>
+    <div class="facts">
+      <span>16:9 master · 1920×1080</span>
+      <span>60 fps</span>
+      <span>Works muted, score optional</span>
+      <span>9:16 cut for Instagram after</span>
+      <span>Built in code, exports to MP4</span>
+    </div>
+  </header>
+
+  <section class="rhythm" aria-labelledby="rhythm-title">
+    <div class="bar"><i></i><span>Rhythm</span><span class="rule"></span><span class="end">To scale</span></div>
+    <h2 id="rhythm-title">Pain, fix, proof, offer</h2>
+    <p>Each block is one shot, as wide as it lasts. The fix gets the most time because it is the reason to get in touch; the end card holds long enough to read. Click a block to jump to its shot.</p>
+    <div class="strip-scroll">
+      <div class="strip" id="strip">
+        <div class="acts" id="acts"></div>
+        <div class="segs" id="segs"></div>
+        <div class="ticks" id="ticks"></div>
+      </div>
+    </div>
+    <div class="legend label">
+      <span><b></b>Shot</span>
+      <span><b class="hold"></b>Held card</span>
+    </div>
+  </section>
+
+  <section class="rules" aria-labelledby="rules-title">
+    <div class="bar"><i></i><span>Motion rules</span><span class="rule"></span><span class="end">06 rules</span></div>
+    <h2 id="rules-title">How everything moves</h2>
+    <div class="rule-grid">
+      <div><span class="label">01</span><strong>Value first</strong><p>Every shot answers a question a customer has. Nothing is there just to look clever.</p></div>
+      <div><span class="label">02</span><strong>Transform, don't cut</strong><p>The old site's window carries into the next shot and rebuilds into the new design, so the change is the story.</p></div>
+      <div><span class="label">03</span><strong>Fast, then a soft stop</strong><p>The site's own curve on every move: quick off the mark, landing gently. No stepped growth, no flicker, no hard-cut bursts.</p></div>
+      <div><span class="label">04</span><strong>Words from one side</strong><p>Lines arrive word by word from the right, about 0.1s apart. Emphasis is a drawn red line, never bold or colour.</p></div>
+      <div><span class="label">05</span><strong>Red, used once</strong><p>The red dot marks the one thing that matters in a shot: the section bar, the step being reached, an enquiry arriving.</p></div>
+      <div><span class="label">06</span><strong>Examples are labelled</strong><p>The business, its enquiries and its booking are made up, and say so on screen. Swap in a real client when there is one.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="shots-title" style="display:flex;flex-direction:column;gap:1.5rem">
+    <div class="shots-head">
+      <div class="bar"><i></i><span>Shots</span><span class="rule"></span><span class="end">4 acts</span></div>
+      <h2 id="shots-title">Shot by shot</h2>
+    </div>
+    <div class="shots" id="shots"></div>
+  </section>
+
+  <section class="open" aria-labelledby="open-title">
+    <div class="bar"><i></i><span>To decide</span><span class="rule"></span><span class="end">Next</span></div>
+    <h2 id="open-title">Open questions</h2>
+    <ol>
+      <li><strong>A real client.</strong> Shots 02, 03 and 05 use a made-up plumber. A real before and after, with real enquiries, would make the film far more convincing.</li>
+      <li><strong>Where it lives.</strong> Home page, Packages page, Instagram, or all three. A social cut wants 15 to 20 seconds: shots 01, 03, 06 and 07.</li>
+      <li><strong>Sound.</strong> It works muted. The score is a warm marimba and soft electric piano; tell me if it should be quieter, or go.</li>
+      <li><strong>Your face.</strong> The end card could carry your portrait beside the wordmark, to make it personal.</li>
+    </ol>
+    <p class="source">This is version 2. Version 1 borrowed motion techniques studied in OpenAI's <em>Refreshed.</em> film (stepped states, bursts of hard cuts) and was dropped: it said nothing a customer needed, and the stepped growth looked glitchy on video. Nothing from that film is used here.</p>
+  </section>
+</div>
+
+<script>
+// The film, one entry per shot. Times in seconds; frames are sketched below.
+const SHOTS = [
+  { act: 'The pain', title: 'Your website should bring you customers', start: 0, dur: 3.5, tech: ['Words from right', 'Drawn underline'],
+    action: 'Section bar: For small businesses. The two-line poster headline arrives word by word, then a red line draws under customers.',
+    text: '“Your website should bring you customers.”',
+    motion: 'Words 0.1s apart, 0.5s each. First line already up on frame 0. Underline draws in 0.6s.',
+    asset: 'Hero headline type, section bar.', frame: 'hook' },
+  { act: 'The pain', title: 'What it costs them', start: 3.5, dur: 5.5, tech: ['Slide up', 'Words from right'],
+    action: 'An example plumber’s dated site rises in on the left. On the right, three pains land one by one, then a card: enquiries this month, 0.',
+    text: '“Looks dated.” “Hard to use on a phone.” “Nobody gets in touch.”  ·  ENQUIRIES THIS MONTH 0',
+    motion: 'Site rises 40px with the soft stop, then a slow 1% push. Pains 0.7s apart.',
+    asset: 'New: the example business’s old site, labelled Example.', frame: 'pain' },
+  { act: 'The fix', title: 'First, a free homepage mockup', start: 9, dur: 7, tech: ['Transform', 'Build in'],
+    action: 'The old site’s window glides from the left into centre stage as the headline lands. Its old content falls away and the new homepage builds in, section by section. A chip lands on the corner.',
+    text: '“First, a free homepage mockup.” “Before you pay a penny.”  ·  FREE · BEFORE YOU PAY',
+    motion: 'Window travels in 0.95s. New sections rise 26px, 0.16s apart.',
+    asset: 'Service colours for the new design; the site’s chip style.', frame: 'mockup' },
+  { act: 'The fix', title: 'Four steps, no surprises', start: 16, dur: 6, tech: ['Line draws', 'Dot rides the tip'],
+    action: 'A line draws across the four real steps with the red dot riding its tip. Each step darkens and its text rises as the dot arrives. Then: live in about 4 weeks.',
+    text: 'Discover · Design · Refine · Deliver  ·  LIVE IN ABOUT 4 WEEKS',
+    motion: 'The dot eases between steps, 0.95s each.',
+    asset: 'Process steps copy from the home page.', frame: 'process' },
+  { act: 'The proof', title: 'Visits into enquiries', start: 22, dur: 6, tech: ['Notifications', 'Press'],
+    action: 'The new site on a phone. Its Book a visit button dips, and an enquiry slides in beside it. Twice more: a booking, another enquiry.',
+    text: '“Built to turn visits into enquiries.”  ·  New enquiry · New booking · New enquiry',
+    motion: 'Each card slides in 60px from the right, 1s apart, just after a button press.',
+    asset: 'The example’s new site, mobile.', frame: 'result' },
+  { act: 'The offer', title: 'See it first. Love it, and we build it.', start: 28, dur: 4.5, tech: ['Words from right', 'Chips'],
+    action: 'Two lines: the first quieter, the second the promise. Three terms land beneath it as chips.',
+    text: '“See it first.” “Love it, and we build it.”  ·  FROM £500 · FREE MOCKUP FIRST · LIVE IN ABOUT 4 WEEKS',
+    motion: 'Chips 0.18s apart with the faintest settle.',
+    asset: 'Closing section copy and package prices.', frame: 'offer' },
+  { act: 'The offer', title: 'gios.build', start: 32.5, dur: 5, hold: true, tech: ['End card', 'Hold'],
+    action: 'The wordmark grows in once with a soft settle, its full stop red. The ask and the place follow.',
+    text: '“gios.build”  “Get your free homepage mockup.”  ·  WEB DESIGN & DEVELOPMENT · BATH, UK',
+    motion: 'One smooth grow from 82%, then a slow creep while it holds over 3s.',
+    asset: 'Wordmark, closing CTA.', frame: 'close' },
+];
+
+const total = SHOTS.reduce((t, s) => t + s.dur, 0);
+const tc = (s) => {
+  const sec = s % 60;
+  const str = Number.isInteger(sec) ? String(sec).padStart(2, '0') : sec.toFixed(1).padStart(4, '0');
+  return `${Math.floor(s / 60)}:${str}`;
+};
+const num = (i) => String(i + 1).padStart(2, '0');
+
+// ---- rhythm strip, every block as wide as its shot lasts ----
+const acts = [];
+SHOTS.forEach((s) => {
+  const last = acts[acts.length - 1];
+  if (last && last.name === s.act) last.dur += s.dur;
+  else acts.push({ name: s.act, dur: s.dur });
+});
+document.getElementById('acts').innerHTML = acts
+  .map((a) => `<div style="flex:${a.dur} 1 0">${a.name}</div>`).join('');
+document.getElementById('segs').innerHTML = SHOTS
+  .map((s, i) => `<a href="#shot-${num(i)}" class="${s.hold ? 'hold' : ''}" style="flex:${s.dur} 1 0" aria-label="Shot ${num(i)}, ${s.title}, ${s.dur} seconds">${num(i)}</a>`).join('');
+document.getElementById('ticks').innerHTML = [0, 10, 20, 30, total]
+  .map((t) => `<span style="left:${(t / total) * 100}%">${tc(t)}</span>`).join('');
+
+// ---- frame sketches ----
+const bar = (label, right) => `<div class="eb"><i></i><span>${label}</span><b></b><span class="r">${right}</span></div>`;
+
+const FRAMES = {
+  hook: () => `${bar('For small businesses', 'gios.build')}
+    <span class="t" style="left:6cqw;top:30cqw;font-size:7.8cqw">Your website should</span>
+    <span class="t" style="left:6cqw;top:38cqw;font-size:7.8cqw">bring you customers.</span>
+    <span style="position:absolute;left:34.5cqw;top:45.8cqw;width:35cqw;height:0.6cqw;border-radius:1cqw;background:var(--accent)"></span>`,
+  pain: () => `${bar('The problem', 'Example business')}
+    <div class="pnl" style="left:6cqw;top:11cqw;width:46cqw;height:34cqw"><div class="chr"><i></i><i></i><i></i></div>
+      <div style="padding:1.6cqw 2.2cqw;font-family:Georgia,serif;color:#444">
+        <div style="background:#d7d7d2;padding:0.8cqw;text-align:center;font-size:1.5cqw;letter-spacing:0.04em">HARPER PLUMBING &amp; HEATING</div>
+        <div style="display:flex;gap:1.3cqw;margin-top:1.3cqw"><div style="width:12cqw;height:9cqw;background:#e3e3df"></div>
+          <div style="flex:1;font-size:0.95cqw;line-height:1.35">Welcome to our website. We offer a wide range of plumbing and heating services.<br><span style="color:#1a38c4;text-decoration:underline">Click here for our services</span></div></div>
+        <div style="display:flex;gap:0.9cqw;margin-top:1.4cqw"><div style="flex:1;height:6cqw;background:#eaeae6"></div><div style="flex:1;height:6cqw;background:#eaeae6"></div><div style="flex:1;height:6cqw;background:#eaeae6"></div></div>
+      </div></div>
+    <span class="t" style="left:58cqw;top:13cqw;font-size:3cqw;letter-spacing:-0.035em">Looks dated.</span>
+    <span class="t" style="left:58cqw;top:17.5cqw;font-size:3cqw;letter-spacing:-0.035em">Hard to use on a phone.</span>
+    <span class="t" style="left:58cqw;top:22cqw;font-size:3cqw;letter-spacing:-0.035em">Nobody gets in touch.</span>
+    <div class="nt" style="position:absolute;left:58cqw;top:31cqw;width:25cqw;flex-direction:column;align-items:flex-start;gap:0.3cqw">
+      <span style="font-family:var(--mono);font-size:1cqw;text-transform:uppercase;letter-spacing:0.06em">Enquiries this month</span>
+      <b style="font-size:6cqw;line-height:1">0</b></div>`,
+  mockup: () => `${bar('The fix', 'Example business')}
+    <span class="t" style="left:6cqw;top:8.6cqw;font-size:4.5cqw">First, a free homepage mockup.</span>
+    <span style="position:absolute;left:6cqw;top:14cqw;font-size:2cqw;color:#5b5b60">Before you pay a penny.</span>
+    <div class="pnl" style="left:19cqw;top:19.5cqw;width:62cqw;height:33cqw"><div class="chr"><i></i><i></i><i></i></div>
+      <div style="padding:1.5cqw 2cqw;display:flex;flex-direction:column;gap:1.1cqw">
+        <div style="display:flex;align-items:center;gap:1.5cqw"><b style="font-family:var(--display);font-size:1.6cqw">Harper</b><span style="margin-left:auto;font-family:var(--mono);font-size:0.9cqw;color:#888">SERVICES · AREAS · REVIEWS</span></div>
+        <div style="display:flex;gap:1.1cqw;height:15cqw">
+          <div style="flex:1;border-radius:1.2cqw;background:#1c3b36;padding:2cqw;display:flex;flex-direction:column;gap:0.8cqw">
+            <b style="font-family:var(--display);font-size:3.4cqw;line-height:0.95;letter-spacing:-0.045em;color:#fff">Boiler fixed today.</b>
+            <span style="font-size:1.2cqw;color:#cfe3dc">Qualified engineers across Bath.</span>
+            <span style="margin-top:auto;align-self:flex-start;border-radius:99px;padding:0.8cqw 1.3cqw;background:#95fc9c;color:#1c3b36;font-size:1.1cqw">Book a visit</span></div>
+          <div style="width:17cqw;border-radius:1.2cqw;background:#7cc4e4"></div></div>
+        <div style="display:flex;gap:1.1cqw;height:5.5cqw"><div style="flex:1;border-radius:1.1cqw;background:#e1ead9"></div><div style="flex:1;border-radius:1.1cqw;background:#e9e9eb"></div><div style="flex:1;border-radius:1.1cqw;background:#fde8e4"></div></div>
+      </div></div>
+    <span class="chip2" style="left:71cqw;top:17.5cqw;transform:rotate(3deg)"><i></i>Free · Before you pay</span>`,
+  process: () => {
+    const steps = ['Discover', 'Design', 'Refine', 'Deliver'];
+    return `${bar('How it works', '04 steps')}
+      <span class="t" style="left:6cqw;top:8.6cqw;font-size:4.5cqw">Four steps. No surprises.</span>
+      <span style="position:absolute;left:8.3cqw;top:29.2cqw;width:65.6cqw;height:0.18cqw;background:#e6e6e9"></span>
+      <span style="position:absolute;left:8.3cqw;top:29.2cqw;width:43.7cqw;height:0.18cqw;background:var(--ink)"></span>
+      <span style="position:absolute;left:51.4cqw;top:28.6cqw;width:1.3cqw;height:1.3cqw;border-radius:50%;background:var(--accent)"></span>
+      ${steps.map((s, i) => `<span class="t" style="left:${8.3 + i * 21.9}cqw;top:21.5cqw;font-size:5.7cqw;color:${i < 3 ? 'var(--ink)' : '#e3e3e6'}">0${i + 1}</span>
+        <span class="t" style="left:${8.3 + i * 21.9}cqw;top:31.6cqw;font-size:2.3cqw;letter-spacing:-0.03em;opacity:${i < 3 ? 1 : 0.2}">${s}</span>`).join('')}
+      <span class="chip2" style="left:6cqw;top:46.5cqw"><i></i>Live in about 4 weeks</span>`;
+  },
+  result: () => `${bar('The result', 'Example business')}
+    <span class="t" style="left:6cqw;top:8.6cqw;font-size:4.5cqw">Built to turn visits into enquiries.</span>
+    <div class="pnl" style="left:13.5cqw;top:17cqw;width:18.7cqw;height:36cqw;border-radius:2.9cqw;box-shadow:0 0 0 0.6cqw var(--ink);transform:rotate(-1.5deg)">
+      <div style="padding:2.8cqw 1.1cqw 1.1cqw;display:flex;flex-direction:column;gap:0.8cqw">
+        <b style="font-family:var(--display);font-size:1.25cqw">Harper</b>
+        <div style="border-radius:1.1cqw;background:#1c3b36;padding:1.4cqw 1.2cqw;display:flex;flex-direction:column;gap:0.6cqw">
+          <b style="font-family:var(--display);font-size:2.3cqw;line-height:0.95;letter-spacing:-0.045em;color:#fff">Boiler fixed today.</b>
+          <span style="align-self:flex-start;border-radius:99px;padding:0.7cqw 1.1cqw;background:#95fc9c;color:#1c3b36;font-size:0.95cqw">Book a visit</span></div>
+        <div style="height:6cqw;border-radius:1cqw;background:#e1ead9"></div></div></div>
+    <div style="position:absolute;left:39.5cqw;top:19cqw;width:33cqw;display:flex;flex-direction:column;gap:1.1cqw">
+      <div class="nt"><i></i><div><b>New enquiry</b><br><span>Boiler service, Widcombe</span></div><em>09:12</em></div>
+      <div class="nt"><i></i><div><b>New booking</b><br><span>Thursday at 10:00</span></div><em>11:30</em></div>
+      <div class="nt"><i></i><div><b>New enquiry</b><br><span>Bathroom quote, Larkhall</span></div><em>14:40</em></div></div>`,
+  offer: () => `${bar('The offer', 'gios.build/packages')}
+    <span class="t" style="left:6cqw;top:16cqw;font-size:6.2cqw;color:#a3a3a8">See it first.</span>
+    <span class="t" style="left:6cqw;top:22.3cqw;font-size:6.2cqw">Love it, and we build it.</span>
+    <span class="chip2" style="left:6cqw;top:36cqw">From £500</span>
+    <span class="chip2" style="left:19.5cqw;top:36cqw"><i></i>Free mockup first</span>
+    <span class="chip2" style="left:39.5cqw;top:36cqw">Live in about 4 weeks</span>`,
+  close: () => `<div class="center" style="flex-direction:column;gap:1.8cqw">
+      <span class="type" style="font-size:9.9cqw">gios<span class="red">.</span>build</span>
+      <span class="type" style="font-size:3.1cqw;letter-spacing:-0.035em">Get your free homepage mockup.</span>
+      <span style="font-family:var(--mono);font-size:1.3cqw;letter-spacing:0.06em;color:#6b6b70">WEB DESIGN &amp; DEVELOPMENT · BATH, UK</span></div>`,
+};
+
+document.getElementById('shots').innerHTML = SHOTS.map((s, i) => `
+  <article class="shot" id="shot-${num(i)}">
+    <div class="frame" role="img" aria-label="Sketch of shot ${num(i)}: ${s.title}">
+      ${FRAMES[s.frame]()}
+    </div>
+    <div class="shot-copy">
+      <div class="shot-top">
+        <span class="shot-num">${num(i)}</span>
+        <span class="shot-time">${tc(s.start)} · ${s.dur}s</span>
+        <span class="label">${s.act}</span>
+      </div>
+      <h3>${s.title}</h3>
+      <div class="tech">${s.tech.map((t) => `<span>${t}</span>`).join('')}</div>
+      <dl>
+        <dt>Action</dt><dd>${s.action}</dd>
+        <dt>On screen</dt><dd>${s.text.replace(/“([^”]+)”/g, '<q>$1</q>')}</dd>
+        <dt>Motion</dt><dd>${s.motion}</dd>
+        <dt>From the site</dt><dd>${s.asset}</dd>
+      </dl>
+    </div>
+  </article>`).join('');
+</script>
+
+</body>
+</html>

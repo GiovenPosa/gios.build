@@ -18,33 +18,7 @@ import { GoArrowUpRight } from "react-icons/go";
 import { Helmet } from 'react-helmet-async';
 import { useBooking } from '../context/bookingContext';
 import { Reveal } from '../components/reveal';
-
-const faqData = [
-  {
-    question: 'How long does it take?',
-    answer: "A simple website is usually live in about 4 weeks. Bigger or more bespoke sites take longer, and you'll get a timeline with your quote."
-  },
-  {
-    question: 'What do I need to provide?',
-    answer: "The basics about your business, your logo if you have one, and any photos you'd like to use. If you're stuck on wording, I'll help you shape it."
-  },
-  {
-    question: 'How many revisions do I get?',
-    answer: "It depends on how bespoke the project is, so we agree it upfront in your quote. The free mockup means we're aligned on the direction before the build starts."
-  },
-  {
-    question: 'Can you handle hosting and my domain?',
-    answer: 'Yes. Hosting and domain setup can be included. The cost depends on what your site needs, and I\'ll include it in your quote.'
-  },
-  {
-    question: 'What happens after launch?',
-    answer: "You can take it from there, or I can look after it with a monthly maintenance plan covering updates, backups and small changes."
-  },
-  {
-    question: 'Is the mockup really free?',
-    answer: 'Yes, with no obligation. If you love it, we build the full site. If not, no hard feelings.'
-  },
-];
+import { faqData } from '../data/faq';
 
 export function PackagesPage() {
   const { openBooking } = useBooking();
@@ -52,7 +26,7 @@ export function PackagesPage() {
   return (
     <>
       <Helmet>
-        <title>Website Packages & Pricing for Small Businesses — gios.build</title>
+        <title>Website Packages & Pricing for Small Businesses | gios.build</title>
 
         <meta
           name="description"
@@ -75,7 +49,7 @@ export function PackagesPage() {
               Simple, honest pricing
             </Reveal>
             <Reveal as="p" className='packages-hero-text' delay={160}>
-              Clear starting prices for small businesses. Every project starts with a free homepage mockup, so you see the direction before you spend a penny.
+              Every project starts the same way: a free mockup, so you see it before you spend a penny.
             </Reveal>
           </section>
 
@@ -208,7 +182,7 @@ export function PackagesPage() {
           <section className='package-info-section'>
             <Reveal as="p" className='section-label'>Free Mockup</Reveal>
             <Reveal as="p" className='section-value' delay={80}>
-              Most people can't picture a new website until they see it. Tell me about your business and I'll design your new homepage for free. If you love it, we build the full site.
+              You won't know if you love it until you see it. So I'll show you first. For free.
             </Reveal>
             <Reveal as="span" className='block-action' delay={160} onClick={() => openBooking()}>
               <p>Request Free Mockup</p>
@@ -219,7 +193,7 @@ export function PackagesPage() {
           <section className='package-info-section'>
             <Reveal as="p" className='section-label'>Hosting & Care</Reveal>
             <Reveal as="p" className='section-value' delay={80}>
-              I can host your site and look after your domain, priced to what your site needs. After launch, a monthly maintenance plan keeps it secure, backed up and up to date.
+              Your site shouldn't need you to think about it again. I can host it, back it up, and keep it running. One simple monthly fee.
             </Reveal>
             <Reveal as="span" className='block-action' delay={160} onClick={() => openBooking('not-sure')}>
               <p>Ask About Care</p>

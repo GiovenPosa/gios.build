@@ -1,85 +1,97 @@
 import { GoArrowUpRight } from 'react-icons/go';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { SiInstagram } from 'react-icons/si';
+import { FaLinkedinIn } from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useBooking } from '../context/bookingContext';
+import { track } from '../lib/analytics';
 import './component-styles/footer.css';
 
+/**
+ * The site's contact section, on the dark footer that every page reveals as
+ * you reach its end (it used to be the separate /contact page). Its items
+ * rise in one after another as the footer scrolls into view.
+ */
 export function Footer() {
-  const navigate = useNavigate();
+  const { openBooking } = useBooking();
+  const footerRef = useRef<HTMLElement | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
+      const footerHeight = footerRef.current?.offsetHeight ?? 0;
       const scrollPosition = window.scrollY + window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      
-      const footerHeight = 900; // matches --footer-h
-      const footerStart = documentHeight - footerHeight;
-      
-      // Delay the animation start - increase this value to start later
-      const animationDelay = 400; // pixels into the footer before animation begins
-      const animationRange = footerHeight - animationDelay; // remaining distance for animation
-      
-      // Calculate how far into the footer we've scrolled (0 to 1)
-      const progress = Math.max(0, Math.min(1, (scrollPosition - footerStart - animationDelay) / animationRange));
-      
-      setScrollProgress(progress);
+      const footerStart = document.documentElement.scrollHeight - footerHeight;
+      // start a little way into the footer, then play over the rest of it
+      const animationDelay = footerHeight * 0.3;
+      const animationRange = Math.max(1, footerHeight - animationDelay);
+      setScrollProgress(Math.max(0, Math.min(1, (scrollPosition - footerStart - animationDelay) / animationRange)));
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
     handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
-  // Calculate transform values based on scroll progress
-  // Each item has a different start point for staggered effect
+  // each item rises in a beat after the one before
   const getItemStyle = (index: number) => {
-    const staggerDelay = index * 0.15; // stagger each item
-    const adjustedProgress = Math.max(0, Math.min(1, (scrollProgress - staggerDelay) / (1 - staggerDelay)));
-    
-    // Easing function for smoother animation
-    const eased = 1 - Math.pow(1 - adjustedProgress, 3);
-    
-    const translateY = 80 * (1 - eased);
-    const opacity = eased;
-    
-    return {
-      transform: `translateY(${translateY}px)`,
-      opacity: opacity
-    };
+    const staggerDelay = index * 0.12;
+    const adjusted = Math.max(0, Math.min(1, (scrollProgress - staggerDelay) / (1 - staggerDelay)));
+    const eased = 1 - Math.pow(1 - adjusted, 3);
+    return { transform: `translateY(${60 * (1 - eased)}px)`, opacity: eased };
   };
 
   return (
-    <div className='footer'>
+    <footer className='footer' id='contact' ref={footerRef}>
       <div className='footer-container'>
-        <div className='footer-contact footer-animate-item' style={getItemStyle(0)}>
+        <div className='footer-main footer-animate-item' style={getItemStyle(0)}>
           <p className='footer-label'>Contact</p>
-          <p className='footer-text'>Got a business that deserves a better website?</p>
-          <span className='footer-button'
-          onClick={() => navigate('/contact')} >
-            <p>Let's talk</p>
-            <GoArrowUpRight/>
-          </span>
+          <h2 className='footer-title'>Get in touch</h2>
+          <p className='footer-text'>Tell me about your business. I'll reply within 24 hours.</p>
+          <button type='button' className='footer-button' onClick={() => openBooking()}>
+            <p>Get a free mockup</p>
+            <GoArrowUpRight aria-hidden />
+          </button>
         </div>
-        <div className='footer-links footer-animate-item' style={getItemStyle(1)}>
-          <p onClick={() => navigate('/')} >Home</p>
-          <p onClick={() => navigate('/work')} >Work</p>
-          <p onClick={() => navigate('/about')} >About Me</p>
-          <p onClick={() => navigate('/contact')} >Contact</p>
+
+        <div className='footer-details'>
+          <div className='footer-detail footer-animate-item' style={getItemStyle(1)}>
+            <p className='footer-detail-label'>Email</p>
+            <a href='mailto:contact@gios.build' className='footer-detail-value' onClick={() => track('Contact link', { to: 'email' })}>contact@gios.build</a>
+          </div>
+
+          <div className='footer-detail footer-animate-item' style={getItemStyle(2)}>
+            <p className='footer-detail-label'>Connect</p>
+            <div className='footer-social'>
+              <a href='https://www.linkedin.com/in/gio-posa-200541240' target='_blank' rel='noopener noreferrer' aria-label='LinkedIn' onClick={() => track('Contact link', { to: 'linkedin' })}>
+                <FaLinkedinIn />
+              </a>
+              <a href='https://www.instagram.com/gios.build' target='_blank' rel='noopener noreferrer' aria-label='Instagram, @gios.build' onClick={() => track('Contact link', { to: 'instagram' })}>
+                <SiInstagram />
+              </a>
+            </div>
+          </div>
+
+          <div className='footer-detail footer-animate-item' style={getItemStyle(3)}>
+            <p className='footer-detail-label'>Based in</p>
+            <p className='footer-detail-value'>Bath, UK. Working with businesses across the UK.</p>
+          </div>
         </div>
-        <div className='footer-links footer-animate-item' style={getItemStyle(2)}>
-          <a href='https://www.linkedin.com/in/gio-posa-200541240' target='_blank' rel='noopener noreferrer'>
-            <p>LinkedIn</p>
-          </a>
-          <a href='https://github.com/GiovenPosa' target='_blank' rel='noopener noreferrer'>
-            <p>GitHub</p>
-          </a>
+
+        <div className='footer-bottom footer-animate-item' style={getItemStyle(4)}>
+          <nav className='footer-nav' aria-label='Footer'>
+            <Link to='/'>Home</Link>
+            <Link to='/work'>Work</Link>
+            <Link to='/packages'>Packages</Link>
+            <Link to='/privacy'>Privacy</Link>
+          </nav>
+          <p className='footer-tag'>{new Date().getFullYear()} crafted by Gio Posa</p>
         </div>
-        <p className='footer-tag footer-animate-item' style={{
-          ...getItemStyle(3),
-          opacity: getItemStyle(3).opacity * 0.8 
-        }}>{new Date().getFullYear()} crafted by Gio Posa</p>
       </div>
-    </div>
-  )
+    </footer>
+  );
 }

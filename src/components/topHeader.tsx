@@ -1,12 +1,15 @@
 import './component-styles/topHeader.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { LuPackage2 } from "react-icons/lu";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 
 export function TopHeader() {
-  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  // the red dot that marks a link on hover, and stays on the current page
+  const navClass = (path: string) => `nav-link${pathname === path ? ' is-current' : ''}`;
+  const dot = <i className='nav-dot' aria-hidden />;
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isDarkBackground, setIsDarkBackground] = useState(false);
@@ -35,21 +38,28 @@ export function TopHeader() {
     const checkBackgroundColor = () => {
       if (!headerRef.current) return;
       
-      const headerRect = headerRef.current.getBoundingClientRect();
-      const headerBottom = headerRect.bottom;
-      
-      const darkElements = document.querySelectorAll(
-        '.project-placeholder, .work-project-placeholder, .about-project-placeholder'
+      // Light text only when it's dark behind the header's words themselves:
+      // behind the logo, and behind the nav (or the menu button on phones).
+      // A dark card elsewhere along the bar no longer flips it.
+      const header = headerRef.current;
+      const probes = [
+        header.querySelector('.top-header-logo'),
+        header.querySelector('.top-header-links'),
+        header.querySelector('.mobile-menu-button'),
+      ]
+        .map((el) => el?.getBoundingClientRect())
+        .filter((rect): rect is DOMRect => !!rect && rect.width > 0);
+
+      const darkRects = [...document.querySelectorAll('.work-card.is-dark .work-surface')].map((el) =>
+        el.getBoundingClientRect()
       );
-      
-      let isOverDark = false;
-      
-      darkElements.forEach((element) => {
-        const rect = element.getBoundingClientRect();
-        if (rect.top < headerBottom && rect.bottom > 0) {
-          isOverDark = true;
-        }
-      });
+      const isDarkBehind = (probe: DOMRect) => {
+        const x = probe.left + probe.width / 2;
+        const y = probe.top + probe.height / 2;
+        return darkRects.some((r) => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom);
+      };
+
+      let isOverDark = probes.length > 0 && probes.every(isDarkBehind);
       
       const scrollPosition = window.scrollY + window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
@@ -86,10 +96,18 @@ export function TopHeader() {
     };
   }, [isMobileMenuOpen]);
 
-  const handleNavigate = (path: string) => {
-    setIsMobileMenuOpen(false);
-    navigate(path);
-  };
+  // links navigate themselves; leaving the menu closes it
+  const closeMenu = () => setIsMobileMenuOpen(false);
+
+  // Escape closes the mobile menu
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isMobileMenuOpen]);
 
   return (
     <>
@@ -98,53 +116,46 @@ export function TopHeader() {
         className={`top-header ${isVisible ? 'visible' : 'hidden'} ${isDarkBackground ? 'dark-bg' : ''}`}
       >
         <div className='top-header-container'>
-          <div className='top-header-logo' onClick={() => handleNavigate('/')}>
+          <Link to='/' className='top-header-logo' onClick={closeMenu} aria-label='gios.build, home'>
             <p>gios.build</p>
-          </div>
+          </Link>
 
           <div className='top-header-links'>
-            <span onClick={() => navigate('/work')}>
+            <Link to='/work' className={navClass('/work')} aria-current={pathname === '/work' ? 'page' : undefined}>
+              {dot}
               <p>WORK</p>
-            </span>
-            <span onClick={() => navigate('/about')}>
-              <p>ABOUT</p>
-            </span>
-            <span onClick={() => navigate('/contact')}>
-              <p>CONTACT</p>
-            </span>
-            <span className='top-header-button' onClick={() => navigate('/packages')}>
+            </Link>
+            <Link to='/packages' className='top-header-button' aria-current={pathname === '/packages' ? 'page' : undefined}>
               <p>Packages</p>
-              <LuPackage2/>
-            </span>
+              <LuPackage2 aria-hidden />
+            </Link>
           </div>
 
-          <div className='mobile-menu-button' onClick={() => setIsMobileMenuOpen(true)}>
-            <HiOutlineMenuAlt4 />
-          </div>
+          <button type='button' className='mobile-menu-button' onClick={() => setIsMobileMenuOpen(true)} aria-label='Open menu' aria-expanded={isMobileMenuOpen} aria-controls='mobile-menu'>
+            <HiOutlineMenuAlt4 aria-hidden />
+          </button>
         </div>
       </div>
 
       {/* Mobile Menu Overlay */}
-      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}>
-        <div className='mobile-menu-close' onClick={() => setIsMobileMenuOpen(false)}>
-          <IoCloseOutline />
-        </div>
-        <span onClick={() => handleNavigate('/')}>
+      {/* inert while closed, so Tab and screen readers skip the hidden links */}
+      <nav id='mobile-menu' className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} aria-label='Menu' inert={!isMobileMenuOpen}>
+        <button type='button' className='mobile-menu-close' onClick={closeMenu} aria-label='Close menu'>
+          <IoCloseOutline aria-hidden />
+        </button>
+        <Link to='/' className={navClass('/')} onClick={closeMenu}>
+          {dot}
           <p>HOME</p>
-        </span>
-        <span onClick={() => handleNavigate('/work')}>
+        </Link>
+        <Link to='/work' className={navClass('/work')} onClick={closeMenu}>
+          {dot}
           <p>WORK</p>
-        </span>
-        <span onClick={() => handleNavigate('/about')}>
-          <p>ABOUT</p>
-        </span>
-        <span onClick={() => handleNavigate('/contact')}>
-          <p>CONTACT</p>
-        </span>
-        <span onClick={() => handleNavigate('/packages')}>
+        </Link>
+        <Link to='/packages' className={navClass('/packages')} onClick={closeMenu}>
+          {dot}
           <p>PACKAGES</p>
-        </span>
-      </div>
+        </Link>
+      </nav>
     </>
   )
 }

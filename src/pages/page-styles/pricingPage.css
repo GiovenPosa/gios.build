@@ -1,0 +1,153 @@
+/* The Packages page in the new design language (pages/pricingPage.tsx).
+   Same gutters and width as the home and Work pages. */
+.pricing-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  color: var(--text-color-dark);
+  overflow-x: clip;
+}
+
+.pricing-page-container {
+  width: 100%;
+  max-width: 1800px;
+}
+
+/* the same centred poster hero as the home page, a size smaller */
+.pricing-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: calc(var(--section-gap-small) + 3rem) 0 var(--section-gap-medium);
+}
+
+.pricing-hero-title {
+  margin: 0;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: clamp(2.8rem, 7.2vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+}
+
+.pricing-hero-title span {
+  display: block;
+  text-wrap: balance;
+}
+
+.pricing-hero-sub {
+  max-width: 38rem;
+  margin: 2.5rem auto 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* padding, not margin, so the gaps can't collapse into each other */
+.pricing-quote {
+  padding-top: var(--section-gap-large);
+}
+
+/* ---- hosting & care: one line, its graphic, one button ---- */
+
+.pricing-care {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2.5rem;
+  margin-top: var(--section-gap-large);
+  padding: 2rem;
+  border-radius: 32px;
+  background: #f4f4f5;
+}
+
+.pricing-care-slot {
+  position: relative;
+  display: block;
+  width: 15rem;
+  aspect-ratio: 2.1;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #e9e9eb;
+}
+
+.pricing-care-slot .svc-art {
+  position: absolute;
+  inset: 0;
+  /* the services slot centres its art with a shift; this one just fills */
+  transform: none;
+  width: 100%;
+  height: 100%;
+}
+
+.pricing-care-copy h2 {
+  margin: 0;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: clamp(2rem, 3.4vw, 3.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.pricing-care-copy p {
+  margin: 0.75rem 0 0;
+  max-width: 34rem;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-regular);
+  line-height: 1.45;
+  color: var(--text-color-muted);
+}
+
+.pricing-care-button {
+  white-space: nowrap;
+  font-family: var(--font-family-Medium);
+}
+
+.pricing-faq {
+  padding-top: var(--section-gap-large);
+}
+
+@media (max-width: 900px) {
+  .pricing-page {
+    padding: 0 1.5rem;
+  }
+
+  .pricing-care {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .pricing-care-slot {
+    width: 100%;
+    max-width: 22rem;
+  }
+
+  .pricing-care-button {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 600px) {
+  .pricing-page {
+    padding: 0 1rem;
+  }
+
+  .pricing-hero {
+    padding-top: 8rem;
+    padding-bottom: 4rem;
+  }
+
+  .pricing-hero-sub {
+    font-size: var(--font-size-medium);
+  }
+
+  .pricing-care {
+    padding: 1.25rem;
+    border-radius: 24px;
+  }
+}

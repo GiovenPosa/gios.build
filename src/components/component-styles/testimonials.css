@@ -1,0 +1,248 @@
+/* The section's height is set by JS (one screen + the track's sideways
+   travel). Its frame is full-bleed and pins to the whole viewport. */
+.tst {
+  position: relative;
+  /* padding, not margin, so it can't collapse into the tools section's margin */
+  padding-top: var(--section-gap-medium);
+  color: var(--text-color-dark);
+  box-sizing: content-box;
+}
+
+.tst-frame {
+  --tst-ink: #0c0c0c;
+  --tst-ink-soft: rgba(12, 12, 12, 0.6);
+  --tst-ink-faint: rgba(12, 12, 12, 0.2);
+  --tst-accent: #fe432a;
+  position: sticky;
+  top: 0;
+  /* break out of the page's side padding to the full window width */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  color: var(--tst-ink);
+}
+
+/* The colour layer: fixed behind the whole page, so it has no edges of its
+   own. JS fades it in before the section and out after it. */
+.tst-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* tiny canvas, stretched: the browser's upscaling is what makes it soft */
+.tst-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* fine film grain over the colour, for texture */
+.tst-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tst-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.tst-head,
+.tst-progress {
+  width: calc(100% - 4rem);
+  max-width: 1736px;
+  margin: 0 auto;
+}
+
+/* the shared section bar, in the testimonials' ink */
+.tst-head {
+  color: var(--tst-ink);
+}
+
+.tst-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--tst-ink-soft);
+}
+
+/* JS pads both ends so the first and last quotes sit centred in the frame */
+.tst-track {
+  display: flex;
+  width: max-content;
+  --panel: min(70vw, 1150px);
+  gap: 8vw;
+  will-change: transform;
+}
+
+/* opacity and drift are set per frame from the panel's distance to the centre */
+.tst-panel {
+  flex: 0 0 var(--panel);
+  margin: 0;
+}
+
+.tst-text {
+  margin: 0;
+  font-family: var(--font-family-Bold);
+  font-size: clamp(2.4rem, 5.4vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.tst-mark {
+  color: var(--tst-accent);
+}
+
+.tst-cite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  font-family: var(--font-family-Mono);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tst-cite i {
+  font-style: normal;
+  color: var(--tst-ink-soft);
+}
+
+/* how they know Gio, on its own line under the name: quieter, so the name
+   leads, and it keeps an endorsement from reading as a client review */
+.tst-rel {
+  flex-basis: 100%;
+  color: var(--tst-ink-soft);
+}
+
+/* result pill, in the brand red like the quote marks */
+.tst-cite em {
+  font-style: normal;
+  margin-left: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: var(--tst-accent);
+  /* dark ink on the brand red: white on it is too faint for small text */
+  color: #0c0c0c;
+}
+
+/* how far through the quotes you are */
+.tst-progress {
+  display: flex;
+  gap: 10px;
+}
+
+/* one rounded segment per quote; JS clips each fill to its length */
+.tst-segment {
+  position: relative;
+  flex: 1;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--tst-ink-faint);
+}
+
+.tst-segment-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--tst-ink);
+  visibility: hidden;
+  clip-path: inset(0 100% 0 0 round 999px);
+}
+
+/* reduced motion: no pinning, the quotes stack over a still gradient */
+.tst.is-still .tst-frame {
+  position: relative;
+  height: auto;
+  padding: 6rem 0;
+}
+
+.tst.is-still .tst-backdrop {
+  position: absolute;
+  opacity: 1;
+}
+
+.tst.is-still .tst-track {
+  flex-direction: column;
+  width: calc(100% - 4rem);
+  max-width: 1736px;
+  margin: 0 auto;
+  gap: 4rem;
+}
+
+.tst.is-still .tst-panel {
+  flex: none;
+}
+
+.tst.is-still .tst-progress,
+.tst.is-still .tst-count {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .tst-track {
+    --panel: 80vw;
+  }
+
+  .tst-head,
+  .tst-progress {
+    width: calc(100% - 3rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .tst {
+    padding-top: 4rem;
+  }
+
+  .tst-inner {
+    gap: 2rem;
+  }
+
+  .tst-head,
+  .tst-progress {
+    width: calc(100% - 2rem);
+  }
+
+  .tst-head {
+    font-size: 12px;
+  }
+
+  .tst-progress {
+    gap: 6px;
+  }
+
+  .tst-segment {
+    height: 4px;
+  }
+
+  .tst-track {
+    --panel: 84vw;
+    gap: 10vw;
+  }
+
+  .tst-text {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+  }
+
+  .tst-cite {
+    margin-top: 1.25rem;
+    font-size: 12px;
+  }
+}

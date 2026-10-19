@@ -1,0 +1,350 @@
+/* The quote builder: questions on the left, a paper receipt on the right
+   that prints a line per answer and totals to a package. */
+.qb {
+  color: var(--text-color-dark);
+}
+
+.qb-bar {
+  margin-bottom: 3rem;
+}
+
+.qb-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 5rem;
+  align-items: start;
+}
+
+/* ---- the questions ---- */
+
+.qb-title {
+  margin: 0;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: clamp(2.6rem, 5.2vw, 5.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+}
+
+.qb-title span {
+  display: block;
+}
+
+.qb-sub {
+  margin: 1.5rem 0 3rem;
+  max-width: 30rem;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.qb-group {
+  margin: 0 0 2rem;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.qb-group legend {
+  margin-bottom: 0.85rem;
+  padding: 0;
+  font-family: var(--font-family-Mono);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-color-muted);
+}
+
+.qb-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* a pill with a little dot that fills when it's chosen */
+.qb-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.2rem;
+  border: 0;
+  border-radius: 99px;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-regular);
+  background: var(--btn-color-muted);
+  color: var(--text-color-dark);
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.5s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .qb-choice:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.qb-choice:active {
+  transform: scale(0.97);
+}
+
+.qb-choice:focus-visible {
+  outline: 2px solid #fe432a;
+  outline-offset: 3px;
+}
+
+.qb-choice i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  opacity: 0.45;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.qb-choice.is-on {
+  background: var(--bg-dark-color);
+  color: var(--text-color-light);
+}
+
+.qb-choice.is-on i {
+  background: #fe432a;
+  box-shadow: none;
+  opacity: 1;
+}
+
+/* ---- the receipt ---- */
+
+.qb-receipt-wrap {
+  position: sticky;
+  top: 7rem;
+}
+
+.qb-receipt {
+  position: relative;
+  padding: 2rem 2rem 2.6rem;
+  background: #fff;
+  font-family: var(--font-family-Mono);
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-color-dark);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.28), 0 10px 24px -12px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 0 0;
+  /* a torn, zigzag bottom edge */
+  --tooth: 12px;
+  -webkit-mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - var(--tooth)) no-repeat,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tooth) * 2) var(--tooth) repeat-x;
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - var(--tooth)) no-repeat,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tooth) * 2) var(--tooth) repeat-x;
+}
+
+.qb-receipt-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1.5px dashed rgba(0, 0, 0, 0.25);
+  font-size: 12px;
+  color: var(--text-color-muted);
+}
+
+.qb-brand {
+  text-transform: none;
+  color: var(--text-color-dark);
+}
+
+.qb-lines {
+  list-style: none;
+  margin: 0;
+  padding: 1.25rem 0;
+  border-bottom: 1.5px dashed rgba(0, 0, 0, 0.25);
+}
+
+/* each new line prints in: it opens up and fades in from above */
+.qb-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  overflow: hidden;
+  animation: qb-print 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.qb-line + .qb-line {
+  margin-top: 0.55rem;
+}
+
+@keyframes qb-print {
+  from {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    max-height: 2em;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.qb-leader {
+  flex: 1;
+  min-width: 1rem;
+  border-bottom: 1.5px dotted rgba(0, 0, 0, 0.3);
+}
+
+.qb-tag {
+  font-size: 12px;
+  color: var(--text-color-muted);
+}
+
+.qb-package {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  row-gap: 0.25rem;
+  padding: 1.25rem 0;
+  border-bottom: 1.5px dashed rgba(0, 0, 0, 0.25);
+}
+
+.qb-package-label {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--text-color-muted);
+}
+
+.qb-package-name {
+  font-family: var(--font-family-Bold);
+  font-size: 1.6rem;
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+
+.qb-package-time {
+  align-self: end;
+  font-size: 12px;
+  color: var(--text-color-muted);
+}
+
+/* what else the package covers, so a jump in price reads as a bundle; it
+   prints in a line at a time whenever the package changes */
+.qb-also {
+  grid-column: 1 / -1;
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  font-size: 12px;
+  color: var(--text-color-muted);
+}
+
+.qb-also-label {
+  margin-bottom: 0.45rem;
+  color: var(--text-color-dark);
+}
+
+.qb-also-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  overflow: hidden;
+  animation: qb-print 0.45s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--k) * 70ms) both;
+}
+
+.qb-also-item + .qb-also-item {
+  margin-top: 0.4rem;
+}
+
+.qb-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.5rem;
+}
+
+.qb-total-label {
+  font-size: 12px;
+  color: var(--text-color-muted);
+}
+
+.qb-total-amount {
+  font-family: var(--font-family-Bold);
+  font-size: clamp(3.2rem, 5vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: var(--text-color-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.qb-range {
+  margin: 0.6rem 0 0;
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-color-muted);
+}
+
+.qb-book {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1.75rem;
+  box-sizing: border-box;
+  border: 0;
+  font-family: var(--font-family-Medium);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.qb-fine {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-color-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qb-line,
+  .qb-also-item {
+    animation: none;
+  }
+
+  .qb-choice {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@media (max-width: 1100px) {
+  .qb-layout {
+    gap: 3rem;
+  }
+}
+
+/* stacked: questions, then the receipt underneath */
+@media (max-width: 900px) {
+  .qb-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .qb-receipt-wrap {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .qb-sub {
+    font-size: var(--font-size-medium);
+  }
+
+  .qb-receipt {
+    padding: 1.5rem 1.25rem 2.2rem;
+    font-size: 12px;
+  }
+
+  .qb-choice {
+    padding: 0.75rem 1rem;
+  }
+}

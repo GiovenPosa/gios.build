@@ -3,5 +3,9 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/stats/s.js", "destination": "https://cloud.umami.is/script.js" },
+    { "source": "/stats/api/send", "destination": "https://gateway.umami.is/api/send" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }

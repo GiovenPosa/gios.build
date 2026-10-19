@@ -1,5 +1,8 @@
+/* Fixed behind the page and revealed as you reach the end (the page keeps
+   var(--footer-h) of room for it). Holds the contact section. */
 .footer {
   background-color: var(--bg-dark-color);
+  color: var(--text-color-light);
   height: var(--footer-h);
   width: 100%;
   position: fixed;
@@ -13,43 +16,55 @@
 }
 
 .footer-container {
+  position: relative;
   width: 100%;
   max-width: 1800px;
-  display: flex;
-  padding-top: var(--element-gap);
-  justify-content: space-between;
-  margin-top: var(--element-gap);
-  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  grid-template-rows: 1fr auto;
+  column-gap: 4rem;
+  padding: var(--element-gap) 0 2.5rem;
 }
 
 .footer-animate-item {
   will-change: transform, opacity;
 }
 
-.footer-contact {
-  width: 34%;
+/* ===== left: the invitation ===== */
+.footer-main {
+  align-self: center;
   font-family: var(--font-family-Medium);
 }
 
 .footer-label {
+  margin: 0 0 var(--element-gap-small);
   font-size: var(--font-size-medium);
-  color: var(--text-color-light);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.footer-title {
   margin: 0;
-  margin-bottom: 1rem;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: clamp(3rem, 7vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
 }
 
 .footer-text {
-  font-size: var(--font-size-xxxlarge);
-  color: var(--text-color-light);
-  margin: 0;
-  margin-bottom: var(--element-gap);
+  margin: 1.5rem 0 2.5rem;
+  max-width: 34rem;
+  font-size: var(--font-size-xxlarge);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .footer-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 1.2rem 1.7rem;
+  padding: 1.2rem 1.6rem;
+  font-family: var(--font-family-Medium);
   font-size: var(--font-size-medium);
   border-radius: 99px;
   background-color: var(--bg-light-color);
@@ -62,165 +77,191 @@
   margin: 0;
 }
 
-.footer-button:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .footer-button:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
-.footer-tag {
-  position: absolute;
-  bottom: var(--element-gap);
-  font-family: var(--font-family-Light);
-  letter-spacing: 0.08em;
-  color: var(--bg-light-color);
-  margin: 0;
-}
-
-.footer-links {
-  padding-top: var(--element-gap);
-  width: 20%;
+/* ===== right: how to reach me ===== */
+.footer-details {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   font-family: var(--font-family-Medium);
+}
+
+.footer-detail-label {
+  margin: 0 0 0.5rem;
+  font-size: var(--font-size-medium);
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.footer-detail-value {
+  margin: 0;
   font-size: var(--font-size-large);
   color: var(--text-color-light);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
 }
 
-.footer-links p {
-  margin: 0;
-  margin-bottom: 2rem;
+@media (hover: hover) and (pointer: fine) {
+  a.footer-detail-value:hover {
+    opacity: var(--opacity-hover);
+  }
+}
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.footer-social a {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  color: inherit;
+  transition: opacity 0.2s ease;
+}
+
+.footer-social svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .footer-social a:hover {
+    opacity: var(--opacity-hover);
+  }
+}
+
+/* ===== bottom bar ===== */
+.footer-bottom {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-nav {
+  display: flex;
+  gap: 2rem;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-regular);
+}
+
+.footer-nav a {
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
 
-.footer-links p:hover {
-  opacity: var(--opacity-hover);
-}
-
-.footer-links a {
-  color: inherit;
-  text-decoration: none;
-}
-
-
-/* ===== LARGE SCREENS (1400px and below) ===== */
-@media (max-width: 1400px) {
-  .footer-contact {
-    width: 40%;
-  }
-  
-  .footer-text {
-    font-size: 48px;
+@media (hover: hover) and (pointer: fine) {
+  .footer-nav a:hover {
+    opacity: var(--opacity-hover);
   }
 }
 
-
-/* ===== MEDIUM-LARGE SCREENS (1100px and below) ===== */
-@media (max-width: 1100px) {
-  .footer-contact {
-    width: 45%;
-  }
-  
-  .footer-text {
-    font-size: 40px;
-  }
-  
-  .footer-links {
-    width: 18%;
-    font-size: var(--font-size-medium);
-  }
+.footer-tag {
+  margin: 0;
+  font-family: var(--font-family-Light);
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-
-/* ===== TABLET (900px and below) ===== */
+/* ===== TABLET (900px and below): one column ===== */
 @media (max-width: 900px) {
   .footer {
     padding: 0 1.5rem;
-    height: 700px;
   }
-  
+
   .footer-container {
-    flex-wrap: wrap;
-    padding-top: 3rem;
-    margin-top: 3rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    row-gap: 2.5rem;
+    padding: 3rem 0 2rem;
   }
-  
-  .footer-contact {
-    width: 100%;
-    margin-bottom: 3rem;
+
+  .footer-main,
+  .footer-details {
+    align-self: start;
   }
-  
+
+  .footer-label {
+    margin-bottom: 1.25rem;
+  }
+
   .footer-text {
-    font-size: 36px;
-    margin-bottom: 2rem;
+    font-size: 26px;
+    margin: 1.25rem 0 1.75rem;
   }
-  
-  .footer-links {
-    width: 30%;
-    padding-top: 0;
-    margin-bottom: 3rem;
+
+  .footer-details {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.75rem 3rem;
   }
-  
-  .footer-tag {
-    bottom: 3rem;
+
+  .footer-bottom {
+    align-self: end;
   }
 }
-
 
 /* ===== MOBILE (600px and below) ===== */
 @media (max-width: 600px) {
   .footer {
     padding: 0 1rem;
-    height: 600px;
   }
-  
+
   .footer-container {
-    padding-top: 2rem;
-    margin-top: 2rem;
+    row-gap: 2rem;
+    padding: 2.25rem 0 1.5rem;
   }
-  
-  .footer-contact {
-    margin-bottom: 2rem;
-  }
-  
-  .footer-label {
+
+  .footer-label,
+  .footer-detail-label {
     font-size: var(--font-size-regular);
   }
-  
+
   .footer-text {
-    font-size: 28px;
-    margin-bottom: 1.5rem;
+    font-size: 20px;
+    margin: 1rem 0 1.5rem;
   }
-  
+
   .footer-button {
-    padding: 0.8rem 1.5rem;
+    padding: 0.85rem 1.4rem;
     font-size: var(--font-size-regular);
   }
-  
-  .footer-links {
-    width: 45%;
+
+  .footer-details {
+    gap: 1.25rem 2rem;
+  }
+
+  .footer-detail-value {
     font-size: var(--font-size-regular);
   }
-  
-  .footer-links p {
-    margin-bottom: 1.5rem;
+
+  .footer-social a {
+    width: 22px;
+    height: 22px;
   }
-  
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding-top: 1.25rem;
+  }
+
+  .footer-nav {
+    gap: 1.5rem;
+  }
+
   .footer-tag {
-    bottom: 2rem;
     font-size: var(--font-size-small);
-  }
-}
-
-
-/* ===== SMALL MOBILE (400px and below) ===== */
-@media (max-width: 400px) {
-  .footer {
-    height: 550px;
-  }
-  
-  .footer-text {
-    font-size: 24px;
-  }
-  
-  .footer-links {
-    width: 48%;
   }
 }

@@ -1,4 +1,5 @@
 .booking-overlay {
+  touch-action: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -32,9 +33,17 @@
   border-radius: 24px;
   z-index: 999;
   overflow-y: auto;
+  /* scrolling to the end of the form never carries on into the page */
+  overscroll-behavior: contain;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+.booking-form:focus {
+  /* the panel takes focus when it opens so keyboard users start inside it;
+     it isn't a control, so no ring */
+  outline: none;
 }
 
 .booking-form.open {
@@ -58,8 +67,10 @@
   transition: opacity 0.2s ease;
 }
 
-.booking-close:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .booking-close:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
 .booking-close svg {
@@ -161,8 +172,10 @@
   transition: all 0.2s ease;
 }
 
-.type-tag:hover {
-  border-color: var(--text-color-muted);
+@media (hover: hover) and (pointer: fine) {
+  .type-tag:hover {
+    border-color: var(--text-color-muted);
+  }
 }
 
 .type-tag.selected {
@@ -194,8 +207,10 @@
   text-align: left;
 }
 
-.package-option:hover {
-  border-color: var(--text-color-muted);
+@media (hover: hover) and (pointer: fine) {
+  .package-option:hover {
+    border-color: var(--text-color-muted);
+  }
 }
 
 .package-option.selected {
@@ -268,8 +283,10 @@
   transition: opacity 0.2s ease;
 }
 
-.booking-submit:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .booking-submit:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
 .booking-submit p {
@@ -279,6 +296,25 @@
 .required-asterisk {
   color: #e53935;
   margin-left: 2px;
+}
+
+/* a short sideways nudge on the field the form has just scrolled to */
+.form-group.needs-attention {
+  animation: field-nudge 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.25s;
+}
+
+@keyframes field-nudge {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-group.needs-attention {
+    animation: none;
+  }
 }
 
 .error-message {
@@ -400,8 +436,10 @@
   transition: opacity 0.2s ease;
 }
 
-.success-button:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .success-button:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
 .success-button p {
@@ -579,4 +617,20 @@
   .success-message {
     font-size: 14px;
   }
+}
+
+/* a quiet line under the submit button pointing to the privacy notice */
+.booking-privacy {
+  margin: 1rem 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.5;
+  color: var(--text-color-muted);
+}
+
+.booking-privacy a {
+  color: var(--text-color-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

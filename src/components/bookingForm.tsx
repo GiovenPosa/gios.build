@@ -1,7 +1,8 @@
 import './component-styles/bookingForm.css';
 import { useBooking } from '../context/bookingContext';
+import { track } from '../lib/analytics';
 import { IoCloseOutline, IoCheckmarkCircle } from "react-icons/io5";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GoArrowUpRight } from "react-icons/go";
 
 const businessTypes = [
@@ -23,7 +24,7 @@ const packages = [
 ];
 
 export function BookingForm() {
-  const { isBookingOpen, initialPackage, closeBooking } = useBooking();
+  const { isBookingOpen, initialPackage, initialMessage, closeBooking } = useBooking();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,12 +46,34 @@ export function BookingForm() {
     budget: ''
   });
 
-  // Preselect the package the visitor clicked on
+  // Preselect the package the visitor clicked on, and start the message
+  // with the build they priced up, if they came from the quote builder
   useEffect(() => {
     if (isBookingOpen && initialPackage) {
       setFormData(prev => ({ ...prev, selectedPackage: initialPackage }));
     }
-  }, [isBookingOpen, initialPackage]);
+    if (isBookingOpen && initialMessage) {
+      setFormData(prev => ({ ...prev, message: initialMessage }));
+    }
+  }, [isBookingOpen, initialPackage, initialMessage]);
+
+  // Lock the page behind the modal while it's open, so wheel, trackpad and
+  // touch scrolling only ever move the form. The scrollbar's width is padded
+  // back on so the page doesn't jump sideways when it disappears.
+  useEffect(() => {
+    if (!isBookingOpen) return;
+    const html = document.documentElement;
+    const scrollbar = window.innerWidth - html.clientWidth;
+    const previous = { html: html.style.overflow, body: document.body.style.overflow, padding: document.body.style.paddingRight };
+    html.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`;
+    return () => {
+      html.style.overflow = previous.html;
+      document.body.style.overflow = previous.body;
+      document.body.style.paddingRight = previous.padding;
+    };
+  }, [isBookingOpen]);
 
   // Reset form state when modal closes (after animation)
   useEffect(() => {
@@ -128,15 +151,35 @@ export function BookingForm() {
     };
     
     setErrors(newErrors);
-    
-    return !Object.values(newErrors).some(error => error !== '');
+
+    // the first field, top to bottom, that needs attention (or null)
+    const order = ['name', 'email', 'selectedTypes', 'selectedPackage'] as const;
+    return order.find((field) => newErrors[field] !== '') ?? null;
+  };
+
+  // Glide the form's own scroll (not the page's) to a field that needs
+  // attention, settle it about a third of the way down, focus it, and give
+  // it a brief nudge so the eye lands on it.
+  const showField = (field: string) => {
+    const panel = document.querySelector<HTMLElement>('.booking-form');
+    const group = panel?.querySelector<HTMLElement>(`[data-field="${field}"]`);
+    if (!panel || !group) return;
+    const offset = group.getBoundingClientRect().top - panel.getBoundingClientRect().top;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    panel.scrollTo({ top: panel.scrollTop + offset - panel.clientHeight * 0.3, behavior: reduce ? 'auto' : 'smooth' });
+    group.querySelector<HTMLElement>('input, button')?.focus({ preventScroll: true });
+    group.classList.remove('needs-attention');
+    void group.offsetWidth; // restart the nudge if it's already playing
+    group.classList.add('needs-attention');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
 
-    if (!validateForm()) {
+    const firstInvalid = validateForm();
+    if (firstInvalid) {
+      showField(firstInvalid);
       return;
     }
 
@@ -192,6 +235,7 @@ export function BookingForm() {
 
       // Show success panel
       setIsSuccess(true);
+      track('Send enquiry', { package: formData.selectedPackage || 'none', business: formData.selectedTypes.join(', ') || 'none' });
 
     } catch (err) {
       console.error("Submit error:", err);
@@ -205,17 +249,44 @@ export function BookingForm() {
     closeBooking();
   };
 
+  // A real dialog: focus moves into it when it opens and back to whatever
+  // opened it when it closes, and Escape closes it
+  const formRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!isBookingOpen) return;
+    const opener = document.activeElement as HTMLElement | null;
+    // the panel fades in from visibility: hidden, which can't take focus, so
+    // move focus in a beat later, once it's visible
+    const focusTimer = window.setTimeout(() => formRef.current?.focus({ preventScroll: true }), 60);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeBooking();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.clearTimeout(focusTimer);
+      window.removeEventListener('keydown', onKey);
+      opener?.focus({ preventScroll: true });
+    };
+  }, [isBookingOpen, closeBooking]);
+
   return (
     <>
       <div 
         className={`booking-overlay ${isBookingOpen ? 'open' : ''}`} 
         onClick={handleClose}
       />
-      <div className={`booking-form ${isBookingOpen ? 'open' : ''}`}>
+      <div
+        className={`booking-form ${isBookingOpen ? 'open' : ''}`}
+        ref={formRef}
+        role='dialog'
+        aria-modal='true'
+        aria-label={isSuccess ? 'Enquiry sent' : 'Start your project'}
+        tabIndex={-1}
+      >
         {isSuccess ? (
           <div className='success-panel'>
-            <button className='booking-close' onClick={handleClose}>
-              <IoCloseOutline />
+            <button type='button' className='booking-close' onClick={handleClose} aria-label='Close'>
+              <IoCloseOutline aria-hidden />
             </button>
             <div className='success-icon'>
               <IoCheckmarkCircle />
@@ -245,13 +316,13 @@ export function BookingForm() {
           </div>
         ) : (
           <>
-            <button className='booking-close' onClick={handleClose}>
-              <IoCloseOutline />
+            <button type='button' className='booking-close' onClick={handleClose} aria-label='Close'>
+              <IoCloseOutline aria-hidden />
             </button>
             
             <div className='booking-header'>
               <p className='booking-label'>gios.build</p>
-              <h1 className='booking-title'>Start Your Project</h1>
+              <h2 className='booking-title'>Start Your Project</h2>
               <p className='booking-subtitle'>
                 Tell me a bit about your project and I'll get back to you within 24 hours.
               </p>
@@ -276,7 +347,7 @@ export function BookingForm() {
                 }}
               />
 
-              <div className='form-group'>
+              <div className='form-group' data-field='name'>
                 <label htmlFor='name'>Name <span className='required-asterisk'>*</span></label>
                 <input
                   type='text'
@@ -288,7 +359,7 @@ export function BookingForm() {
                 {errors.name && <span className='error-message'>{errors.name}</span>}
               </div>
 
-              <div className='form-group'>
+              <div className='form-group' data-field='email'>
                 <label htmlFor='email'>Email <span className='required-asterisk'>*</span></label>
                 <input
                   type='email'
@@ -323,7 +394,7 @@ export function BookingForm() {
                 />
               </div>
 
-              <div className='form-group'>
+              <div className='form-group' data-field='selectedTypes'>
                 <label>What kind of business? <span className='required-asterisk'>*</span></label>
                 <div className='type-tags'>
                   {businessTypes.map((type) => (
@@ -340,7 +411,7 @@ export function BookingForm() {
                 {errors.selectedTypes && <span className='error-message'>{errors.selectedTypes}</span>}
               </div>
 
-              <div className='form-group'>
+              <div className='form-group' data-field='selectedPackage'>
                 <label>Which package interests you? <span className='required-asterisk'>*</span></label>
                 <div className='package-options'>
                   {packages.map((pkg) => (
@@ -389,6 +460,9 @@ export function BookingForm() {
                 <p>{isSubmitting ? 'Sending...' : 'Send Request'}</p>
                 <GoArrowUpRight />
               </button>
+              <p className='booking-privacy'>
+                I'll only use your details to reply and quote. <a href='/privacy' target='_blank' rel='noopener'>How I handle them</a>
+              </p>
             </form>
           </>
         )}

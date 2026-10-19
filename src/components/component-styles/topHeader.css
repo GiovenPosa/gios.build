@@ -10,15 +10,32 @@
   box-sizing: border-box;
   background-color: transparent;
   z-index: 100;
-  transition: transform 0.3s ease;
 }
 
+/* coming back: fast, then a soft stop */
 .top-header.visible {
   transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease,
+    visibility 0s;
 }
 
+/* Going away: it slides up and fades out as it goes. Fading matters on
+   iPhone Safari, whose see-through glass toolbar shows whatever sits above
+   the page, so a header that only slid out of view was still visible through
+   it. Once it's gone it's taken out of view entirely. */
 .top-header.hidden {
-  transform: translateY(-100%);
+  transform: translateY(calc(-100% - env(safe-area-inset-top, 0px)));
+  opacity: 0;
+  visibility: hidden;
+  /* the slide leads and the fade follows it, so you see it go up */
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease 0.2s,
+    visibility 0s linear 0.4s;
 }
 
 .top-header-container {
@@ -60,16 +77,17 @@
   transition: opacity 0.2s ease;
 }
 
-.top-header-logo > p:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .top-header-logo > p:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
 .top-header-links {
   display: flex;
-  justify-content: space-between;
-  min-width: 400px;
   align-items: center;
-  gap: 2rem;
+  /* sized to its links, so the spacing is just the gap */
+  gap: 1.5rem;
 }
 
 .top-header-links span {
@@ -81,8 +99,10 @@
   margin: 0;
 }
 
-.top-header-links span:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .top-header-links span.top-header-button:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
 .top-header-button {
@@ -111,8 +131,10 @@
   transition: color 0.3s ease;
 }
 
-.top-header-button:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .top-header-button:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
 /* Mobile menu button - hidden by default */
@@ -123,8 +145,10 @@
   transition: opacity 0.2s ease;
 }
 
-.mobile-menu-button:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .mobile-menu-button:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
 .mobile-menu-button svg {
@@ -163,9 +187,7 @@
   transition: opacity 0.2s ease;
 }
 
-.mobile-menu-overlay span:hover {
-  opacity: var(--opacity-hover);
-}
+
 
 .mobile-menu-overlay span p {
   margin: 0;
@@ -182,8 +204,10 @@
   transition: opacity 0.2s ease;  
 }
 
-.mobile-menu-close:hover {
-  opacity: var(--opacity-hover); 
+@media (hover: hover) and (pointer: fine) {
+  .mobile-menu-close:hover {
+    opacity: var(--opacity-hover); 
+  }
 }
 
 .mobile-menu-close svg {
@@ -195,8 +219,7 @@
 /* ===== LARGE SCREENS (1400px and below) ===== */
 @media (max-width: 1400px) {
   .top-header-links {
-    min-width: 380px;
-    gap: 1.5rem;
+    gap: 1.35rem;
   }
 }
 
@@ -204,7 +227,6 @@
 /* ===== MEDIUM-LARGE SCREENS (1100px and below) ===== */
 @media (max-width: 1100px) {
   .top-header-links {
-    min-width: 350px;
     gap: 1.25rem;
   }
   
@@ -269,5 +291,72 @@
   
   .mobile-menu-overlay span {
     font-size: 28px;
+  }
+}
+
+/* ===== Nav links: the red dot =====
+   On hover a small red dot (the one from the section labels) drops in from
+   above with a soft bounce and lands just before the word, which stays
+   exactly where it is, so nothing around it shifts. Leaving, it slips away
+   downward instead of retracing its steps. On the current page it simply stays. Sized in em,
+   so it scales with the header link and the big mobile menu alike. */
+.nav-link {
+  --dot: 0.34em;
+  --dot-gap: 0.42em;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-dot {
+  position: absolute;
+  left: calc(-1 * (var(--dot) + var(--dot-gap)));
+  /* on the capitals' centre, which sits a little below the line box's */
+  top: calc(50% + 0.07em);
+  width: var(--dot);
+  height: var(--dot);
+  margin-top: calc(var(--dot) / -2);
+  border-radius: 50%;
+  background: #fe432a;
+  opacity: 0;
+  transform: translateY(0.5em) scale(0);
+  transition: transform 0.3s cubic-bezier(0.5, 0, 0.75, 0), opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.nav-link.is-current .nav-dot {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover .nav-dot {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* hover in: drop from above and settle with a little bounce */
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover:not(.is-current) .nav-dot {
+    animation: nav-dot-drop 0.6s cubic-bezier(0.12, 1.4, 0.3, 1);
+  }
+}
+
+@keyframes nav-dot-drop {
+  from { opacity: 0; transform: translateY(-0.9em) scale(0.4); }
+  35% { opacity: 1; }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-dot {
+    transition: opacity 0.2s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover:not(.is-current) .nav-dot {
+      animation: none;
+    }
   }
 }

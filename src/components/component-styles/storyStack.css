@@ -1,0 +1,466 @@
+.story {
+  /* follows straight on from the testimonials, inside the same colour */
+  padding-top: var(--section-gap-small);
+  padding-bottom: var(--section-gap-small);
+  color: var(--text-color-dark);
+}
+
+/* same centred poster title group as the tools and FAQ sections */
+.story-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.story-bar {
+  margin-bottom: 3rem;
+}
+
+.story-headline {
+  margin: 0;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: clamp(2.4rem, 4.8vw, 5.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+}
+
+.story-headline span {
+  display: block;
+}
+
+.story-subtext {
+  max-width: 40rem;
+  margin: 2rem auto 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* ===== the deck ===== */
+.story-list {
+  --stack-top: 11vh;
+  --peek: 26px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  /* the scroll between cards: each one travels this far before it lands */
+  gap: 18vh;
+}
+
+/* Each card sticks a little lower than the last, so the tops of the earlier
+   chapters peek out above the newest one like a deck. --cover (0 to 1, set
+   by JS) is how much the next card has slid over this one. */
+.story-card {
+  --cover: 0;
+  position: sticky;
+  top: calc(var(--stack-top) + var(--i) * var(--peek));
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 3rem;
+  min-height: min(68vh, 640px);
+  padding: 3rem;
+  border-radius: 32px;
+  background: var(--bg-light-color);
+  /* a soft shadow cast upwards too, onto the card it slides over, plus the
+     usual lift underneath */
+  box-shadow:
+    0 -18px 44px -20px rgba(20, 30, 60, 0.16),
+    0 -2px 10px -4px rgba(20, 30, 60, 0.06),
+    0 30px 60px -36px rgba(20, 30, 60, 0.35);
+  transform-origin: 50% 0;
+  transform: scale(calc(1 - var(--cover) * 0.05));
+  will-change: transform;
+}
+
+/* a covered card dims back, so the newest chapter reads as on top */
+.story-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #0d1220;
+  opacity: calc(var(--cover) * 0.12);
+  pointer-events: none;
+}
+
+.story-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.story-chapter {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 0 0 auto;
+  font-family: var(--font-family-Mono);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-color-muted);
+}
+
+.story-chapter span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  height: 1.7rem;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  background: #fe432a;
+  /* dark ink on the brand red: white on it is too faint for small text */
+  color: #0c0c0c;
+}
+
+.story-title {
+  margin: 2.5rem 0 0;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: clamp(2.2rem, 4vw, 4.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.story-text {
+  max-width: 30rem;
+  margin: 1.5rem 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  line-height: 1.4;
+  color: var(--text-color-muted);
+}
+
+/* The image slot: a soft field holding a little fanned stack of three
+   photos (placeholders until real ones go in). Hovering the slot lifts the
+   stack a touch and fans the back two out to peek further. */
+.story-slot {
+  --slot: #dfd5cb;
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  min-height: 280px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--slot) 55%, var(--bg-light-color));
+}
+
+/* The big word behind the photos. Sized from the slot itself, so it always
+   overflows and gets cropped the same way; it drifts a little the other way
+   when the stack fans out. */
+.story-slot {
+  container-type: size;
+}
+
+.story-word {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -52%);
+  font-family: var(--font-family-Bold);
+  font-size: 40cqh;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--slot) 30%, #111);
+  pointer-events: none;
+  transition: transform 0.9s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .story-slot:hover .story-word {
+    transform: translate(-53%, -52%);
+  }
+}
+
+.story-card.is-final .story-word {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.story-photos {
+  position: relative;
+  z-index: 1;
+  width: min(58%, 290px);
+  aspect-ratio: 1;
+  /* the fan leans left, so nudge the stack right to centre it optically */
+  transform: translateX(3.8%);
+  transition: transform 0.7s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+.story-photo {
+  position: absolute;
+  inset: 0;
+  border-radius: 18%/ 17%;
+  box-shadow: 0 18px 32px -18px rgba(20, 25, 40, 0.45), 0 3px 8px -4px rgba(20, 25, 40, 0.2);
+  transition: transform 0.7s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+/* placeholder "photos": soft tonal fields from the slot's colour */
+.story-photo.is-back {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--slot) 25%, #fff), color-mix(in srgb, var(--slot) 55%, #fff));
+  transform: translate(-16%, 2%) rotate(-10deg) scale(0.9);
+}
+
+.story-photo.is-middle {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--slot) 70%, #fff), color-mix(in srgb, var(--slot) 85%, #000));
+  transform: translate(-5%, -7%) rotate(-3deg) scale(0.94);
+}
+
+.story-photo.is-front {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--slot) 92%, #fff), color-mix(in srgb, var(--slot) 72%, #000));
+  transform: translate(6%, 4%) rotate(6deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .story-slot:hover .story-photos {
+    /* fanned wider, so it shifts a touch further right to stay centred */
+    transform: translateX(9%) scale(1.04);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .story-slot:hover .story-photo.is-back {
+    transform: translate(-27%, 1%) rotate(-15deg) scale(0.9);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .story-slot:hover .story-photo.is-middle {
+    transform: translate(-10%, -12%) rotate(-5deg) scale(0.94);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .story-slot:hover .story-photo.is-front {
+    transform: translate(9%, 5%) rotate(7deg);
+  }
+}
+
+/* a real photo fills its card exactly; the card stays square */
+.story-photo.has-photo {
+  overflow: hidden;
+  background: transparent;
+}
+
+.story-photo.has-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* decoration only: no tapping, long-pressing, dragging or saving them */
+.story-photo img,
+.story-photo video {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+
+/* a single square card (IBM's and Vanaways' videos, the founder photo):
+   slightly tilted at rest, and it rights itself and lifts a touch when the
+   slot is hovered */
+.story-photos.is-single {
+  width: min(52%, 280px);
+  aspect-ratio: 1;
+  transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .story-slot:hover .story-photos.is-single {
+    transform: none;
+  }
+}
+
+.story-photo.is-solo {
+  overflow: hidden;
+  /* no fill of its own, so nothing peeks out round the media's edges */
+  background: transparent;
+  transform: rotate(-6deg);
+}
+
+.story-photo.is-solo video,
+.story-photo.is-solo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .story-slot:hover .story-photo.is-solo {
+    transform: rotate(0deg) scale(1.05);
+  }
+}
+
+.story-photo em {
+  position: absolute;
+  left: 12%;
+  bottom: 10%;
+  font-family: var(--font-family-Mono);
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.42);
+}
+
+/* the last chapter is the studio: dark, with the photo and the next step */
+.story-card.is-final {
+  background: #111;
+  color: var(--text-color-light);
+}
+
+.story-card.is-final .story-chapter,
+.story-card.is-final .story-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.story-card.is-final .story-slot {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.story-card.is-final .story-slot {
+  background: #1b1b1b;
+}
+
+.story-card.is-final .story-photo em {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.story-cta {
+  align-self: flex-start;
+  margin-top: 2rem;
+  background: var(--bg-light-color);
+  color: var(--text-color-dark);
+  font-family: var(--font-family-Medium);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-card {
+    transform: none;
+  }
+
+  .story-photos,
+  .story-photo,
+  .story-word {
+    transition: none;
+  }
+
+  .story-card::after {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .story-card {
+    padding: 2.25rem;
+    gap: 2rem;
+  }
+}
+
+/* phones: image on top, words underneath */
+@media (max-width: 760px) {
+  .story-intro {
+    margin-bottom: 3rem;
+  }
+
+  .story-subtext {
+    font-size: var(--font-size-medium);
+    margin-top: 1.5rem;
+  }
+
+  .story-list {
+    --stack-top: 9svh;
+    --peek: 14px;
+    gap: 14vh;
+  }
+
+  .story-card {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding: 1.25rem;
+    gap: 1.5rem;
+    border-radius: 24px;
+  }
+
+  .story-slot {
+    order: -1;
+    min-height: 0;
+    aspect-ratio: 5 / 4;
+    border-radius: 16px;
+  }
+
+  /* a taller slot, so the stack sits smaller inside it with room around */
+  .story-photos {
+    width: 50%;
+  }
+
+  .story-photos.is-single {
+    width: 46%;
+  }
+
+  .story-chapter {
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .story-title {
+    margin-top: 1rem;
+    font-size: 2rem;
+  }
+
+  .story-text {
+    margin-top: 0.75rem;
+    font-size: var(--font-size-medium);
+  }
+
+  .story-cta {
+    margin-top: 1.5rem;
+  }
+}
+
+/* Touch screens: no hover, so the card that has most recently come past
+   the middle of the screen (storyStack.tsx sets .is-current) plays the
+   hover state instead, and hands it on to the next card */
+@media (hover: none) {
+  .story-card.is-current .story-word {
+    transform: translate(-53%, -52%);
+  }
+
+  .story-card.is-current .story-photos {
+    transform: translateX(9%) scale(1.04);
+  }
+
+  .story-card.is-current .story-photo.is-back {
+    transform: translate(-27%, 1%) rotate(-15deg) scale(0.9);
+  }
+
+  .story-card.is-current .story-photo.is-middle {
+    transform: translate(-10%, -12%) rotate(-5deg) scale(0.94);
+  }
+
+  .story-card.is-current .story-photo.is-front {
+    transform: translate(9%, 5%) rotate(7deg);
+  }
+
+  .story-card.is-current .story-photos.is-single {
+    transform: none;
+  }
+
+  .story-card.is-current .story-photo.is-solo {
+    transform: rotate(0deg) scale(1.05);
+  }
+}

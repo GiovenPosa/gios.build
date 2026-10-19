@@ -1,0 +1,250 @@
+.svc {
+  /* the size of the service titles, shared so the notes and row spacing
+     can follow it. As big as it can be while the widest line, image open
+     and notes beside it, still fits: about 9.8em of title plus ~340px */
+  --svc-size: max(3rem, min(9.5rem, 8.4vw, calc((100vw - 4rem - 340px) / 9.8)));
+  /* padding, not margin, so it can't collapse into the work grid's margin above */
+  padding-top: var(--section-gap-large);
+  margin-bottom: var(--section-gap-medium);
+  color: var(--text-color-dark);
+}
+
+.svc-bar {
+  margin-bottom: 3rem;
+}
+
+.svc-stack {
+  display: flex;
+  flex-direction: column;
+  /* each row is as tall as its title or its notes, whichever is taller,
+     plus a little air that grows and shrinks with the type */
+  gap: calc(var(--svc-size) * 0.08);
+}
+
+.svc-row {
+  display: flex;
+  justify-content: center;
+}
+
+.svc-line {
+  display: inline-flex;
+  /* notes sit centred against their title */
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.svc-line:focus-visible {
+  outline: 2px solid #fe432a;
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+
+.svc-title {
+  font-family: var(--font-family-Bold);
+  font-size: var(--svc-size);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  color: var(--text-color-dark);
+  transition: color 0.35s ease;
+}
+
+.svc-row.is-active .svc-title {
+  color: #fe432a;
+}
+
+/* The image slot: closed to nothing inside the word gap, it springs open on
+   the active line. Placeholder colour until real thumbnails are imported. */
+.svc-thumb {
+  position: relative;
+  display: inline-block;
+  vertical-align: -0.04em;
+  width: 0;
+  height: 0.74em;
+  margin: 0;
+  border-radius: 0.14em;
+  overflow: hidden;
+  transition:
+    width 0.7s cubic-bezier(0.12, 1.15, 0.3, 1),
+    margin 0.7s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+.svc-row.is-active .svc-thumb {
+  width: 1.55em;
+  /* the word space already sits on the right, so pad the left to match */
+  margin: 0 0.02em 0 0.24em;
+}
+
+/* An animated graphic in the slot: drawn at the slot's open size and
+   centred, so opening the slot reveals it like a window rather than
+   squashing it. */
+.svc-art {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1.55em;
+  height: 100%;
+  transform: translateX(-50%);
+  display: block;
+}
+
+.svc-thumb span {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.45rem;
+  font-family: var(--font-family-Mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+}
+
+/* Sub-items hang off the line as small notes, in the site's Plus Jakarta,
+   like the place names in the reference. Always there to scan; the active line's notes darken and
+   step in one after another. */
+.svc-notes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Centred on the letters, not the title's box: the type sits low in its
+     line (caps ~0.03em, lowercase ~0.13em below the box's middle), so the
+     notes drop to the optical centre between the two */
+  position: relative;
+  top: calc(var(--svc-size) * 0.075);
+  font-family: var(--font-family-Medium);
+  font-size: 14px;
+  line-height: 1.4;
+  /* a little tracking so the capitals breathe at this small size */
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.28);
+}
+
+.svc-notes-before {
+  text-align: right;
+}
+
+.svc-notes li {
+  transition:
+    color 0.35s ease calc(var(--k) * 45ms),
+    transform 0.5s cubic-bezier(0.12, 1.15, 0.3, 1) calc(var(--k) * 45ms);
+}
+
+.svc-row.is-active .svc-notes li {
+  color: var(--text-color-dark);
+  transform: translateX(0.35rem);
+}
+
+.svc-row.is-active .svc-notes-before li {
+  transform: translateX(-0.35rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-thumb,
+  .svc-notes li {
+    transition: none;
+  }
+}
+
+/* Tablets: the notes drop under each line instead of beside it, so the
+   lines keep the full width */
+@media (max-width: 1100px) {
+  .svc {
+    --svc-size: clamp(2.8rem, 8.4vw, 6rem);
+  }
+
+  .svc-row + .svc-row {
+    margin-top: 1.25rem;
+  }
+
+  .svc-line {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .svc-notes,
+  .svc-notes-before {
+    order: 2;
+    text-align: center;
+    padding: 0;
+    top: 0;
+  }
+
+  .svc-row.is-active .svc-notes li,
+  .svc-row.is-active .svc-notes-before li {
+    transform: none;
+  }
+}
+
+/* Phones: lines stack flush left and only the active line shows its notes,
+   opening underneath it like an accordion. */
+@media (max-width: 600px) {
+  .svc {
+  /* the size of the service titles, shared so the notes and row spacing
+     can follow it. As big as it can be while the widest line, image open
+     and notes beside it, still fits: about 9.8em of title plus ~340px */
+  --svc-size: max(3rem, min(9.5rem, 8.4vw, calc((100vw - 4rem - 340px) / 9.8)));
+    padding-top: 7rem;
+  }
+
+  .svc-bar {
+    margin-bottom: 2rem;
+  }
+
+  .svc-row {
+    justify-content: flex-start;
+  }
+
+  .svc-row + .svc-row {
+    margin-top: 0.35rem;
+  }
+
+  .svc-line {
+    gap: 0;
+  }
+
+  .svc-line {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .svc-title {
+    white-space: normal;
+    --svc-size: clamp(2.8rem, 13.5vw, 4.3rem);
+    font-size: var(--svc-size);
+  }
+
+  .svc-notes,
+  .svc-notes-before {
+    order: 2;
+    text-align: left;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    color: var(--text-color-dark);
+    transition: max-height 0.5s cubic-bezier(0.12, 1.15, 0.3, 1), padding 0.5s ease;
+  }
+
+  .svc-row.is-active .svc-notes {
+    max-height: 8rem;
+    padding: 0.75rem 0 0.5rem;
+  }
+
+  .svc-row.is-active .svc-notes li,
+  .svc-row.is-active .svc-notes-before li {
+    transform: none;
+  }
+}

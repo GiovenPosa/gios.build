@@ -1,0 +1,269 @@
+/* The work catalog, after shopify.design: staggered columns of project
+   reels, a mono caption under each. Used on the home page and Work page. */
+.work-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.work-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.work-card {
+  cursor: pointer;
+  outline: none;
+}
+
+.work-surface {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0);
+  /* fast off the mark, then a long soft stop with the faintest overshoot;
+     the shadow eases plainly so only the card itself has the bounce */
+  transition:
+    transform 0.7s cubic-bezier(0.12, 1.15, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-card:focus-visible .work-surface {
+  transform: scale(1.025);
+  /* lifted off the page: the main shadow falls below, and a softer one
+     shows along the top edge too, so the card reads as raised all round */
+  box-shadow:
+    0 24px 48px -20px rgba(0, 0, 0, 0.22),
+    0 8px 18px -10px rgba(0, 0, 0, 0.12),
+    0 -10px 28px -14px rgba(0, 0, 0, 0.16);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .work-card:hover .work-surface {
+    transform: scale(1.025);
+    /* lifted off the page: the main shadow falls below, and a softer one
+       shows along the top edge too, so the card reads as raised all round */
+    box-shadow:
+      0 24px 48px -20px rgba(0, 0, 0, 0.22),
+      0 8px 18px -10px rgba(0, 0, 0, 0.12),
+      0 -10px 28px -14px rgba(0, 0, 0, 0.16);
+  }
+}
+
+.work-card:focus-visible .work-surface {
+  /* the same red focus ring as everything else you can tab to */
+  outline: 2px solid #fe432a;
+  outline-offset: 4px;
+}
+
+/* the media fills the card, cropped to its shape, and fades in once it's
+   actually playing so a loading video never flashes black */
+.work-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.work-media.is-ready {
+  opacity: 1;
+}
+
+/* under the card, not on it: stays readable whatever the reel shows */
+.work-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.9rem;
+  padding: 0 0.25rem;
+  font-family: var(--font-family-Mono);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-color-dark);
+}
+
+.work-meta {
+  color: var(--text-color-muted);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-surface {
+    transition: box-shadow 0.3s ease;
+  }
+
+  .work-card:focus-visible .work-surface {
+    transform: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .work-card:hover .work-surface {
+      transform: none;
+    }
+  }
+}
+
+/* ---- the larger view ---- */
+
+.work-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem 4rem;
+  box-sizing: border-box;
+  cursor: zoom-out;
+}
+
+.work-viewer-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* as big as fits, at the media's own shape, so nothing is cropped */
+.work-viewer-frame {
+  position: relative;
+  width: min(100%, 1400px, calc((100svh - 12rem) * var(--aspect)));
+  will-change: transform;
+}
+
+.work-viewer-media {
+  aspect-ratio: var(--aspect);
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.work-viewer-media video,
+.work-viewer-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.work-viewer-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0 0.25rem;
+  font-family: var(--font-family-Mono);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.work-viewer-meta {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* a round close button, its cross drawn from two rounded bars */
+.work-viewer-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.5s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .work-viewer-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+  }
+}
+
+.work-viewer-close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.work-viewer-close i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 2.5px;
+  margin: -1.25px 0 0 -9px;
+  border-radius: 2px;
+  background: #fff;
+  transform: rotate(45deg);
+}
+
+.work-viewer-close i + i {
+  transform: rotate(-45deg);
+}
+
+/* two narrow columns on phones */
+@media (max-width: 600px) {
+  .work-grid {
+    gap: 0.75rem;
+  }
+
+  .work-column {
+    gap: 1.25rem;
+  }
+
+  .work-surface {
+    border-radius: 16px;
+  }
+
+  /* too narrow for title and meta side by side: stack them */
+  .work-caption {
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 0.6rem;
+    padding: 0 0.1rem;
+    font-size: 11px;
+  }
+
+  .work-meta {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .work-viewer {
+    padding: 4.5rem 1rem 3rem;
+  }
+
+  .work-viewer-media {
+    border-radius: 16px;
+  }
+
+  .work-viewer-caption {
+    font-size: 12px;
+  }
+
+  .work-viewer-close {
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+  }
+}

@@ -5,6 +5,9 @@
   justify-content: center;
   padding: 0 2rem;
   box-sizing: border-box;
+  /* the testimonials frame is 100vw wide; clip any scrollbar-width spill
+     sideways. clip (not hidden) so the sticky frame still pins. */
+  overflow-x: clip;
 }
 
 .home-page-container {
@@ -16,41 +19,212 @@
   margin-top: var(--section-gap-small);
   color: var(--text-color-dark);
   font-family: var(--font-family-Medium);
-  margin-bottom: var(--section-gap-small);
+  margin-bottom: var(--section-gap-medium);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.home-page-hero-section > h1 {
-  font-family: var(--font-family-Medium);
-  font-size: var(--font-size-regular);
-  font-weight: normal;
-  margin-bottom: 2.5rem;
-}
-
+/* Poster-scale headline, after shopify.design: very large, very tight
+   leading and tracking, centred. Fluid so it scales with the viewport
+   instead of stepping at each breakpoint. It's the page's h1. */
 .hero-main-text {
-  font-size: var(--font-size-xxxlarge);
-  width: 60%;
-  margin-bottom: 2rem;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: clamp(3rem, 8vw, 9rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  margin: 0 auto;
 }
 
 .hero-main-text p {
   margin: 0;
 }
 
+/* one sentence per line; each still wraps on its own when the screen is narrow */
+.hero-main-text .hero-line {
+  display: block;
+  text-wrap: balance;
+}
+
+/* Each line splits in two halves that wrap as units, so on a phone the
+   first line still breaks as "Most websites / blend in." */
+.hero-word {
+  display: inline-block;
+  position: relative;
+}
+
+.hero-word.is-left {
+  transform-origin: 0% 80%;
+}
+
+.hero-word.is-right {
+  transform-origin: 100% 80%;
+}
+
+/* The build, on first load. Each line is built from its outer edges: a
+   red dot lands at the edge, a tiny word appears beside it, then it steps
+   up through a few clear sizes, a quick snap and a short hold at each,
+   until it's full size, anchored there. The right-hand words grow out of
+   their own full stops, which land red and settle to black. */
+.hero-main-text {
+  --build: 1.3s;
+}
+
+.hero-main-text.is-wait .hero-word {
+  opacity: 0;
+}
+
+.hero-main-text.is-build .hero-word {
+  animation: hero-grow var(--build) linear var(--d) both;
+}
+
+/* the left halves get a dot of their own, which fades as the word grows */
+.hero-main-text.is-build .hero-word.is-left::before {
+  content: '';
+  position: absolute;
+  right: calc(100% + 0.12em);
+  bottom: 0.2em;
+  width: 0.16em;
+  height: 0.16em;
+  border-radius: 50%;
+  background: #fe432a;
+  animation: hero-dot var(--build) linear var(--d) both;
+}
+
+.hero-main-text.is-build .hero-stop {
+  display: inline-block;
+  animation: hero-stop var(--build) linear var(--d) both;
+}
+
+/* Sizes 16% > 30% > 48% > 72% > 100%. Each step is a fast snap with the
+   faintest overshoot, so the break between sizes reads clearly, then a
+   hold; the last step lands with the site's soft stop. */
+@keyframes hero-grow {
+  0%,
+  10% {
+    transform: scale(0.16);
+    color: transparent;
+  }
+  14%,
+  24% {
+    transform: scale(0.16);
+    color: var(--text-color-dark);
+    animation-timing-function: cubic-bezier(0.25, 1.3, 0.5, 1);
+  }
+  28%,
+  37% {
+    transform: scale(0.3);
+    color: var(--text-color-dark);
+    animation-timing-function: cubic-bezier(0.25, 1.3, 0.5, 1);
+  }
+  41%,
+  50% {
+    transform: scale(0.48);
+    color: var(--text-color-dark);
+    animation-timing-function: cubic-bezier(0.25, 1.3, 0.5, 1);
+  }
+  54%,
+  63% {
+    transform: scale(0.72);
+    color: var(--text-color-dark);
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  74%,
+  100% {
+    transform: scale(1);
+    color: var(--text-color-dark);
+  }
+}
+
+@keyframes hero-dot {
+  0% {
+    transform: scale(0);
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  9% {
+    transform: scale(1.6);
+  }
+  14% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  /* gone while the word is still stepping up past it */
+  37% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  50%,
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* drawn as its own colour so it shows while the word is still invisible */
+@keyframes hero-stop {
+  0% {
+    transform: scale(0);
+    color: #fe432a;
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  9% {
+    transform: scale(1.6);
+    color: #fe432a;
+  }
+  14% {
+    transform: scale(1);
+    color: #fe432a;
+  }
+  80% {
+    color: #fe432a;
+  }
+  100% {
+    transform: scale(1);
+    color: var(--text-color-dark);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-main-text .hero-word,
+  .hero-main-text .hero-word::before,
+  .hero-main-text .hero-stop {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  .hero-main-text .hero-word::before {
+    content: none;
+  }
+}
+
+/* read by search engines and screen readers, never shown */
+.hero-main-text .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 .hero-sub {
   font-family: var(--font-family-Regular);
   font-size: var(--font-size-large);
-  color: var(--text-color-muted);
-  margin: 0 0 var(--element-gap) 0;
-}
-
-.hero-sub-price {
-  font-family: var(--font-family-Medium);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
   color: var(--text-color-dark);
+  max-width: 44rem;
+  margin: 2.5rem auto 2.5rem;
+  text-wrap: balance;
 }
 
 .hero-action {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.75rem;
 }
 
@@ -72,79 +246,246 @@
   color: var(--text-color-dark);
 }
 
-.hero-action-button:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .hero-action-button:hover {
+    opacity: var(--opacity-hover);
+  }
+}
+
+/* Idle attention pulse: the same glass-reflection sweep as the hover
+   effect (see index.css), but auto-repeating every few seconds so the
+   hero CTA catches the eye on its own. Hover still takes over instantly
+   — the hover rule's higher specificity wins while the cursor is there,
+   and this loop just resumes once it leaves. */
+.hero-cta-pulse::after {
+  animation: hero-cta-shimmer-loop 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+@keyframes hero-cta-shimmer-loop {
+  0%, 80% {
+    transform: translateX(-100%) skewX(-20deg);
+    opacity: 0;
+  }
+  88% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) skewX(-20deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta-pulse::after {
+    animation: none;
+  }
 }
 
 .hero-action-button p {
   margin: 0;
 }
 
-.home-page-project-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+/* The work button: a tiny version of the work grid, two staggered columns
+   of rounded tiles, drawn like the service graphics. As tall as the button
+   beside it, and about as wide, until the label slides out to its left
+   on hover. */
+.hero-work-button {
+  gap: 0;
+  padding-inline: 1.4rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-work-button:hover {
+    opacity: 1;
+  }
+}
+
+.work-icon {
+  display: flex;
+  gap: 0.14em;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.work-icon > span {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.14em;
+}
+
+.work-icon i {
+  display: block;
+  min-height: 0;
+  border-radius: 0.2em;
+  background: currentColor;
+  flex: 2 1 0;
+  /* a quick snap with the faintest overshoot, one tile after another */
+  transition: flex-grow 0.5s cubic-bezier(0.25, 1.3, 0.5, 1);
+}
+
+/* staggered like the grid: tall over short, short over tall */
+.work-icon > span:first-child i:last-child,
+.work-icon > span:last-child i:first-child {
+  flex-grow: 1;
+}
+
+/* hover: the tiles reshuffle, every tall one short and every short one tall */
+@media (hover: hover) and (pointer: fine) {
+  .hero-work-button:hover .work-icon > span:first-child i:first-child,
+  .hero-work-button:hover .work-icon > span:last-child i:last-child {
+    flex-grow: 1;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-work-button:hover .work-icon > span:first-child i:last-child,
+  .hero-work-button:hover .work-icon > span:last-child i:first-child {
+    flex-grow: 2;
+  }
+}
+
+.work-icon > span:first-child i:last-child { transition-delay: 40ms; }
+.work-icon > span:last-child i:first-child { transition-delay: 80ms; }
+.work-icon > span:last-child i:last-child { transition-delay: 120ms; }
+
+.hero-work-label {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  /* the same type as the button beside it */
+  white-space: nowrap;
+  transition:
+    max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    margin 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease;
+}
+
+.hero-work-button:focus-visible .hero-work-label {
+  max-width: 5em;
+  margin-right: 0.7em;
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-work-button:hover .hero-work-label {
+    max-width: 5em;
+    margin-right: 0.7em;
+    opacity: 1;
+  }
+}
+
+/* on first load the tiles pop in one by one, just after the buttons arrive */
+.hero-action.is-building .work-icon i {
+  animation: work-tile-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: 1.25s;
+}
+
+.hero-action.is-building .work-icon > span:first-child i:last-child { animation-delay: 1.32s; }
+.hero-action.is-building .work-icon > span:last-child i:first-child { animation-delay: 1.39s; }
+.hero-action.is-building .work-icon > span:last-child i:last-child { animation-delay: 1.46s; }
+
+@keyframes work-tile-pop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Touch screens have no hover: the work button always says "Work", and on
+   first load its tiles reshuffle once, just after they pop in, so the hover
+   moment still happens */
+@media (hover: none) {
+  .hero-work-label {
+    max-width: 5em;
+    margin-right: 0.7em;
+    opacity: 1;
+  }
+}
+
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  .hero-action.is-building .work-icon > span:first-child i:first-child {
+    animation:
+      work-tile-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 1.25s both,
+      work-shuffle-tall 1.1s cubic-bezier(0.25, 1.3, 0.5, 1) 2.1s both;
+  }
+
+  .hero-action.is-building .work-icon > span:first-child i:last-child {
+    animation:
+      work-tile-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 1.32s both,
+      work-shuffle-short 1.1s cubic-bezier(0.25, 1.3, 0.5, 1) 2.16s both;
+  }
+
+  .hero-action.is-building .work-icon > span:last-child i:first-child {
+    animation:
+      work-tile-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 1.39s both,
+      work-shuffle-short 1.1s cubic-bezier(0.25, 1.3, 0.5, 1) 2.22s both;
+  }
+
+  .hero-action.is-building .work-icon > span:last-child i:last-child {
+    animation:
+      work-tile-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 1.46s both,
+      work-shuffle-tall 1.1s cubic-bezier(0.25, 1.3, 0.5, 1) 2.28s both;
+  }
+}
+
+/* a tall tile goes short and back; a short one goes tall and back */
+@keyframes work-shuffle-tall {
+  0%, 100% { flex-grow: 2; }
+  35%, 65% { flex-grow: 1; }
+}
+
+@keyframes work-shuffle-short {
+  0%, 100% { flex-grow: 1; }
+  35%, 65% { flex-grow: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-icon i,
+  .hero-work-label {
+    transition: none;
+  }
+
+  .hero-action.is-building .work-icon i {
+    animation: none;
+  }
+}
+
+/* Selected work: the shared work grid (components/workGrid.tsx) under a
+   rule bar. */
+.home-work-section {
   margin-bottom: var(--section-gap-small);
 }
 
-.project-container:first-child {
-  grid-column: 1 / -1;
+.home-work-bar {
+  margin-bottom: 1.5rem;
 }
 
-.project-container {
-  display: flex;
-  flex-direction: column;
+.home-work-bar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
 }
 
-.project-container p {
-  margin: 0 0 0.75rem 0;
-}
-
-.project-placeholder {
-  position: relative;
-  width: 100%;
-  height: 800px;
-  background-color: transparent;
-  border-radius: 30px;
-  margin-bottom: 1rem;
-  overflow: hidden;
-}
-
-.project-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.project-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.project-container:not(:first-child) .project-placeholder {
-  height: 500px;
-}
-
-.project-company {
-  font-family: var(--font-family-Medium);
-  font-size: var(--font-size-large);
-  color: var(--text-color-muted);
-  padding-left: 0.1rem;
-}
-
-.project-title {
-  color: var(--text-color-dark);
-  font-family: var(--font-family-Medium);
-  font-size: var(--font-size-xlarge);
-  padding-left: 0.1rem;
+@media (hover: hover) and (pointer: fine) {
+  .home-work-bar-link:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
 .home-page-info-section {
   color: var(--text-color-dark);
 }
 
-.design-info-block, .story-block {
+.story-block {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -184,106 +525,270 @@
   flex-shrink: 0;
 }
 
-.block-action:hover {
-  opacity: var(--opacity-hover);
+@media (hover: hover) and (pointer: fine) {
+  .block-action:hover {
+    opacity: var(--opacity-hover);
+  }
 }
 
-.services-info-block {
+.home-visual-pair {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  margin-bottom: var(--section-gap-small);
+}
+
+.home-visual-half {
+  flex: 1;
+  height: 500px;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.home-visual-image,
+.home-visual-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.process-info-block {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  /* padding, not margin: the parent is a plain block, so a top margin would
+     collapse into the visual pair's bottom margin and add nothing */
+  padding-top: var(--section-gap-large);
   margin-bottom: var(--section-gap-medium);
   color: var(--text-color-dark);
 }
 
-.services-bullets-container {
+/* Same poster treatment as the hero, one size down: muted eyebrow,
+   tight bold headline with a sentence per line, ink subtitle. */
+.process-bar {
+  margin-bottom: 3rem;
+}
+
+.process-headline {
+  font-family: var(--font-family-Bold);
+  font-size: clamp(2.75rem, 6.4vw, 7rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+
+.process-headline span {
+  display: block;
+  text-wrap: balance;
+}
+
+.process-subtext {
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--text-color-dark);
+  max-width: 44rem;
+  margin: 2.5rem auto 0;
+  text-wrap: balance;
+}
+
+.process-info-block .process-steps {
+  margin-top: 4rem;
+  align-self: stretch;
+  text-align: left;
+}
+
+/* Integrations, in the same language as the process section: centred poster
+   headline one size below it, then the tile wall. */
+.tools-info-block {
   display: flex;
   flex-direction: column;
-  font-family: var(--font-family-Medium);
-  font-size: var(--font-size-xxlarge);
-  /* Own compositing layer so the open/close animation repaints cleanly
-     instead of leaving faint copies of the row borders behind */
-  transform: translateZ(0);
-}
-
-.service-item {
-  border-bottom: 1px solid var(--text-color-muted);
-  padding: 1rem 0;
-}
-
-.service-header {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  padding: 1rem 0;
-  transition: opacity 0.2s ease;
-}
-
-.service-header:hover {
-  opacity: var(--opacity-hover);
-}
-
-.services-blt {
-  margin: 0;
-}
-
-.service-arrow {
-  transition: transform 0.3s ease;
-}
-
-.service-arrow.rotated {
-  transform: rotate(180deg);
-}
-
-.service-dropdown {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.3s ease;
-}
-
-.service-dropdown.expanded {
-  grid-template-rows: 1fr;
-}
-
-.service-dropdown-inner {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.service-list {
-  list-style: none;
-  padding: 0 0 1rem 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.service-list li {
-  font-size: var(--font-size-xxlarge);
-  color: var(--text-color-muted);
-  padding-left: 3rem;
-  position: relative;
-  transition: color 0.2s ease;
-}
-
-.service-list li::before {
-  content: '→';
-  position: absolute;
-  left: 0;
-  opacity: 0;
-  transform: translateX(-5px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.service-list li:hover {
+  text-align: center;
+  /* padding, not margin: a margin would collapse into the process section's */
+  padding-top: var(--section-gap-large);
+  margin-bottom: var(--section-gap-medium);
   color: var(--text-color-dark);
 }
 
-.service-list li:hover::before {
-  opacity: 1;
-  transform: translateX(0);
+.tools-headline,
+.home-faq-headline {
+  font-family: var(--font-family-Bold);
+  font-size: clamp(2.4rem, 4.8vw, 5.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+
+.tools-headline span,
+.home-faq-headline span {
+  display: block;
+  text-wrap: balance;
+}
+
+.tools-subtext,
+.home-faq-subtext {
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--text-color-dark);
+  max-width: 40rem;
+  margin: 2rem auto 0;
+  text-wrap: balance;
+}
+
+/* The tool wall as two marquees. The rows fade out at both edges, pause
+   while hovered, and leave room above and below for a tile's hover lift. */
+.tools-marquee {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* Each row clips its own track, so it carries enough padding for a hovered
+   tile's lift and shadow; the rows then overlap by most of that padding so
+   the visible gap between them stays small. */
+.tools-marquee-row {
+  overflow: hidden;
+  padding: 44px 0;
+}
+
+.tools-marquee-row + .tools-marquee-row {
+  margin-top: -74px;
+}
+
+.tools-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: tools-marquee 80s linear infinite;
+}
+
+.tools-marquee-row.is-reverse .tools-marquee-track {
+  animation-duration: 90s;
+  animation-direction: reverse;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tools-marquee-row:hover .tools-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes tools-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* a margin rather than a gap, so both halves of the track are the same width */
+.tools-marquee-track .tool-card {
+  margin-right: 12px;
+}
+
+.tool-card {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  width: 112px;
+  height: 112px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tools-marquee-track {
+    animation: none;
+  }
+
+  .tools-marquee-row {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tool-card:hover {
+    z-index: 10;
+  }
+}
+
+/* Same hover as the work cards: fast to a soft stop, plus a soft lift. */
+.tool-surface {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  background-color: var(--btn-color-muted);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition:
+    transform 0.7s cubic-bezier(0.12, 1.15, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tool-card:hover .tool-surface {
+    transform: scale(1.1);
+    box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.25), 0 6px 14px -8px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.tool-name {
+  /* the icon says it; the name stays for screen readers only */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-surface {
+    transition: opacity 0.2s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tool-card:hover .tool-surface {
+      transform: none;
+    }
+  }
+}
+
+.tool-icon-svg {
+  width: 44px;
+  height: 44px;
+}
+
+.tool-icon-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* FAQ: the same centred poster headline as the tools section, then the
+   message thread (src/components/faqThread.tsx). */
+.home-faq-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* padding, not margin: a margin would collapse into the tools section's */
+  padding-top: var(--section-gap-large);
+  margin-bottom: var(--section-gap-medium);
+  color: var(--text-color-dark);
+}
+
+.home-faq-block .faq-thread {
+  margin-top: 4rem;
+  text-align: left;
 }
 
 .clients-label {
@@ -312,9 +817,6 @@
 
 /* ===== LARGE SCREENS (1400px and below) ===== */
 @media (max-width: 1400px) {
-  .hero-main-text {
-    width: 70%;
-  }
   
   .section-label {
     margin-right: 6rem;
@@ -332,19 +834,6 @@
 
 /* ===== MEDIUM-LARGE SCREENS (1100px and below) ===== */
 @media (max-width: 1100px) {
-  .hero-main-text {
-    width: 80%;
-    font-size: calc(var(--font-size-xxxlarge) * 0.85);
-  }
-  
-  .project-placeholder {
-    height: 600px;
-  }
-  
-  .project-container:not(:first-child) .project-placeholder {
-    height: 400px;
-  }
-  
   .section-label {
     margin-right: 4rem;
   }
@@ -357,13 +846,7 @@
     margin-left: 4rem;
   }
   
-  .services-bullets-container {
-    font-size: calc(var(--font-size-xxlarge) * 0.85);
-  }
   
-  .service-list li {
-    font-size: calc(var(--font-size-xxlarge) * 0.85);
-  }
   
   .clients-block {
     gap: 8rem;
@@ -381,34 +864,23 @@
     margin-bottom: 4rem;
   }
   
-  .hero-main-text {
-    width: 100%;
-    font-size: 42px;
-  }
-  
-  .home-page-project-section {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-  
-  .project-container:first-child {
-    grid-column: 1;
-  }
-  
-  .project-placeholder {
-    height: 450px;
-    border-radius: 20px;
-  }
-  
-  .project-container:not(:first-child) .project-placeholder {
-    height: 450px;
-  }
-  
-  .design-info-block, .story-block {
+
+  .home-visual-pair {
     flex-direction: column;
     gap: 1.5rem;
   }
-  
+
+  .home-visual-half {
+    height: 350px;
+    border-radius: 20px;
+  }
+
+
+  .story-block {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
   .section-label {
     margin-right: 0;
   }
@@ -422,23 +894,41 @@
     align-self: flex-start;
   }
   
-  .services-bullets-container {
-    font-size: 32px;
-  }
   
-  .service-list li {
-    font-size: 28px;
-    padding-left: 2rem;
-  }
   
   .clients-block {
     gap: 5rem;
     height: 200px;
     margin-bottom: var(--section-gap-medium);
   }
-  
+
   .client-icon {
     height: 32px;
+  }
+
+  .tool-card {
+    width: 84px;
+    height: 84px;
+  }
+
+  .tools-marquee-track .tool-card {
+    margin-right: 10px;
+  }
+
+  .tools-marquee {
+    margin-top: 0.5rem;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .tool-surface {
+    border-radius: 18px;
+  }
+
+  .tool-icon-svg,
+  .tool-icon-img {
+    width: 30px;
+    height: 30px;
   }
 }
 
@@ -449,79 +939,51 @@
   }
   
   .home-page-hero-section {
-    margin-top: 3rem;
+    margin-top: 6rem;
     margin-bottom: 3rem;
   }
 
   .hero-sub {
    font-size: var(--font-size-medium);
+   margin-top: 1.75rem;
   }
-  
-  .hero-main-text {
-    font-size: 32px;
-    margin-bottom: 1.25rem;
-  }
-  
-  .hero-main-text p {
-    margin: 0;
+
+  .process-subtext {
+    font-size: var(--font-size-medium);
+    margin-top: 1.75rem;
   }
   
   .hero-action-button {
     padding: 0.9rem 1.3rem;
     font-size: var(--font-size-regular);
   }
+
+  .hero-work-button {
+    padding-inline: 0.9rem;
+  }
   
-  .home-page-project-section {
-    gap: 2rem;
+  .home-work-section {
     margin-bottom: 4rem;
-  }
-  
-  .project-placeholder {
-    height: 350px;
-    border-radius: 16px;
-  }
-  
-  .project-container:not(:first-child) .project-placeholder {
-    height: 350px;
   }
 
-  .project-company {
-    font-size: var(--font-size-medium);
-  }
-  
-  .project-title {
-    font-size: var(--font-size-large);
-  }
-  
-  .design-info-block, .story-block {
+  .story-block {
     margin-bottom: 4rem;
   }
-  
+
   .section-value {
     font-size: 24px;
   }
+
+
   
   .block-action {
     padding: 0.5rem 1.5rem;
     font-size: var(--font-size-regular);
   }
   
-  .services-info-block {
-    margin-bottom: 4rem;
-  }
   
-  .services-bullets-container {
-    font-size: 24px;
-  }
   
-  .service-header {
-    padding: 0.75rem 0;
-  }
   
-  .service-list li {
-    font-size: 20px;
-    padding-left: 1.5rem;
-  }
   
   .clients-block {
     flex-wrap: wrap;
@@ -539,32 +1001,19 @@
 /* ===== SMALL MOBILE (400px and below) ===== */
 @media (max-width: 400px) {
   .hero-main-text {
-    font-size: 26px;
-  }
-  
-  .project-placeholder {
-    height: 280px;
-  }
-  
-  .project-container:not(:first-child) .project-placeholder {
-    height: 280px;
+    font-size: 2.6rem;
   }
   
   .section-value {
     font-size: 20px;
   }
   
-  .services-bullets-container {
-    font-size: 20px;
-  }
   
-  .service-list li {
-    font-size: 18px;
-  }
   
   .clients-block {
     gap: 2rem;
   }
+
   
   .client-icon {
     height: 24px;

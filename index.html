@@ -2,22 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>gios.build — Websites for Small Businesses | Gio Posa, Bath</title>
+    <title>gios.build | Websites for Small Businesses | Gio Posa, Bath</title>
     <meta name="description" content="I'm Gio, a web designer and software engineer in Bath. I build new websites and redesign old ones for small businesses across the UK, with a free homepage mockup before you commit.">
     <meta name="keywords" content="web designer bath, web developer bath, small business website, website redesign, web design uk, gios.build">
     <meta name="author" content="Gio Posa">
-    <link rel="canonical" href="https://www.gios.build/" />
+    <!-- each page sets its own canonical link (react-helmet-async) -->
 
     <!-- Social preview (Open Graph for sharing) -->
-    <meta property="og:title" content="gios.build — Websites for Small Businesses">
+    <meta property="og:title" content="gios.build | Websites for Small Businesses">
     <meta property="og:description" content="New websites and redesigns for small businesses, from £500. See a free mockup of your new homepage before you commit.">
     <meta property="og:url" content="https://www.gios.build">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://www.gios.build/og-image.png">
+    <meta property="og:image:width" content="2400">
+    <meta property="og:image:height" content="1260">
+    <meta property="og:image:alt" content="gios.build: Most websites blend in. Yours won't. Websites for small businesses, with a free homepage mockup first.">
 
     <!-- Twitter card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="gios.build — Websites for Small Businesses">
+    <meta name="twitter:title" content="gios.build | Websites for Small Businesses">
     <meta name="twitter:description" content="New websites and redesigns for small businesses, from £500, by Gio Posa in Bath.">
     <meta name="twitter:image" content="https://www.gios.build/og-image.png">
 
@@ -33,17 +36,74 @@
         "@type": "ProfessionalService",
         "name": "gios.build",
         "url": "https://www.gios.build",
-        "logo": "https://www.gios.build/gb2.svg",
+        "logo": "https://www.gios.build/gb.png",
         "image": "https://www.gios.build/og-image.png",
         "email": "contact@gios.build",
-        "description": "Website design and development for small businesses: new websites, redesigns, hosting and maintenance.",
-        "priceRange": "££",
+        "description": "Website design and development for small businesses in Bath and across the UK: new websites, redesigns, enquiry and booking forms, getting found on Google, hosting and care. Every project starts with a free homepage mockup.",
+        "priceRange": "From £500",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Bath",
+          "addressRegion": "Somerset",
           "addressCountry": "GB"
         },
-        "areaServed": "GB",
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Bath"
+          },
+          {
+            "@type": "Country",
+            "name": "United Kingdom"
+          }
+        ],
+        "sameAs": [
+          "https://www.instagram.com/gios.build",
+          "https://www.linkedin.com/in/gio-posa-200541240"
+        ],
+        "knowsAbout": [
+          "Web design",
+          "Website redesign",
+          "Web development",
+          "Small business websites",
+          "Search engine optimisation"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Website packages",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "name": "Starter Website",
+              "description": "For new businesses that need to look professional online.",
+              "priceSpecification": {
+                "@type": "PriceSpecification",
+                "minPrice": 500,
+                "priceCurrency": "GBP"
+              }
+            },
+            {
+              "@type": "Offer",
+              "name": "Website Redesign",
+              "description": "For sites that look dated or don't bring in enquiries.",
+              "priceSpecification": {
+                "@type": "PriceSpecification",
+                "minPrice": 800,
+                "priceCurrency": "GBP"
+              }
+            },
+            {
+              "@type": "Offer",
+              "name": "Growth Website",
+              "description": "For businesses ready to make their website a source of leads.",
+              "priceSpecification": {
+                "@type": "PriceSpecification",
+                "minPrice": 1500,
+                "priceCurrency": "GBP"
+              }
+            }
+          ]
+        },
         "founder": {
           "@type": "Person",
           "name": "Gio Posa",

@@ -1,0 +1,299 @@
+/* The packages price list: poster prices between hairlines, in the
+   services stack's language (a solid active line, a slot that opens with an
+   animated graphic, notes that darken), laid out as a left-aligned list so
+   it reads as prices rather than a second services section. */
+.pk {
+  --pk-size: clamp(4rem, 7.8vw, 9rem);
+  color: var(--text-color-dark);
+}
+
+.pk-bar {
+  margin-bottom: 1rem;
+}
+
+.pk-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pk-row {
+  display: grid;
+  /* every row shares the same columns (the notes a fixed width), so the
+     prices line up like a price list and never shift as a slot opens */
+  grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr) 22rem;
+  align-items: center;
+  gap: 3rem;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+/* ---- name, ladder and who it's for ---- */
+
+.pk-name h2 {
+  margin: 1rem 0 0;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: clamp(1.75rem, 2.6vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.pk-name p {
+  margin: 0.6rem 0 0;
+  max-width: 22rem;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-regular);
+  line-height: 1.4;
+  color: var(--text-color-muted);
+}
+
+/* one bar per tier, rising like signal bars; a package lights as many as
+   its tier, and on the active row they pop up one after another */
+.pk-ladder {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 22px;
+}
+
+.pk-ladder i {
+  width: 6px;
+  height: calc(50% + var(--b) * 25%);
+  border-radius: 4px;
+  background: currentColor;
+  opacity: 0.12;
+  transform-origin: bottom;
+  transition: opacity 0.3s ease, background-color 0.35s ease;
+}
+
+.pk-ladder i.is-on {
+  opacity: 1;
+}
+
+.pk-row.is-active .pk-ladder i.is-on {
+  background: #fe432a;
+  animation: pk-bar-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--b) * 80ms) both;
+}
+
+@keyframes pk-bar-pop {
+  from {
+    transform: scaleY(0.2);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ---- the price ---- */
+
+.pk-price {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-family-Bold);
+  font-size: var(--pk-size);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+}
+
+.pk-from {
+  position: absolute;
+  top: -1.4rem;
+  left: 0.1em;
+  font-family: var(--font-family-Mono);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-color-muted);
+}
+
+/* prices stay black (red on a price reads as a sale or a warning); the
+   active one stands out because the others step back */
+.pk-amount {
+  color: rgba(0, 0, 0, 0.18);
+  transition: color 0.35s ease;
+}
+
+.pk-row.is-active .pk-amount {
+  color: var(--text-color-dark);
+}
+
+/* the slot: closed to nothing beside the price, it springs open on the
+   active row and plays that package's graphic, like the services stack */
+.pk-slot {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0.74em;
+  margin-left: 0;
+  border-radius: 0.14em;
+  overflow: hidden;
+  transition:
+    width 0.7s cubic-bezier(0.12, 1.15, 0.3, 1),
+    margin 0.7s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+.pk-row.is-active .pk-slot {
+  width: 1.55em;
+  margin-left: 0.18em;
+}
+
+.pk-slot .svc-art {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1.55em;
+  height: 100%;
+  transform: translateX(-50%);
+  display: block;
+}
+
+/* ---- what's in it ---- */
+
+.pk-notes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pk-notes ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-Medium);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.pk-notes li {
+  transition:
+    color 0.35s ease calc(var(--k) * 45ms),
+    transform 0.5s cubic-bezier(0.12, 1.15, 0.3, 1) calc(var(--k) * 45ms);
+}
+
+.pk-row.is-active .pk-notes li {
+  color: var(--text-color-dark);
+  transform: translateX(4px);
+}
+
+.pk-row.is-active .pk-notes li.pk-plus {
+  color: #fe432a;
+}
+
+.pk-range {
+  margin: 0.9rem 0 0;
+  font-family: var(--font-family-Mono);
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-color-muted);
+}
+
+.pk-choose {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.1rem;
+  border: 0;
+  border-radius: 99px;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-regular);
+  background: var(--btn-color-muted);
+  color: var(--text-color-dark);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pk-row.is-active .pk-choose {
+  background: var(--bg-dark-color);
+  color: var(--text-color-light);
+}
+
+.pk-choose:focus-visible {
+  outline: 2px solid #fe432a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pk-slot,
+  .pk-notes li {
+    transition: none;
+  }
+
+  .pk-row.is-active .pk-ladder i.is-on {
+    animation: none;
+  }
+}
+
+/* narrower screens: the price leads, name and notes either side of it
+   underneath */
+@media (max-width: 1100px) {
+  .pk-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'price price'
+      'name notes';
+    gap: 1.75rem 2rem;
+    align-items: start;
+  }
+
+  .pk-price {
+    grid-area: price;
+    margin-top: 1.4rem;
+  }
+
+  .pk-name {
+    grid-area: name;
+  }
+
+  .pk-notes {
+    grid-area: notes;
+    justify-self: start;
+    min-width: 0;
+  }
+
+  .pk-price {
+    justify-self: start;
+  }
+}
+
+/* phones: one column, the slot opens under-sized beside the price */
+@media (max-width: 600px) {
+  .pk {
+    --pk-size: 4.6rem;
+  }
+
+  .pk-row {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'name'
+      'price'
+      'notes';
+    gap: 1.25rem;
+    padding: 2rem 0;
+  }
+
+  .pk-price {
+    margin-top: 1.6rem;
+  }
+
+  .pk-notes ul {
+    font-size: 12px;
+  }
+
+  /* a narrower slot, so the widest price and its slot stay inside the margins */
+  .pk-row.is-active .pk-slot {
+    width: 1.2em;
+    margin-left: 0.14em;
+  }
+
+  .pk-slot .svc-art {
+    width: 1.2em;
+  }
+}

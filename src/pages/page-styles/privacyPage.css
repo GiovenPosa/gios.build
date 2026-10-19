@@ -1,0 +1,148 @@
+/* The privacy notice: the site's section bar and a centred poster headline,
+   then plain-English sections in a centred column at a comfortable reading
+   width (the text itself stays left-aligned, so it reads easily). */
+.privacy-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: var(--section-gap-small) 2rem var(--section-gap-medium);
+  box-sizing: border-box;
+  color: var(--text-color-dark);
+}
+
+.privacy-container {
+  width: 100%;
+  max-width: 1800px;
+}
+
+.privacy-bar {
+  margin-bottom: 3.5rem;
+}
+
+.privacy-title {
+  margin: 0;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: clamp(2.8rem, 7vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  text-align: center;
+}
+
+.privacy-title span {
+  display: block;
+}
+
+.privacy-lede {
+  margin: 2rem auto 0;
+  max-width: 40rem;
+  text-align: center;
+  text-wrap: balance;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.privacy-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
+  max-width: 44rem;
+  margin: 5rem auto 0;
+}
+
+.privacy-body section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--btn-color-muted);
+}
+
+.privacy-body h2 {
+  margin: 0;
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+  font-size: 1.6rem;
+  letter-spacing: -0.03em;
+}
+
+.privacy-body p,
+.privacy-body li {
+  margin: 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-medium);
+  line-height: 1.6;
+  color: var(--text-color-muted);
+}
+
+.privacy-body ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.privacy-body a {
+  color: var(--text-color-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* the opt-out switch for visit counting */
+.privacy-optout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 0.4rem;
+}
+
+.privacy-optout-button {
+  padding: 0.75rem 1.2rem;
+  border: 0;
+  border-radius: 99px;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-regular);
+  background: var(--btn-color-muted);
+  color: var(--text-color-dark);
+  cursor: pointer;
+}
+
+.privacy-optout-button:focus-visible {
+  outline: 2px solid var(--text-color-dark);
+  outline-offset: 3px;
+}
+
+.privacy-optout-state {
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-regular);
+  color: var(--text-color-muted);
+}
+
+@media (max-width: 900px) {
+  .privacy-page {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .privacy-page {
+    padding: 6rem 1rem 4rem;
+  }
+
+  .privacy-lede {
+    font-size: var(--font-size-medium);
+  }
+
+  .privacy-body {
+    margin-top: 3.5rem;
+  }
+
+  .privacy-optout {
+    justify-content: flex-start;
+  }
+}

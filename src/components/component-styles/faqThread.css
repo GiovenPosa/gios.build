@@ -1,0 +1,490 @@
+/* iMessage, light mode, seen from the visitor's phone: what they send is
+   system blue on the right, Gio's replies are system grey on the left. The text uses the system font so on Apple devices
+   it is SF, which is what makes a bubble read as a real message. */
+.faq-thread {
+  --faq-in: #e9e9eb;
+  --faq-out: #0a84ff;
+  --faq-page: var(--bg-light-color);
+  --faq-meta: #6e6e73;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', var(--font-family-Regular), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The chat: a fixed-height pane that scrolls to the newest message, so the
+   question pills underneath stay where your thumb is. The avatar and name sit
+   over its top edge, and the messages fade out on a long eased curve as they
+   slide up beneath them: the fade belongs to the messages, so it has no edge
+   anywhere (a backdrop blur always hard-stops at the pane's bounds). */
+.faq-pane {
+  position: relative;
+}
+
+.faq-window {
+  --faq-head: 188px;
+  height: clamp(420px, 56vh, 600px);
+  overflow-y: auto;
+  /* vertical only: the bubble tails and pop-ins poke a few px past the edge,
+     which otherwise made the pane wiggle sideways */
+  overflow-x: hidden;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+  padding: var(--faq-head) 14px 1rem;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.03) calc(var(--faq-head) * 0.4),
+    rgba(0, 0, 0, 0.1) calc(var(--faq-head) * 0.7),
+    rgba(0, 0, 0, 0.3) calc(var(--faq-head) * 0.95),
+    rgba(0, 0, 0, 0.68) calc(var(--faq-head) + 1.25rem),
+    #000 calc(var(--faq-head) + 2.75rem));
+  mask-image: linear-gradient(to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.03) calc(var(--faq-head) * 0.4),
+    rgba(0, 0, 0, 0.1) calc(var(--faq-head) * 0.7),
+    rgba(0, 0, 0, 0.3) calc(var(--faq-head) * 0.95),
+    rgba(0, 0, 0, 0.68) calc(var(--faq-head) + 1.25rem),
+    #000 calc(var(--faq-head) + 2.75rem));
+}
+
+.faq-window::-webkit-scrollbar {
+  display: none;
+}
+
+/* conversation header: avatar and name, fixed over the top of the chat */
+.faq-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  padding-top: 1.25rem;
+  pointer-events: none;
+}
+
+/* a soft white glow behind the avatar and name, so a message passing
+   beneath never reads through them; a radial gradient, so no edges */
+.faq-header::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -10%;
+  width: 320px;
+  height: 125%;
+  transform: translateX(-50%);
+  z-index: -1;
+  background: radial-gradient(closest-side, #fff 45%, rgba(255, 255, 255, 0.85) 62%, rgba(255, 255, 255, 0) 100%);
+}
+
+.faq-avatar {
+  display: block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* shown while the photo loads */
+  background: #e9e9eb;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.faq-name {
+  font-family: var(--font-family-Bold);
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: var(--text-color-dark);
+  /* a soft white halo keeps the name legible over a message passing beneath */
+  text-shadow: 0 0 6px #fff, 0 0 12px #fff, 0 0 18px #fff;
+}
+
+.faq-stamp {
+  margin: 0 0 1.25rem;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--faq-meta);
+}
+
+.faq-messages {
+  display: flex;
+  flex-direction: column;
+}
+
+.faq-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.faq-row-out {
+  align-items: flex-end;
+}
+
+/* a change of speaker gets room; a run from one speaker sits tight */
+.faq-row + .faq-row {
+  margin-top: 1rem;
+}
+
+.faq-row-in + .faq-row-in,
+.faq-row-out + .faq-row-out {
+  margin-top: 0.3rem;
+}
+
+/* The bubble. Each one pops up from its tail corner as it arrives. */
+.faq-bubble,
+.faq-ghost {
+  box-sizing: border-box;
+  max-width: min(74%, 40rem);
+  margin: 0;
+  padding: 0.85rem 1.35rem;
+  border-radius: 1.6rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', var(--font-family-Regular), sans-serif;
+  font-size: 24px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.faq-bubble {
+  position: relative;
+  animation: faq-pop 0.55s cubic-bezier(0.12, 1.3, 0.3, 1) both;
+}
+
+/* a question in flight: its ghost is on the way, the bubble waits for it */
+.faq-bubble.is-flying {
+  visibility: hidden;
+  animation: none;
+}
+
+@keyframes faq-pop {
+  from { opacity: 0; transform: scale(0.8) translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* the pill on its way up into the thread */
+.faq-ghost {
+  position: fixed;
+  z-index: 1000;
+  max-width: none;
+  margin: 0;
+  background: var(--faq-out, #0a84ff);
+  color: #fff;
+  transform-origin: 0 0;
+  pointer-events: none;
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.3);
+}
+
+.faq-in {
+  background: var(--faq-in);
+  color: #000;
+  transform-origin: 0 100%;
+}
+
+.faq-out {
+  background: var(--faq-out);
+  color: #fff;
+  transform-origin: 100% 100%;
+}
+
+/* The classic tail, only on the last bubble of a run: a coloured curve under
+   the corner, then a page-coloured curve cut out of it. */
+.faq-bubble.has-tail::before,
+.faq-bubble.has-tail::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  height: 28px;
+}
+
+.faq-in.has-tail::before {
+  left: -9px;
+  width: 26px;
+  background: var(--faq-in);
+  border-bottom-right-radius: 21px 18px;
+}
+
+.faq-in.has-tail::after {
+  left: -34px;
+  width: 34px;
+  background: var(--faq-page);
+  border-bottom-right-radius: 13px;
+}
+
+.faq-out.has-tail::before {
+  right: -9px;
+  width: 26px;
+  background: var(--faq-out);
+  border-bottom-left-radius: 21px 18px;
+}
+
+.faq-out.has-tail::after {
+  right: -34px;
+  width: 34px;
+  background: var(--faq-page);
+  border-bottom-left-radius: 13px;
+}
+
+/* "typing…" */
+.faq-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1.15rem 1.35rem;
+  border-radius: 1.6rem;
+  background: var(--faq-in);
+  transform-origin: 0 100%;
+  animation: faq-pop 0.45s cubic-bezier(0.12, 1.3, 0.3, 1) both;
+}
+
+.faq-typing i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #6e6e73;
+  animation: faq-dot 1.2s ease-in-out infinite;
+}
+
+.faq-typing i:nth-child(2) { animation-delay: 0.15s; }
+.faq-typing i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes faq-dot {
+  0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+.faq-receipt {
+  margin: 0.3rem 0.35rem 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--faq-meta);
+  animation: faq-fade 0.4s ease 0.5s both;
+}
+
+@keyframes faq-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* The questions, as iOS suggestion pills under the thread. Asked ones leave;
+   while Gio is replying the rest wait, dimmed. */
+.faq-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.faq-suggestions.is-busy {
+  opacity: 0.45;
+}
+
+.faq-pill {
+  padding: 0.7rem 1.2rem;
+  border: 1.5px solid #d1d1d6;
+  border-radius: 999px;
+  background: var(--faq-page);
+  color: var(--faq-out);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', var(--font-family-Regular), sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  animation: faq-pop 0.5s cubic-bezier(0.12, 1.3, 0.3, 1) both;
+  transition:
+    transform 0.6s cubic-bezier(0.12, 1.15, 0.3, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faq-pill:not([aria-disabled='true']):hover {
+    transform: translateY(-3px) scale(1.03);
+    background: #f2f2f7;
+    border-color: #c7c7cc;
+  }
+}
+
+.faq-pill[aria-disabled='true'] {
+  cursor: default;
+}
+
+/* the composer is the call to action: tapping it opens the booking form */
+.faq-composer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 2.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+  border: 1px solid #d1d1d6;
+  border-radius: 999px;
+  background: var(--faq-page);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faq-composer:hover {
+    border-color: #b8b8bf;
+    box-shadow: 0 10px 30px -16px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.faq-composer-field {
+  flex: 1;
+  text-align: left;
+  font-size: 22px;
+  color: #76767b;
+}
+
+.faq-composer-send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--faq-out);
+  color: #fff;
+  transition: transform 0.5s cubic-bezier(0.12, 1.3, 0.3, 1);
+}
+
+.faq-composer-send svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faq-composer:hover .faq-composer-send {
+    transform: scale(1.08);
+  }
+}
+
+/* once every question is asked, the composer is the next step: it glows */
+.faq-composer.is-ready {
+  border-color: var(--faq-out);
+  animation: faq-ready 2.4s ease-in-out infinite;
+}
+
+@keyframes faq-ready {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(10, 132, 255, 0.28); }
+  50% { box-shadow: 0 0 0 10px rgba(10, 132, 255, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-bubble,
+  .faq-typing,
+  .faq-receipt,
+  .faq-pill,
+  .faq-composer.is-ready,
+  .faq-typing i {
+    animation: none;
+  }
+
+  .faq-pill,
+  .faq-composer-send {
+    transition: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .faq-bubble,
+  .faq-ghost {
+    font-size: 21px;
+  }
+
+  .faq-composer-field {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .faq-bubble,
+  .faq-ghost {
+    max-width: 82%;
+    font-size: 18px;
+    padding: 0.65rem 1.05rem;
+    border-radius: 1.3rem;
+  }
+
+  .faq-ghost {
+    max-width: none;
+  }
+
+  .faq-window {
+    --faq-head: 162px;
+    height: clamp(420px, 66svh, 600px);
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 0.75rem;
+  }
+
+  .faq-header {
+    padding-top: 1rem;
+  }
+
+  .faq-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .faq-name {
+    font-size: 20px;
+  }
+
+  /* one swipeable row of pills, like iOS quick replies, so the composer
+     stays on screen under the thread */
+  .faq-suggestions {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    margin: 1rem -1rem 0;
+    padding: 0.25rem 1rem 0.5rem;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 1rem, #000 calc(100% - 1rem), transparent);
+    mask-image: linear-gradient(to right, transparent 0, #000 1rem, #000 calc(100% - 1rem), transparent);
+  }
+
+  .faq-suggestions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .faq-pill {
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-size: 15px;
+    padding: 0.6rem 1rem;
+  }
+
+  /* a slimmer composer, closer to the real iOS one at phone size */
+  .faq-composer {
+    margin-top: 1rem;
+    gap: 0.5rem;
+    padding: 0.3rem 0.3rem 0.3rem 1.1rem;
+  }
+
+  .faq-composer-field {
+    font-size: 16px;
+  }
+
+  .faq-composer-send {
+    width: 34px;
+    height: 34px;
+  }
+
+  .faq-composer-send svg {
+    width: 18px;
+    height: 18px;
+  }
+
+}

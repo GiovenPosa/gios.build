@@ -1,4 +1,4 @@
-// Shared by the home page accordion and the about page services list
+// The home page services stack (src/components/servicesType.tsx).
 export const servicesData = [
   {
     title: 'New Websites',
