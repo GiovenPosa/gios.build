@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState, type VideoHTMLAttributes } from 'react';
+import { useCallback, useEffect, useRef, useState, type VideoHTMLAttributes } from 'react';
+import { useKeepPlaying } from '../hooks/useKeepPlaying';
 
 // React sets `muted` only as a property and never writes the attribute, and
 // Safari decides whether a video may play by itself from the attribute, so
@@ -29,27 +30,39 @@ type LoopVideoProps = VideoHTMLAttributes<HTMLVideoElement> & {
  * `poster` (its first frame) so it shows straight away while it loads.
  */
 export function LoopVideo({ src, webm, lazy = false, ...props }: LoopVideoProps) {
-  const [near, setNear] = useState(!lazy);
+  const ref = useRef<HTMLVideoElement | null>(null);
   const [node, setNode] = useState<HTMLVideoElement | null>(null);
+  // near the screen, so worth loading
+  const [near, setNear] = useState(!lazy);
+  // on the screen, so it should be playing
+  const [visible, setVisible] = useState(false);
   // stable, so it runs once per element
   const attach = useCallback((video: HTMLVideoElement | null) => {
     muteAndPlay(video);
+    ref.current = video;
     setNode(video);
   }, []);
 
   useEffect(() => {
-    if (near || !node) return;
-    const io = new IntersectionObserver(([entry]) => {
+    if (!node) return;
+    const nearby = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) setNear(true);
     }, { rootMargin: '600px 0px' });
-    io.observe(node);
-    return () => io.disconnect();
-  }, [near, node]);
+    const onScreen = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    if (lazy) nearby.observe(node);
+    onScreen.observe(node);
+    return () => {
+      nearby.disconnect();
+      onScreen.disconnect();
+    };
+  }, [lazy, node]);
 
   // the sources arrived after the element did: have it pick one
   useEffect(() => {
     if (lazy && near) node?.load();
   }, [lazy, near, node]);
+
+  useKeepPlaying(ref, near && visible);
 
   return (
     <video

@@ -382,3 +382,14 @@ html {
   outline: 2px solid #fe432a;
   outline-offset: 3px;
 }
+
+/* No video on the site has controls, so never show Safari's own play button
+   and dimmed overlay over one (it appears when Safari holds back a video,
+   e.g. in Low Power Mode). The video simply starts on the next tap. */
+video::-webkit-media-controls,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-overlay-play-button,
+video::-webkit-media-controls-panel {
+  display: none !important;
+  -webkit-appearance: none;
+}

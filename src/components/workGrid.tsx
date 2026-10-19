@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { useColumnCount } from '../hooks/useColumnCount';
+import { useKeepPlaying } from '../hooks/useKeepPlaying';
 import type { WorkItem, WorkMedia } from '../data/work';
 import { Reveal } from './reveal';
 import { track } from '../lib/analytics';
@@ -86,34 +87,10 @@ function CardMedia({ media, eager = false, canLoad = true, onReady }: CardMediaP
     if (load) ref.current?.load();
   }, [load]);
 
-  // On screen, keep it playing. A browser can turn down a play() that comes
-  // too early (before it has data, or while the page is still busy), so
-  // rather than trust one call, try again every so often and on the first
-  // tap, key or scroll (which also wins over iPhone Low Power Mode), until
-  // it's moving. Off screen, pause it.
+  // on screen, keep it playing (see useKeepPlaying); off screen, pause it
+  useKeepPlaying(ref, load && visible);
   useEffect(() => {
-    const video = ref.current;
-    if (!video || !load) return;
-    if (!visible) {
-      video.pause();
-      return;
-    }
-    const kick = () => {
-      if (video.paused) video.play().catch(() => {});
-    };
-    kick();
-    const retry = window.setInterval(kick, 800);
-    const events = ['pointerdown', 'keydown', 'touchstart', 'scroll'] as const;
-    events.forEach((e) => window.addEventListener(e, kick, { passive: true }));
-    const stop = () => {
-      window.clearInterval(retry);
-      events.forEach((e) => window.removeEventListener(e, kick));
-    };
-    video.addEventListener('playing', stop);
-    return () => {
-      stop();
-      video.removeEventListener('playing', stop);
-    };
+    if (load && !visible) ref.current?.pause();
   }, [load, visible]);
 
   const style = { objectPosition: media.focus } as CSSProperties;
