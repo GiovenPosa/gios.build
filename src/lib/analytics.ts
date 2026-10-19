@@ -1,7 +1,8 @@
 // Privacy-friendly analytics with Umami: totals only, no cookies, nothing
 // that follows a person around. The tracker is served from this site's own
-// /stats path (vercel.json passes it through to Umami Cloud), so ad blockers
-// that block analytics domains leave it alone.
+// /stats path (the Cloudflare Pages Functions in functions/stats pass it
+// through to Umami Cloud), so ad blockers that block analytics domains leave
+// it alone.
 //
 // It only runs on the live site (data-domains), respects Do Not Track, and
 // stays off for anyone who opts out on the privacy page.

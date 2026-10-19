@@ -103,7 +103,7 @@ export function PrivacyPage() {
             <section>
               <h2>Where they're kept</h2>
               <p>
-                Form enquiries are stored with Supabase, a database service, this site is hosted by Vercel, and visits are counted
+                Form enquiries are stored with Supabase, a database service, this site is hosted by Cloudflare, and visits are counted
                 by Umami. All three only handle your details on my behalf. Some services like these store data outside the UK; where they do, they use the
                 safeguards UK law requires.
               </p>
