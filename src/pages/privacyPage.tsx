@@ -8,6 +8,10 @@ import { Reveal } from '../components/reveal';
 // When this was last changed; update it with the text.
 const UPDATED = '19 October 2026';
 
+// The ICO registration number, once the data protection fee is paid
+// (ico.org.uk/fee). The line under "Who I am" shows only once it's set.
+const ICO_NUMBER = '';
+
 // The privacy notice: what the enquiry form collects, why, where it's kept,
 // for how long, and people's rights under UK GDPR, in plain English.
 export function PrivacyPage() {
@@ -42,6 +46,7 @@ export function PrivacyPage() {
                 gios.build is run by me, Gio Posa, a web designer and developer based in Bath, UK. I'm responsible for the
                 details you send me (the "data controller"). You can reach me at <a href='mailto:contact@gios.build'>contact@gios.build</a>.
               </p>
+              {ICO_NUMBER && <p>I'm registered with the Information Commissioner's Office, number {ICO_NUMBER}.</p>}
             </section>
 
             <section>
@@ -62,7 +67,8 @@ export function PrivacyPage() {
                 To see how the site is doing, I count visits with Umami, a privacy-friendly analytics service. It tells me totals:
                 which pages are viewed, which buttons are used, the country and kind of device people visit from, and which
                 website or search sent them here. It uses no cookies, doesn't follow you around other sites, and never tells me
-                who you are. Umami does this only on my behalf, and nothing is used for advertising.
+                who you are. To tell the country, your IP address is passed on to Umami as the page loads; it works out the
+                country and doesn't keep the address. Umami does this only on my behalf, and nothing is used for advertising.
               </p>
               <div className='privacy-optout'>
                 <button type='button' className='privacy-optout-button' onClick={toggleCounting} aria-pressed={optedOut}>
@@ -96,9 +102,9 @@ export function PrivacyPage() {
             <section>
               <h2>Where they're kept</h2>
               <p>
-                Form enquiries are stored with Supabase, a database service, this site is hosted by Cloudflare, and visits are counted
-                by Umami. All three only handle your details on my behalf. Some services like these store data outside the UK; where they do, they use the
-                safeguards UK law requires.
+                Form enquiries are stored with Supabase, a database service. The site is hosted by Cloudflare, and visits are
+                counted by Umami. All three handle your details only on my behalf. Some of them store data outside the UK; where
+                they do, they use the safeguards UK law requires.
               </p>
             </section>
 
