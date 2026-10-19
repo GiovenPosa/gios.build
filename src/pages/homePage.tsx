@@ -10,7 +10,7 @@ import GiosBuildFontsAnimate from '../assets/project-images/gios-build-fonts.mp4
 import GiosBuildFontsPoster from '../assets/project-images/gios-build-fonts.webp';
 import { Link } from 'react-router-dom';
 import { useBooking } from '../context/bookingContext';
-import { Helmet } from 'react-helmet-async';
+import { PageMeta } from '../components/pageMeta';
 import { toolsData } from '../data/tools';
 import { Reveal } from '../components/reveal';
 import { ToolIcon } from '../components/toolIcon';
@@ -85,23 +85,7 @@ export function HomePage() {
 
   return (
     <>
-      <Helmet>
-        <title>
-          gios.build | Websites for Small Businesses in Bath & Across the UK | Gio Posa
-        </title>
-
-        <meta
-          name="description"
-          content="I'm Gio, a web designer and software engineer in Bath. I build new websites and redesign old ones for small businesses across the UK, from £500, with a free homepage mockup before you commit."
-        />
-
-        <meta
-          name="keywords"
-          content="web designer bath, web developer bath, small business website, website redesign, web design uk, gios.build"
-        />
-
-        <link rel="canonical" href="https://www.gios.build/" />
-      </Helmet>
+      <PageMeta path='/' />
 
       <div className='home-page'>
         <div className='home-page-container'>

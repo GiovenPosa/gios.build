@@ -1,6 +1,6 @@
 import './page-styles/privacyPage.css';
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { PageMeta } from '../components/pageMeta';
 import { isOptedOut, setOptedOut } from '../lib/analytics';
 import { SectionBar } from '../components/sectionBar';
 import { Reveal } from '../components/reveal';
@@ -20,14 +20,7 @@ export function PrivacyPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Privacy | gios.build</title>
-        <meta
-          name="description"
-          content="How gios.build uses the details you send through the enquiry form: what's collected, why, where it's kept, for how long, and your rights."
-        />
-        <link rel="canonical" href="https://www.gios.build/privacy" />
-      </Helmet>
+      <PageMeta path='/privacy' />
 
       <div className='privacy-page'>
         <div className='privacy-container'>

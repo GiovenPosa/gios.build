@@ -1,6 +1,6 @@
 import './page-styles/pricingPage.css';
 import { GoArrowUpRight } from 'react-icons/go';
-import { Helmet } from 'react-helmet-async';
+import { PageMeta } from '../components/pageMeta';
 import { useBooking } from '../context/bookingContext';
 import { Reveal } from '../components/reveal';
 import { PackageStack } from '../components/packageStack';
@@ -18,21 +18,7 @@ export function PricingPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Website Packages & Pricing for Small Businesses | gios.build</title>
-
-        <meta
-          name="description"
-          content="Clear website pricing for small businesses: starter sites from £500, redesigns from £800 and growth websites from £1,500. Every project starts with a free homepage mockup."
-        />
-
-        <meta
-          name="keywords"
-          content="web design packages, website pricing uk, small business website, website redesign, lead generation website, web design services, landing page design, gios.build"
-        />
-
-        <link rel="canonical" href="https://www.gios.build/packages" />
-      </Helmet>
+      <PageMeta path='/packages' />
 
       <div className='pricing-page'>
         <div className='pricing-page-container'>

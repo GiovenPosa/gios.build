@@ -3,15 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <title>gios.build | Websites for Small Businesses | Gio Posa, Bath</title>
-    <meta name="description" content="I'm Gio, a web designer and software engineer in Bath. I build new websites and redesign old ones for small businesses across the UK, with a free homepage mockup before you commit.">
-    <meta name="keywords" content="web designer bath, web developer bath, small business website, website redesign, web design uk, gios.build">
+    <meta data-rh="true" name="description" content="I'm Gio, a web designer and software engineer in Bath. I build new websites and redesign old ones for small businesses across the UK, with a free homepage mockup before you commit.">
+    <meta data-rh="true" name="keywords" content="web designer bath, web developer bath, small business website, website redesign, web design uk, gios.build">
     <meta name="author" content="Gio Posa">
-    <!-- each page sets its own canonical link (react-helmet-async) -->
+    <!-- the tags marked data-rh are each page's own: the build writes every
+         page's into its HTML (vite.config.ts, from src/data/seo.ts), and the
+         app swaps them as you move between pages (components/pageMeta.tsx) -->
+    <!-- page canonical -->
 
     <!-- Social preview (Open Graph for sharing) -->
-    <meta property="og:title" content="gios.build | Websites for Small Businesses">
-    <meta property="og:description" content="New websites and redesigns for small businesses, from £500. See a free mockup of your new homepage before you commit.">
-    <meta property="og:url" content="https://www.gios.build">
+    <meta data-rh="true" property="og:title" content="gios.build | Websites for Small Businesses">
+    <meta data-rh="true" property="og:description" content="New websites and redesigns for small businesses, from £500. See a free mockup of your new homepage before you commit.">
+    <meta data-rh="true" property="og:url" content="https://www.gios.build">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://www.gios.build/og-image.png">
     <meta property="og:image:width" content="2400">
@@ -20,8 +23,8 @@
 
     <!-- Twitter card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="gios.build | Websites for Small Businesses">
-    <meta name="twitter:description" content="New websites and redesigns for small businesses, from £500, by Gio Posa in Bath.">
+    <meta data-rh="true" name="twitter:title" content="gios.build | Websites for Small Businesses">
+    <meta data-rh="true" name="twitter:description" content="New websites and redesigns for small businesses, from £500, by Gio Posa in Bath.">
     <meta name="twitter:image" content="https://www.gios.build/og-image.png">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
