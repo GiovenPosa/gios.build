@@ -90,17 +90,17 @@
   gap: 1.5rem;
 }
 
-.top-header-links span {
+.top-header-links a {
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
 
-.top-header-links span p {
+.top-header-links a p {
   margin: 0;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .top-header-links span.top-header-button:hover {
+  .top-header-links a.top-header-button:hover {
     opacity: var(--opacity-hover);
   }
 }
@@ -179,7 +179,7 @@
   pointer-events: auto;
 }
 
-.mobile-menu-overlay span {
+.mobile-menu-overlay .nav-link {
   font-family: var(--font-family-Medium);
   font-size: var(--font-size-xxlarge);
   color: var(--text-color-dark); 
@@ -189,7 +189,7 @@
 
 
 
-.mobile-menu-overlay span p {
+.mobile-menu-overlay .nav-link p {
   margin: 0;
   color: var(--text-color-dark); 
 }
@@ -272,7 +272,7 @@
     font-size: 26px;
   }
   
-  .mobile-menu-overlay span {
+  .mobile-menu-overlay .nav-link {
     font-size: 32px;
   }
   
@@ -289,7 +289,7 @@
     font-size: 24px;
   }
   
-  .mobile-menu-overlay span {
+  .mobile-menu-overlay .nav-link {
     font-size: 28px;
   }
 }
