@@ -1,7 +1,9 @@
 html, body, #root {
   margin: 0;
   padding: 0;
-  width: 100vw;
+  /* 100%, not 100vw: where scrollbars always show, 100vw includes the
+     scrollbar and makes every page a scrollbar's width too wide */
+  width: 100%;
   min-height: 100vh;
   overscroll-behavior: none;
 }
@@ -20,6 +22,10 @@ html, body, #root {
   z-index: 1;
   background-color: var(--bg-light-color);
   margin-bottom: var(--footer-h);
+  /* nothing may widen the page: the closing headline's words start out past
+     the screen's edges and drift in. clip (not hidden) so sticky and pinned
+     sections inside still work. */
+  overflow-x: clip;
 }
 
 .main-content {

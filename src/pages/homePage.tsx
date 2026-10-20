@@ -22,6 +22,7 @@ import { SectionBar } from '../components/sectionBar';
 import { LoopVideo } from '../components/loopVideo';
 import { StoryStack } from '../components/storyStack';
 import { ClosingCta } from '../components/closingCta';
+import { ResultsLenses } from '../components/resultsLenses';
 import { WorkGrid } from '../components/workGrid';
 import { workData } from '../data/work';
 
@@ -159,6 +160,8 @@ export function HomePage() {
               </Reveal>
               <ProcessSteps />
             </div>
+
+            <ResultsLenses />
 
             <div className='tools-info-block'>
               <Reveal as="p" className='tools-headline' delay={60}>

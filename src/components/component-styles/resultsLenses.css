@@ -1,0 +1,605 @@
+/* "How we'll know": the same centred poster headline as the process and
+   tools sections, then three colour slots side by side, then the ladder. */
+.results-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* padding, not margin: a margin would collapse into the section above */
+  padding-top: var(--section-gap-large);
+  margin-bottom: var(--section-gap-medium);
+  color: var(--text-color-dark);
+}
+
+.results-bar {
+  align-self: stretch;
+  margin-bottom: var(--element-gap-small);
+}
+
+.results-headline {
+  font-family: var(--font-family-Bold);
+  /* the font is already the bold cut: no extra weight from the heading */
+  font-weight: 400;
+  font-size: clamp(2.75rem, 6.4vw, 7rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+
+.results-headline span {
+  display: block;
+  text-wrap: balance;
+}
+
+.results-subtext {
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  max-width: 44rem;
+  margin: 2.5rem auto 0;
+  text-wrap: balance;
+}
+
+/* ---- the three lenses: portrait poster cards, the colour filling each ---- */
+
+.results-carousel {
+  align-self: stretch;
+}
+
+/* the previous/next buttons only show where the cards become a carousel */
+.results-nav {
+  display: none;
+}
+
+.results-lenses {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: var(--element-gap);
+  text-align: left;
+}
+
+.results-lens {
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 4 / 5;
+  padding: 2.5rem 2.25rem 2rem;
+  border-radius: 22px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* the layer's name, small, over the title */
+.results-lens-layer {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-medium);
+  letter-spacing: -0.01em;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* the graphic takes whatever the card has spare, centred in it */
+.results-slot {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 1rem -0.5rem 0;
+}
+
+.lens-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* the drawings sit inside a roomy box; scale them up to fill the slot */
+  transform: scale(1.2);
+}
+
+.results-title {
+  margin: 0;
+  font-family: var(--font-family-Bold);
+  font-weight: 400;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.results-text {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-regular);
+  line-height: 1.45;
+  color: rgba(0, 0, 0, 0.62);
+  max-width: 24rem;
+}
+
+/* what's tracked: outlined pills that fill in, one by one, as it plays */
+.results-tracks {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+}
+
+.results-tracks li {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 99px;
+  font-family: var(--font-family-Medium);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+  transition:
+    background-color 0.35s ease calc(var(--k) * 90ms + 0.8s),
+    border-color 0.35s ease calc(var(--k) * 90ms + 0.8s),
+    color 0.35s ease calc(var(--k) * 90ms + 0.8s);
+}
+
+.results-lens.is-playing .results-tracks li {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+/* ---- the ladder: the tier bars, poster-sized ---- */
+
+.results-ladder {
+  align-self: stretch;
+  margin-top: var(--section-gap-xlarge);
+}
+
+.results-ladder-title {
+  margin: 0;
+  font-family: var(--font-family-Bold);
+  font-size: clamp(2rem, 3.6vw, 3.75rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.results-ladder-title span {
+  display: block;
+}
+
+.results-ladder-title span + span {
+  color: var(--text-color-muted);
+}
+
+.results-pillars {
+  --block: 7.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  gap: 1.25rem;
+  margin-top: var(--element-gap-small);
+  text-align: left;
+}
+
+/* the first block at the bottom, the newest on top */
+.results-blocks {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+}
+
+.results-block-item {
+  height: var(--block);
+  box-sizing: border-box;
+  padding: 1.1rem 1.25rem;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* the inherited blocks: pale */
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+}
+
+/* the block each package adds: dark, with the red dot */
+.results-block-item.is-new {
+  background: #000;
+  color: #fff;
+}
+
+.results-block-adds {
+  font-family: var(--font-family-Bold);
+  font-size: var(--font-size-xlarge);
+  letter-spacing: -0.02em;
+}
+
+.results-block-adds::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0.34em;
+  margin: 0 0 0.12em 0;
+  border-radius: 50%;
+  background: #fe432a;
+  vertical-align: middle;
+}
+
+.results-block-item.is-new .results-block-adds::before {
+  width: 0.34em;
+  margin-right: 0.42em;
+}
+
+.results-block-detail {
+  font-family: var(--font-family-Regular);
+  font-size: 14px;
+  line-height: 1.35;
+  opacity: 0.75;
+}
+
+/* ---- the build, once the ladder is on screen ---- */
+
+/* the first level rises up out of the floor */
+.results-pillars.reveal-in .results-block-item.is-floor {
+  animation: results-block-rise 0.65s cubic-bezier(0.12, 1.15, 0.3, 1) var(--d) both;
+}
+
+/* the levels above drop onto the stack and settle */
+.results-pillars.reveal-in .results-block-item:not(.is-floor) {
+  animation: results-block-drop 0.7s cubic-bezier(0.12, 1.3, 0.3, 1) var(--d) both;
+}
+
+/* every block lands new, then passes "new" up as the next lands on it */
+.results-pillars.reveal-in .results-block-item.will-dim {
+  animation-name: results-block-drop, results-block-dim;
+  animation-duration: 0.7s, 0.45s;
+  animation-timing-function: cubic-bezier(0.12, 1.3, 0.3, 1), ease;
+  animation-delay: var(--d), var(--dim);
+  animation-fill-mode: both, both;
+}
+
+.results-pillars.reveal-in .results-block-item.is-floor.will-dim {
+  animation-name: results-block-rise, results-block-dim;
+  animation-duration: 0.65s, 0.45s;
+  animation-timing-function: cubic-bezier(0.12, 1.15, 0.3, 1), ease;
+}
+
+.results-pillars.reveal-in .results-block-item.will-dim .results-block-adds::before {
+  animation: results-dot-out 0.45s ease var(--dim) both;
+}
+
+@keyframes results-block-rise {
+  from { opacity: 0; clip-path: inset(100% 0 0 0 round 18px); transform: translateY(1.5rem); }
+  30% { opacity: 1; }
+  to { opacity: 1; clip-path: inset(0 0 0 0 round 18px); transform: none; }
+}
+
+@keyframes results-block-drop {
+  from { opacity: 0; transform: translateY(-3rem); }
+  35% { opacity: 1; }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes results-block-dim {
+  from { background: #000; color: #fff; }
+  to { background: rgba(0, 0, 0, 0.05); color: rgba(0, 0, 0, 0.45); }
+}
+
+@keyframes results-dot-out {
+  from { width: 0.34em; margin-right: 0.42em; transform: scale(1); }
+  to { width: 0; margin-right: 0; transform: scale(0); }
+}
+
+/* the pillar's base: its floor draws left to right, then the name rises
+   from just under it and the tier bars pop up in turn */
+.results-pillar-base {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+  padding-top: 1rem;
+  color: var(--text-color-dark);
+  text-decoration: none;
+}
+
+.results-pillar-base::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 99px;
+  background: #000;
+  transform-origin: left;
+}
+
+.results-pillars.reveal-in .results-pillar-base::before {
+  animation: results-floor 0.6s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--p) * 90ms) both;
+}
+
+.results-pillars.reveal-in .results-pillar-name,
+.results-pillars.reveal-in .results-pillar-price {
+  animation: results-name-rise 0.6s cubic-bezier(0.12, 1.15, 0.3, 1) calc(var(--p) * 90ms + 0.2s) both;
+}
+
+.results-pillars.reveal-in .results-pillar-bars i {
+  animation: results-bar-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--p) * 90ms + 0.3s + var(--b) * 70ms) both;
+}
+
+@keyframes results-floor {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes results-name-rise {
+  from { opacity: 0; transform: translateY(0.6em); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes results-bar-pop {
+  from { transform: scaleY(0.2); }
+  to { transform: scaleY(1); }
+}
+
+.results-pillar-bars {
+  display: flex;
+  align-items: flex-end;
+  /* sized with the name beside it: the tallest bar about its capitals */
+  gap: clamp(4px, 0.4vw, 6px);
+  height: clamp(1.5rem, 2.35vw, 2.5rem);
+  flex: none;
+}
+
+.results-pillar-bars i {
+  width: clamp(6px, 0.62vw, 10px);
+  height: calc(50% + var(--b) * 25%);
+  border-radius: 4px;
+  background: currentColor;
+  opacity: 0.12;
+  transform-origin: bottom;
+}
+
+.results-pillar-bars i.is-on {
+  opacity: 1;
+  background: #fe432a;
+}
+
+.results-pillar-name {
+  font-family: var(--font-family-Bold);
+  font-size: clamp(2.1rem, 3.3vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.results-pillar-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  font-family: var(--font-family-Mono);
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-color-muted);
+  white-space: nowrap;
+}
+
+.results-pillar-price svg {
+  transition: transform 0.3s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .results-pillar-base:hover .results-pillar-price {
+    color: var(--text-color-dark);
+  }
+
+  .results-pillar-base:hover .results-pillar-price svg {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 900px) {
+  /* a swipeable row, edge to edge. The first card rests a little left of
+     centre, the way the row starts; every card after it snaps to the
+     middle of the screen. The row spans the full screen width, so vw is the
+     row. The same scroll padding both sides keeps the middle the middle,
+     and the first card snaps to its start, which that padding puts just
+     left of centre. */
+  .results-carousel {
+    --gutter: 1.5rem;
+  }
+
+  .results-lenses {
+    display: flex;
+    gap: 0.75rem;
+    margin-inline: calc(-1 * var(--gutter));
+    --card: min(68vw, 18rem);
+    --offset: 1.5rem;
+    --rest: calc(50vw - var(--card) / 2 - var(--offset));
+    padding-left: var(--rest);
+    padding-right: calc(50vw - var(--card) / 2);
+    scroll-padding-inline: var(--rest);
+    overflow-x: auto;
+    /* sideways only: a card still waiting to fade in sits 24px low, which
+       would otherwise let the row scroll up and clip the cards' tops */
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .results-lenses::-webkit-scrollbar {
+    display: none;
+  }
+
+  .results-lens {
+    flex: 0 0 var(--card);
+    scroll-snap-align: center;
+    aspect-ratio: 4 / 6.2;
+    padding: 1.4rem 1.2rem 1.2rem;
+    border-radius: 18px;
+  }
+
+  .results-lens:first-child {
+    scroll-snap-align: start;
+  }
+
+  /* in the row, cards fade in where they are rather than rising into
+     place, so nothing ever hangs below the row */
+  .results-lens.reveal {
+    transform: none;
+  }
+
+  .results-lens-layer {
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+  }
+
+  .results-title {
+    font-size: 1.6rem;
+  }
+
+  .results-text {
+    margin-top: 0.5rem;
+    font-size: 13.5px;
+  }
+
+  .results-tracks {
+    gap: 0.3rem;
+    margin-top: 0.8rem;
+  }
+
+  .results-tracks li {
+    padding: 0.25rem 0.55rem;
+    font-size: 10px;
+  }
+
+  .results-slot {
+    margin: 0.75rem -0.5rem 0;
+  }
+
+  .results-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .results-nav-button {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--btn-color-muted);
+    color: var(--text-color-dark);
+    font-size: 20px;
+    cursor: pointer;
+    transition: opacity 0.25s ease;
+  }
+
+  .results-nav-button:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .results-pillars {
+    --block: 6.5rem;
+    gap: 0.6rem;
+  }
+
+  .results-block-item {
+    padding: 0.85rem;
+    border-radius: 14px;
+  }
+
+  .results-block-adds {
+    font-size: var(--font-size-regular);
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .results-carousel {
+    --gutter: 1rem;
+  }
+
+  .results-subtext {
+    font-size: var(--font-size-medium);
+    margin-top: 1.75rem;
+  }
+
+  .results-pillars {
+    --block: 5.25rem;
+    gap: 0.4rem;
+  }
+
+  .results-block-item {
+    padding: 0.7rem 0.6rem;
+    border-radius: 12px;
+    justify-content: flex-end;
+  }
+
+  .results-block-adds {
+    font-size: 14px;
+    line-height: 1.15;
+  }
+
+  /* too narrow for the detail line: the block's name says enough */
+  .results-block-detail {
+    display: none;
+  }
+
+  /* the bars and name stay side by side, both sized to the screen (in vw)
+     so the longest name, Redesign, still fits its narrow column; the price
+     drops to its own line. Every pillar lays out the same, so the floors
+     stay level. */
+  .results-pillar-base {
+    flex-wrap: wrap;
+    gap: 0.3rem 0.28em;
+    padding-top: 0.75rem;
+    font-size: 5.1vw;
+  }
+
+  .results-pillar-bars {
+    height: 0.74em;
+    gap: 0.09em;
+  }
+
+  .results-pillar-bars i {
+    width: 0.2em;
+  }
+
+  .results-pillar-name {
+    font-size: 1em;
+    white-space: nowrap;
+  }
+
+  .results-pillar-price {
+    flex-basis: 100%;
+    margin-left: 0;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .results-tracks li {
+    transition: none;
+  }
+
+  .results-pillars.reveal-in .results-block-item,
+  .results-pillars.reveal-in .results-block-item.will-dim .results-block-adds::before,
+  .results-pillars.reveal-in .results-pillar-base::before,
+  .results-pillars.reveal-in .results-pillar-name,
+  .results-pillars.reveal-in .results-pillar-price,
+  .results-pillars.reveal-in .results-pillar-bars i {
+    animation: none;
+  }
+
+  .results-pillars.reveal-in .results-block-item {
+    opacity: 1;
+  }
+}
