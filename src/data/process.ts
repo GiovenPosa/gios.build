@@ -23,6 +23,6 @@ export const processData: ProcessStep[] = [
   {
     id: '04',
     title: 'Deliver',
-    text: "I set up hosting and your domain, then launch. A simple website is usually live in about 4 weeks, and I can look after it monthly from there."
+    text: "I set up hosting and your domain, then launch. A simple website is usually live in about 4 weeks. 30 days on, we review what's working."
   }
 ];

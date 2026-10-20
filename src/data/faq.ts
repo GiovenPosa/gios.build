@@ -22,8 +22,12 @@ export const faqData: FaqItem[] = [
     answer: 'Yes. Hosting and domain setup can be included. The cost depends on what your site needs, and I\'ll include it in your quote.'
   },
   {
+    question: "How will I know it's working?",
+    answer: "Every site gets privacy-friendly visit tracking, tested before launch. 30 days in, we look at the real numbers together. I won't promise you a number, but I'll always show you an honest one."
+  },
+  {
     question: 'What happens after launch?',
-    answer: "You can take it from there, or I can look after it with a monthly maintenance plan covering updates, backups and small changes."
+    answer: "Your 30-day review comes first. After that, you can take it from there, or I can look after it with a monthly plan covering updates, backups and small changes."
   },
   {
     question: 'Is the mockup really free?',

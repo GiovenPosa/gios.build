@@ -58,7 +58,7 @@ const QUESTIONS: Question[] = [
     choices: [
       { id: 'bookings', label: 'Take bookings', tier: 2, covers: 'Bookings, maps & integrations' },
       { id: 'tools', label: 'Connect my tools', tier: 2, covers: 'Bookings, maps & integrations' },
-      { id: 'seo', label: 'Get found on Google', tier: 2, covers: 'SEO foundations & analytics' },
+      { id: 'seo', label: 'Get found on Google', tier: 2, covers: 'SEO foundations & enquiry tracking' },
       { id: 'care', label: 'Look after it for me' },
     ],
   },
