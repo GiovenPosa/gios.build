@@ -90,7 +90,9 @@ async function db(env: EnquiryEnv, path: string, init: RequestInit = {}) {
   const response = await fetch(`${env.SUPABASE_URL}/rest/v1/${path}`, {
     ...init,
     headers: {
-      apikey: env.SUPABASE_SECRET_KEY,
+      // trimmed: a key pasted into the dashboard can pick up a stray space or
+      // line break, which makes the header invalid
+      apikey: (env.SUPABASE_SECRET_KEY ?? '').trim(),
       'Content-Type': 'application/json',
       Prefer: 'return=representation',
       ...init.headers,
