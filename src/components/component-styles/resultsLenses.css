@@ -87,14 +87,14 @@
   margin: 1rem -0.5rem 0;
 }
 
-.lens-art {
+.lens-icon {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-  /* the drawings sit inside a roomy box; scale them up to fill the slot */
-  transform: scale(1.2);
+  /* the object sits centred in the space the card has spare */
+  overflow: visible;
 }
 
 .results-title {

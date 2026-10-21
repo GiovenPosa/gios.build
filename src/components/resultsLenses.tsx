@@ -6,13 +6,11 @@ import { packagesData, formatPrice } from '../data/packages';
 import { Reveal } from './reveal';
 import { SectionBar } from './sectionBar';
 import { ResultsDashboard } from './resultsDashboard';
-import { TechnicalArt } from './serviceArt/technicalArt';
-import { ExperienceArt } from './serviceArt/experienceArt';
-import { BusinessArt } from './serviceArt/businessArt';
+import { BuiltRightIcon, GrowthIcon, TapIcon } from './resultsIcons';
 import './component-styles/resultsLenses.css';
 
-const ART = { technical: TechnicalArt, experience: ExperienceArt, business: BusinessArt };
-// side by side, each graphic starts a beat after the one to its left
+const ART = { technical: BuiltRightIcon, experience: TapIcon, business: GrowthIcon };
+// side by side, each card's pills fill a beat after the one to its left
 const STAGGER_MS = 350;
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -75,7 +73,7 @@ function Lens({ lens, index }: { lens: ResultLens; index: number }) {
         </ul>
       </div>
       <div className='results-slot' ref={ref}>
-        <Art active={playing} />
+        <Art />
       </div>
     </Reveal>
   );
