@@ -23,7 +23,8 @@ html, body, #root {
   background-color: var(--bg-light-color);
   margin-bottom: var(--footer-h);
   /* the page lifts off the footer like a card */
-  border-radius: 0 0 48px 48px;
+  --radius: 48px;
+  border-radius: 0 0 var(--corner) var(--corner);
   /* nothing may widen the page: the closing headline's words start out past
      the screen's edges and drift in. clip (not hidden) so sticky and pinned
      sections inside still work. */

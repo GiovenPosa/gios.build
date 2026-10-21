@@ -103,7 +103,8 @@
 .privacy-optout-button {
   padding: 0.75rem 1.2rem;
   border: 0;
-  border-radius: 99px;
+  --radius: 22px;
+  border-radius: var(--corner);
   font-family: var(--font-family-Medium);
   font-size: var(--font-size-regular);
   background: var(--btn-color-muted);

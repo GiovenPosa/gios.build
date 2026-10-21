@@ -43,7 +43,8 @@
 .svc-line:focus-visible {
   outline: 2px solid #fe432a;
   outline-offset: 6px;
-  border-radius: 8px;
+  --radius: 8px;
+  border-radius: var(--corner);
 }
 
 .svc-title {
@@ -69,7 +70,8 @@
   width: 0;
   height: 0.74em;
   margin: 0;
-  border-radius: 0.14em;
+  --radius: 0.14em;
+  border-radius: var(--corner);
   overflow: hidden;
   transition:
     width 0.7s cubic-bezier(0.12, 1.15, 0.3, 1),

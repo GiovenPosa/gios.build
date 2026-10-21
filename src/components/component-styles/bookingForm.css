@@ -30,7 +30,8 @@
   background: var(--bg-light-color);
   padding: 2.5rem;
   box-sizing: border-box;
-  border-radius: 24px;
+  --radius: 24px;
+  border-radius: var(--corner);
   z-index: 999;
   overflow-y: auto;
   /* scrolling to the end of the form never carries on into the page */
@@ -133,7 +134,8 @@
 
 .booking-progress-bar li {
   height: 4px;
-  border-radius: 99px;
+  --radius: 99px;
+  border-radius: var(--corner);
   background: var(--btn-color-muted);
   transition: background-color 0.3s ease;
 }
@@ -187,7 +189,8 @@
   padding: 1.1rem 1.5rem;
   font-family: var(--font-family-Medium);
   font-size: var(--font-size-medium);
-  border-radius: 99px;
+  --radius: 27px;
+  border-radius: var(--corner);
   background: var(--btn-color-muted);
   color: var(--text-color-dark);
   border: none;
@@ -210,7 +213,8 @@
 .booking-error {
   margin: 0;
   padding: 0.875rem 1rem;
-  border-radius: 12px;
+  --radius: 12px;
+  border-radius: var(--corner);
   background: rgba(229, 57, 53, 0.08);
   font-family: var(--font-family-Regular);
   font-size: 14px;
@@ -237,7 +241,8 @@
   color: var(--text-color-dark);
   background: var(--btn-color-muted);
   border: 2px solid transparent;
-  border-radius: 12px;
+  --radius: 12px;
+  border-radius: var(--corner);
   padding: 1rem 1.25rem;
   outline: none;
   transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -272,7 +277,8 @@
   color: var(--text-color-dark);
   background: var(--btn-color-muted);
   border: 2px solid transparent;
-  border-radius: 99px;
+  --radius: 21px;
+  border-radius: var(--corner);
   padding: 0.6rem 1.25rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -306,7 +312,8 @@
   color: var(--text-color-dark);
   background: var(--btn-color-muted);
   border: 2px solid transparent;
-  border-radius: 12px;
+  --radius: 12px;
+  border-radius: var(--corner);
   padding: 1rem 1.25rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -381,7 +388,8 @@
   margin-top: 0.5rem;
   font-family: var(--font-family-Medium);
   font-size: var(--font-size-medium);
-  border-radius: 99px;
+  --radius: 27px;
+  border-radius: var(--corner);
   background-color: var(--bg-dark-color);
   color: var(--text-color-light);
   border: none;
@@ -499,7 +507,8 @@
 .success-details {
   width: 100%;
   background: var(--btn-color-muted);
-  border-radius: 16px;
+  --radius: 16px;
+  border-radius: var(--corner);
   padding: 1.25rem;
   margin-bottom: 2rem;
   display: flex;
@@ -534,7 +543,8 @@
   padding: 1.1rem 1.5rem;
   font-family: var(--font-family-Medium);
   font-size: var(--font-size-medium);
-  border-radius: 99px;
+  --radius: 27px;
+  border-radius: var(--corner);
   background-color: var(--bg-dark-color);
   color: var(--text-color-light);
   border: none;
@@ -574,7 +584,8 @@
   .booking-form {
     width: 95%;
     padding: 1.5rem;
-    border-radius: 20px;
+    --radius: 20px;
+    border-radius: var(--corner);
     max-height: 85vh;
   }
   

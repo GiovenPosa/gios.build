@@ -66,7 +66,8 @@
   gap: 3rem;
   min-height: min(68vh, 640px);
   padding: 3rem;
-  border-radius: 32px;
+  --radius: 32px;
+  border-radius: var(--corner);
   background: var(--bg-light-color);
   /* a soft shadow cast upwards too, onto the card it slides over, plus the
      usual lift underneath */
@@ -116,7 +117,8 @@
   min-width: 2.4rem;
   height: 1.7rem;
   padding: 0 0.6rem;
-  border-radius: 999px;
+  --radius: 14px;
+  border-radius: var(--corner);
   background: #fe432a;
   /* dark ink on the brand red: white on it is too faint for small text */
   color: #0c0c0c;
@@ -149,7 +151,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  border-radius: 22px;
+  --radius: 22px;
+  border-radius: var(--corner);
   min-height: 280px;
   overflow: hidden;
   background: color-mix(in srgb, var(--slot) 55%, var(--bg-light-color));
@@ -393,14 +396,16 @@
     min-height: 0;
     padding: 1.25rem;
     gap: 1.5rem;
-    border-radius: 24px;
+    --radius: 24px;
+    border-radius: var(--corner);
   }
 
   .story-slot {
     order: -1;
     min-height: 0;
     aspect-ratio: 5 / 4;
-    border-radius: 16px;
+    --radius: 16px;
+    border-radius: var(--corner);
   }
 
   /* a taller slot, so the stack sits smaller inside it with room around */

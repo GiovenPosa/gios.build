@@ -41,11 +41,27 @@
 }
 
 /* Apple-style continuous corners on every rounded box: the curve eases out
-   of the straight edge instead of starting abruptly. Browsers without
-   corner-shape keep the plain round corner. Circles opt back out with
-   corner-shape: round, or they'd turn into rounded squares. */
+   of the straight edge instead of starting abruptly.
+
+   A rounded rule sets its radius as --radius and draws it with
+   border-radius: var(--corner). Pills set --radius to about half their
+   height, not 999px, so the fallback below has a real size to scale.
+
+   Chrome and Edge draw a true squircle (corner-shape). Safari and Firefox
+   can't yet, so they get a plain round corner at 55% of the radius, which
+   takes the same bite out of the corner and reads almost the same.
+
+   Circles opt out with corner-shape: round, or they'd turn into rounded
+   squares. */
 *, *::before, *::after {
   corner-shape: squircle;
+  --corner: var(--radius);
+}
+
+@supports not (corner-shape: squircle) {
+  *, *::before, *::after {
+    --corner: calc(var(--radius) * 0.55);
+  }
 }
 
 /* Pill button labels: drop the font's uneven built-in line spacing so the

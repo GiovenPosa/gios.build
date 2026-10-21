@@ -69,7 +69,8 @@
   gap: 0.6rem;
   padding: 0.85rem 1.2rem;
   border: 0;
-  border-radius: 99px;
+  --radius: 24px;
+  border-radius: var(--corner);
   font-family: var(--font-family-Medium);
   font-size: var(--font-size-regular);
   background: var(--btn-color-muted);
@@ -134,7 +135,8 @@
   text-transform: uppercase;
   color: var(--text-color-dark);
   box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.28), 0 10px 24px -12px rgba(0, 0, 0, 0.12);
-  border-radius: 6px 6px 0 0;
+  --radius: 6px;
+  border-radius: var(--corner) var(--corner) 0 0;
   /* a torn, zigzag bottom edge */
   --tooth: 12px;
   -webkit-mask:

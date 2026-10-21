@@ -111,7 +111,8 @@
   gap: 0.5rem;
   padding: 0.8rem 1.1rem;
   font-size: var(--font-size-regular);
-  border-radius: 99px;
+  --radius: 22px;
+  border-radius: var(--corner);
   background-color: var(--bg-dark-color);
   color: var(--text-color-light);
   cursor: pointer;

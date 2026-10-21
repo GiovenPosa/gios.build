@@ -145,7 +145,8 @@
   max-width: min(74%, 40rem);
   margin: 0;
   padding: 0.85rem 1.35rem;
-  border-radius: 1.6rem;
+  --radius: 1.6rem;
+  border-radius: var(--corner);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', var(--font-family-Regular), sans-serif;
   font-size: 24px;
   line-height: 1.3;
@@ -238,7 +239,8 @@
   align-items: center;
   gap: 5px;
   padding: 1.15rem 1.35rem;
-  border-radius: 1.6rem;
+  --radius: 1.6rem;
+  border-radius: var(--corner);
   background: var(--faq-in);
   transform-origin: 0 100%;
   animation: faq-pop 0.45s cubic-bezier(0.12, 1.3, 0.3, 1) both;
@@ -292,7 +294,8 @@
 .faq-pill {
   padding: 0.7rem 1.2rem;
   border: 1.5px solid #d1d1d6;
-  border-radius: 999px;
+  --radius: 24px;
+  border-radius: var(--corner);
   background: var(--faq-page);
   color: var(--faq-out);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', var(--font-family-Regular), sans-serif;
@@ -328,7 +331,8 @@
   margin-top: 2.5rem;
   padding: 0.5rem 0.5rem 0.5rem 1.5rem;
   border: 1px solid #d1d1d6;
-  border-radius: 999px;
+  --radius: 32px;
+  border-radius: var(--corner);
   background: var(--faq-page);
   font: inherit;
   cursor: pointer;
@@ -417,7 +421,8 @@
     max-width: 82%;
     font-size: 18px;
     padding: 0.65rem 1.05rem;
-    border-radius: 1.3rem;
+    --radius: 1.3rem;
+    border-radius: var(--corner);
   }
 
   .faq-ghost {

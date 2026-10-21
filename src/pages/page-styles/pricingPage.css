@@ -62,7 +62,8 @@
   gap: 2.5rem;
   margin-top: var(--section-gap-large);
   padding: 2rem;
-  border-radius: 32px;
+  --radius: 32px;
+  border-radius: var(--corner);
   background: #f4f4f5;
 }
 
@@ -71,7 +72,8 @@
   display: block;
   width: 15rem;
   aspect-ratio: 2.1;
-  border-radius: 20px;
+  --radius: 20px;
+  border-radius: var(--corner);
   overflow: hidden;
   background: #e9e9eb;
 }
@@ -148,6 +150,7 @@
 
   .pricing-care {
     padding: 1.25rem;
-    border-radius: 24px;
+    --radius: 24px;
+    border-radius: var(--corner);
   }
 }

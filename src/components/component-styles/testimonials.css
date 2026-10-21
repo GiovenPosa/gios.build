@@ -136,7 +136,8 @@
   font-style: normal;
   margin-left: 0.4rem;
   padding: 0.25rem 0.6rem;
-  border-radius: 999px;
+  --radius: 11px;
+  border-radius: var(--corner);
   background: var(--tst-accent);
   /* dark ink on the brand red: white on it is too faint for small text */
   color: #0c0c0c;
@@ -153,7 +154,8 @@
   position: relative;
   flex: 1;
   height: 5px;
-  border-radius: 999px;
+  --radius: 999px;
+  border-radius: var(--corner);
   background: var(--tst-ink-faint);
 }
 

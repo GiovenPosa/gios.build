@@ -21,7 +21,8 @@
 
 .work-surface {
   position: relative;
-  border-radius: 24px;
+  --radius: 24px;
+  border-radius: var(--corner);
   overflow: hidden;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0);
   /* fast off the mark, then a long soft stop with the faintest overshoot;
@@ -145,7 +146,8 @@
 
 .work-viewer-media {
   aspect-ratio: var(--aspect);
-  border-radius: 24px;
+  --radius: 24px;
+  border-radius: var(--corner);
   overflow: hidden;
 }
 
@@ -212,7 +214,8 @@
   width: 18px;
   height: 2.5px;
   margin: -1.25px 0 0 -9px;
-  border-radius: 2px;
+  --radius: 2px;
+  border-radius: var(--corner);
   background: #fff;
   transform: rotate(45deg);
 }
@@ -232,7 +235,8 @@
   }
 
   .work-surface {
-    border-radius: 16px;
+    --radius: 16px;
+    border-radius: var(--corner);
   }
 
   /* too narrow for title and meta side by side: stack them */
@@ -254,7 +258,8 @@
   }
 
   .work-viewer-media {
-    border-radius: 16px;
+    --radius: 16px;
+    border-radius: var(--corner);
   }
 
   .work-viewer-caption {

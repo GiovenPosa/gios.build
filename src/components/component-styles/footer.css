@@ -78,7 +78,8 @@
   padding: 1.2rem 1.6rem;
   font-family: var(--font-family-Medium);
   font-size: var(--font-size-medium);
-  border-radius: 99px;
+  --radius: 28px;
+  border-radius: var(--corner);
   background-color: var(--bg-light-color);
   color: var(--text-color-dark);
   cursor: pointer;
