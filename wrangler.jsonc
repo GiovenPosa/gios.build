@@ -1,5 +1,11 @@
 // Cloudflare Worker that serves the site: the built files in dist/, with the
-// small script in worker/ in front of /stats only (the Umami pass-through).
+// small script in worker/ in front of /stats (the Umami pass-through) and
+// /api (the enquiry form's endpoint).
+//
+// The enquiry endpoint also needs the Supabase secret key, kept out of this
+// file and out of the browser: `npx wrangler secret put SUPABASE_SECRET_KEY`.
+// For local testing, put it in .dev.vars (gitignored) and run
+// `npm run build && npx wrangler dev`.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "gios-build",
@@ -11,7 +17,15 @@
     // any path without a file gets index.html with a 200; the router shows
     // the page, or the not-found page
     "not_found_handling": "single-page-application",
-    "run_worker_first": ["/stats/*"]
+    "run_worker_first": ["/stats/*", "/api/*"]
   },
+  "vars": {
+    "SUPABASE_URL": "https://tbewrjkilpnifzzygqhv.supabase.co"
+  },
+  // enquiry form requests per visitor IP: generous for a person going back
+  // and forth between steps, tight for a script
+  "ratelimits": [
+    { "name": "ENQUIRY_LIMIT", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }
+  ],
   "observability": { "enabled": true }
 }

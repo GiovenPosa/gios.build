@@ -58,6 +58,11 @@ export function PrivacyPage() {
                 <li>the kind of business you run, and the package and budget you pick</li>
                 <li>anything you write in your message</li>
               </ul>
+              <p>
+                The form has three steps, and each one is saved when you press Next. So once you've given your name and email
+                on the first step, I have them even if you close the form before sending, and I may get in touch once to see
+                if you'd still like a mockup.
+              </p>
               <p>If you email me directly, I'll have whatever you put in that email.</p>
             </section>
 
@@ -111,7 +116,8 @@ export function PrivacyPage() {
             <section>
               <h2>How long I keep them</h2>
               <p>
-                If we don't go on to work together, I delete your enquiry within 12 months. If we do, I keep your details for as
+                If we don't go on to work together, I delete your enquiry within 12 months, and an unfinished one within
+                3 months. If we do, I keep your details for as
                 long as the project needs, and project and payment records for as long as UK tax rules require, usually six years.
               </p>
             </section>

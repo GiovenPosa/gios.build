@@ -107,10 +107,115 @@
   line-height: 1.5;
 }
 
-.booking-form-content {
+.booking-form-content,
+.booking-step {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+/* ===== Wizard: progress, step change, buttons ===== */
+.booking-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.booking-progress-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.booking-progress-bar li {
+  height: 4px;
+  border-radius: 99px;
+  background: var(--btn-color-muted);
+  transition: background-color 0.3s ease;
+}
+
+.booking-progress-bar li.is-done {
+  background: var(--bg-dark-color);
+}
+
+.booking-progress-label {
+  margin: 0;
+  font-family: var(--font-family-Mono);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-color-muted);
+}
+
+.booking-progress-label span {
+  margin-left: 0.5rem;
+  color: var(--text-color-dark);
+}
+
+/* each step slides in softly from the right */
+.booking-step {
+  animation: booking-step-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes booking-step-in {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .booking-step {
+    animation: none;
+  }
+}
+
+.booking-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.booking-actions .booking-submit {
+  flex: 1;
+  margin-top: 0;
+}
+
+.booking-back {
+  padding: 1.1rem 1.5rem;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-medium);
+  border-radius: 99px;
+  background: var(--btn-color-muted);
+  color: var(--text-color-dark);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .booking-back:hover {
+    opacity: var(--opacity-hover);
+  }
+}
+
+.booking-submit:disabled,
+.booking-back:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.booking-error {
+  margin: 0;
+  padding: 0.875rem 1rem;
+  border-radius: 12px;
+  background: rgba(229, 57, 53, 0.08);
+  font-family: var(--font-family-Regular);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #c62828;
 }
 
 .form-group {
@@ -523,9 +628,18 @@
     padding-left: 2.25rem;
   }
   
-  .booking-submit {
+  .booking-submit,
+  .booking-back {
     padding: 1rem 1.25rem;
     font-size: var(--font-size-regular);
+  }
+
+  .booking-progress {
+    margin-bottom: 1.5rem;
+  }
+
+  .booking-step {
+    gap: 1.25rem;
   }
   
   /* Success panel mobile */

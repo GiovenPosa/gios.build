@@ -34,3 +34,6 @@ dist-ssr
 .env.test.local
 # Cloudflare local dev
 .wrangler
+
+# Worker secrets for local testing (wrangler dev)
+.dev.vars

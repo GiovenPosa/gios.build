@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@coreui/icons": "^3.1.0",
-    "@supabase/supabase-js": "^2.87.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-helmet-async": "^2.0.5",
