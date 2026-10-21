@@ -87,6 +87,7 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  corner-shape: round;
   object-fit: cover;
   /* shown while the photo loads */
   background: #e9e9eb;
@@ -247,6 +248,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  corner-shape: round;
   background: #6e6e73;
   animation: faq-dot 1.2s ease-in-out infinite;
 }
@@ -354,6 +356,7 @@
   width: 46px;
   height: 46px;
   border-radius: 50%;
+  corner-shape: round;
   background: var(--faq-out);
   color: #fff;
   transition: transform 0.5s cubic-bezier(0.12, 1.3, 0.3, 1);

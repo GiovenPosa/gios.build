@@ -59,6 +59,7 @@
   background: var(--btn-color-muted);
   border: none;
   border-radius: 50%;
+  corner-shape: round;
   cursor: pointer;
   padding: 0.5rem;
   display: flex;

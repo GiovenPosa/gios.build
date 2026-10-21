@@ -34,6 +34,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  corner-shape: round;
   background: var(--text-color-dark);
   box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.06);
   opacity: 0;
@@ -152,6 +153,7 @@
     height: 44px;
     margin: 0;
     border-radius: 50%;
+    corner-shape: round;
     background-color: var(--bg-light-color);
     border: 2px solid var(--btn-color-muted);
     display: flex;

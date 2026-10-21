@@ -219,6 +219,7 @@
   height: 0.34em;
   margin: 0 0 0.12em 0;
   border-radius: 50%;
+  corner-shape: round;
   background: #fe432a;
   vertical-align: middle;
 }
@@ -494,6 +495,7 @@
     padding: 0;
     border: none;
     border-radius: 50%;
+    corner-shape: round;
     background: var(--btn-color-muted);
     color: var(--text-color-dark);
     font-size: 20px;

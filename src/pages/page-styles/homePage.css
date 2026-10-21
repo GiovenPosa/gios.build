@@ -89,6 +89,7 @@
   width: 0.16em;
   height: 0.16em;
   border-radius: 50%;
+  corner-shape: round;
   background: #fe432a;
   animation: hero-dot var(--build) linear var(--d) both;
 }

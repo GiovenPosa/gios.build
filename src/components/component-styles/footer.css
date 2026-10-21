@@ -15,6 +15,18 @@
   box-sizing: border-box;
 }
 
+/* the footer's colour reaches up behind the page's rounded bottom corners
+   (App.css), which would otherwise show the white page ground */
+.footer::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 48px;
+  background: inherit;
+}
+
 .footer-container {
   position: relative;
   width: 100%;

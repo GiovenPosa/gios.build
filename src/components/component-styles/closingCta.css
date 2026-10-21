@@ -30,6 +30,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
+  corner-shape: round;
   background: #22c55e;
 }
 
@@ -39,6 +40,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
+  corner-shape: round;
   background: #22c55e;
   animation: cta-ping 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }

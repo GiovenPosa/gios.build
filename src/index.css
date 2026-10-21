@@ -40,6 +40,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Apple-style continuous corners on every rounded box: the curve eases out
+   of the straight edge instead of starting abruptly. Browsers without
+   corner-shape keep the plain round corner. Circles opt back out with
+   corner-shape: round, or they'd turn into rounded squares. */
+*, *::before, *::after {
+  corner-shape: squircle;
+}
+
 /* Pill button labels: drop the font's uneven built-in line spacing so the
    text sits optically centred. Browsers without text-box support (Firefox)
    fall back to line-height: 1. */
@@ -241,7 +249,7 @@
   }
 }
 /* The section eyebrow, used everywhere (components/sectionBar.tsx):
-   dot + mono label, a hairline rule to the edge, an optional end piece */
+   mono label, a hairline rule to the edge, an optional end piece */
 .section-bar {
   display: flex;
   align-items: center;
@@ -256,17 +264,7 @@
 }
 
 .section-bar-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
   white-space: nowrap;
-}
-
-.section-bar-label i {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #fe432a;
 }
 
 .section-bar-rule {

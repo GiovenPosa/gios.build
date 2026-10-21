@@ -295,7 +295,7 @@
 }
 
 /* ===== Nav links: the red dot =====
-   On hover a small red dot (the one from the section labels) drops in from
+   On hover a small red dot (the one from the booking status) drops in from
    above with a soft bounce and lands just before the word, which stays
    exactly where it is, so nothing around it shifts. Leaving, it slips away
    downward instead of retracing its steps. On the current page it simply stays. Sized in em,
@@ -317,6 +317,7 @@
   height: var(--dot);
   margin-top: calc(var(--dot) / -2);
   border-radius: 50%;
+  corner-shape: round;
   background: #fe432a;
   opacity: 0;
   transform: translateY(0.5em) scale(0);
