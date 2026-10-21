@@ -5,8 +5,6 @@ interface SectionBarProps {
   label: string;
   /** Anything that sits at the right end of the rule: a count, a link. */
   children?: ReactNode;
-  /** The dot's colour; the site's red unless a section has its own. */
-  dot?: string;
   className?: string;
   /** Fade in on scroll. Off for bars inside pinned, scroll-driven sections. */
   reveal?: boolean;
@@ -15,16 +13,13 @@ interface SectionBarProps {
 }
 
 /**
- * The one eyebrow every section uses: a dot and a mono label, a hairline
- * rule running to the edge, and optionally something at its far end.
+ * The one eyebrow every section uses: a mono label, a hairline rule
+ * running to the edge, and optionally something at its far end.
  */
-export function SectionBar({ label, children, dot, className = '', reveal = true, when }: SectionBarProps) {
+export function SectionBar({ label, children, className = '', reveal = true, when }: SectionBarProps) {
   const content = (
     <>
-      <span className='section-bar-label'>
-        <i style={dot ? { background: dot } : undefined} />
-        {label}
-      </span>
+      <span className='section-bar-label'>{label}</span>
       <span className='section-bar-rule' />
       {children}
     </>

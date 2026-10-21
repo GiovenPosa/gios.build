@@ -123,7 +123,7 @@ export function HomePage() {
           </section>
 
           <section className='home-work-section'>
-            <SectionBar label='Selected work' dot='#6bff91' className='home-work-bar' when={workIn}>
+            <SectionBar label='Selected work' className='home-work-bar' when={workIn}>
               <Link to='/work' className='home-work-bar-link'>
                 View all <GoArrowUpRight aria-hidden />
               </Link>
