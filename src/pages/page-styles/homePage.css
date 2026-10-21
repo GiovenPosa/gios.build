@@ -16,6 +16,9 @@
 }
 
 .home-page-hero-section {
+  /* the orb (components/heroOrb.tsx) sits behind the headline, inside here */
+  position: relative;
+  isolation: isolate;
   margin-top: var(--section-gap-small);
   color: var(--text-color-dark);
   font-family: var(--font-family-Medium);

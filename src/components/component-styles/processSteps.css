@@ -184,3 +184,27 @@
     font-size: var(--font-size-regular);
   }
 }
+
+/* The hero orb's stroke down the line (processSteps.tsx, lib/orb.ts): a
+   canvas wide enough for the rim's soft edge and wobble, centred on the
+   track, and 160px (PAD there) taller at each end so the stroke's soft nose
+   and tail are never cut off. Once it's running, the plain grey track,
+   black line and dot all step aside. */
+.process-steps-orb {
+  position: absolute;
+  top: -160px;
+  left: 50%;
+  width: 120px;
+  height: calc(100% + 320px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.process-steps-track.has-orb {
+  background-color: transparent;
+}
+
+.process-steps-track.has-orb .process-steps-track-fill,
+.process-steps-track.has-orb .process-steps-track-tip {
+  display: none;
+}

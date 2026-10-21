@@ -25,6 +25,7 @@ import { ClosingCta } from '../components/closingCta';
 import { ResultsLenses } from '../components/resultsLenses';
 import { WorkGrid } from '../components/workGrid';
 import { workData } from '../data/work';
+import { HeroOrb } from '../components/heroOrb';
 
 
 // The hero headline builds itself once per visit: on first load, not every
@@ -91,6 +92,8 @@ export function HomePage() {
       <div className='home-page'>
         <div className='home-page-container'>
           <section className='home-page-hero-section'>
+            {/* the ring starts drawing as the headline's second line lands */}
+            <HeroOrb play={heroBuild !== 'wait'} delay={heroBuild === 'build' ? 700 : 0} />
             <h1 className={`hero-main-text is-${heroBuild}`}>
               <span className='hero-line'>
                 <span className='hero-word is-left' style={{ '--d': '0ms' } as CSSProperties}>Most websites</span>{' '}

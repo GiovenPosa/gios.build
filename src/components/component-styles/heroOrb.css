@@ -1,0 +1,16 @@
+/* The ring behind the hero headline (components/heroOrb.tsx). --orb-unit is
+   the shader's unit: the ring's diameter is just under it. The canvas is 1.2
+   units square so the soft rim never reaches its edge. It's centred on the
+   hero and may run past the screen's sides; .site-content clips that. Its
+   entrance is drawn by the shader itself, so there's no CSS fade. */
+.hero-orb {
+  --orb-unit: clamp(340px, 53vw, 860px);
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--orb-unit) * 1.2);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  pointer-events: none;
+}
