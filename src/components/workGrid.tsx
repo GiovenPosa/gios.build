@@ -239,11 +239,13 @@ function WorkViewer({ opened, onClose }: { opened: Opened; onClose: () => void }
 
 /**
  * The work catalog: staggered columns of project reels with a mono caption
- * under each. Clicking a card opens its reel larger. Shared by the home page
+ * under each (unless `captions` is off). Clicking a card opens its reel larger. Shared by the home page
  * and the Work page so the two never drift apart.
  */
-export function WorkGrid({ items, hold = false, onFirstRowIn }: {
+export function WorkGrid({ items, hold = false, captions = true, onFirstRowIn }: {
   items: WorkItem[];
+  /** the title and meta row under each card (the home page leaves it off) */
+  captions?: boolean;
   /** keep the top row back (the home page holds it until the hero has built) */
   hold?: boolean;
   /** the top row has started to come in, so anything that belongs with it
@@ -322,11 +324,16 @@ export function WorkGrid({ items, hold = false, onFirstRowIn }: {
                     onReady={() => markMoving(item.title)}
                   />
                 </div>
-                <div className='work-caption'>
-                  <span className='work-title'>{item.title}</span>
-                  <span className='work-meta'>{item.meta}</span>
-                  <span className='visually-hidden'>, open the larger view</span>
-                </div>
+                {captions ? (
+                  <div className='work-caption'>
+                    <span className='work-title'>{item.title}</span>
+                    <span className='work-meta'>{item.meta}</span>
+                    <span className='visually-hidden'>, open the larger view</span>
+                  </div>
+                ) : (
+                  // no row showing, but the card still needs a name to be read out
+                  <span className='visually-hidden'>{item.title}, open the larger view</span>
+                )}
               </Reveal>
             ))}
           </div>

@@ -131,7 +131,7 @@ export function HomePage() {
                 View all <GoArrowUpRight aria-hidden />
               </Link>
             </SectionBar>
-            <WorkGrid items={workData} hold={!heroSettled} onFirstRowIn={showWork} />
+            <WorkGrid items={workData} hold={!heroSettled} captions={false} onFirstRowIn={showWork} />
           </section>
 
           <section className='home-page-info-section'>

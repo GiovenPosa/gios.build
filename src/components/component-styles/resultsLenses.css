@@ -65,7 +65,7 @@
   flex-direction: column;
   aspect-ratio: 4 / 5;
   padding: 2.5rem 2.25rem 2rem;
-  --radius: 22px;
+  --radius: 64px;
   border-radius: var(--corner);
   box-sizing: border-box;
   overflow: hidden;
@@ -444,7 +444,7 @@
     scroll-snap-align: center;
     aspect-ratio: 4 / 6.2;
     padding: 1.4rem 1.2rem 1.2rem;
-    --radius: 18px;
+    --radius: 50px;
     border-radius: var(--corner);
   }
 
