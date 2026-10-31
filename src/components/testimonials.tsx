@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { testimonialsData } from '../data/testimonials';
-import { SectionBar } from './sectionBar';
 import './component-styles/testimonials.css';
 
 // how much vertical scroll each pixel of sideways travel costs (lower = faster)
@@ -67,9 +66,7 @@ export function Testimonials() {
   const barRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const backdropRef = useRef<HTMLDivElement | null>(null);
-  const [current, setCurrent] = useState(0);
   const [still] = useState(reducedMotion);
-  const count = testimonialsData.length;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -204,7 +201,6 @@ export function Testimonials() {
             ? `translateY(${(soft * 24).toFixed(1)}px) scale(${(1 - soft * 0.04).toFixed(3)})`
             : 'none';
         });
-        setCurrent(Math.round(position));
       }
       if (!visible || still) draw(performance.now());
     };
@@ -280,12 +276,6 @@ export function Testimonials() {
       <div className='tst-frame' ref={frameRef}>
 
         <div className='tst-inner'>
-          <SectionBar label="People I've worked with" className='tst-head' reveal={false}>
-            <span className='tst-count'>
-              {String(current + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
-            </span>
-          </SectionBar>
-
           <div className='tst-track' ref={trackRef}>
             {testimonialsData.map((item, index) => (
               <figure key={index} className='tst-panel'>

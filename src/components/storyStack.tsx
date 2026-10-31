@@ -3,7 +3,6 @@ import { GoArrowUpRight } from 'react-icons/go';
 import { journeyData } from '../data/journey';
 import { useBooking } from '../context/bookingContext';
 import { Reveal } from './reveal';
-import { SectionBar } from './sectionBar';
 import { LoopVideo } from './loopVideo';
 // square, card-sized cuts: the cards only ever show a small square
 import IbmAnimate from '../assets/story/ibm-square.mp4';
@@ -106,9 +105,6 @@ export function StoryStack() {
     // holds the testimonials' colour until the story ends
     <section className='story' id='story' data-backdrop-hold aria-labelledby='story-title'>
       <div className='story-intro'>
-        <SectionBar label='My story' className='story-bar'>
-          <span>{String(journeyData.length).padStart(2, '0')} milestones</span>
-        </SectionBar>
         <Reveal as="h2" className='story-headline' delay={60} id='story-title'>
           <span>Engineer first.</span> <span>Designer always.</span>
         </Reveal>

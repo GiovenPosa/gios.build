@@ -4,7 +4,6 @@ import { packagesData, formatPrice, priceRange } from '../data/packages';
 import { useBooking } from '../context/bookingContext';
 import { track } from '../lib/analytics';
 import { Reveal } from './reveal';
-import { SectionBar } from './sectionBar';
 import './component-styles/quoteBuilder.css';
 
 // Each answer is something one of the packages includes; the build needs
@@ -169,10 +168,6 @@ export function QuoteBuilder() {
 
   return (
     <section className='qb' aria-labelledby='qb-title'>
-      <SectionBar label='Build your quote' className='qb-bar'>
-        <span>{QUESTIONS.length} questions</span>
-      </SectionBar>
-
       <div className='qb-layout'>
         <div className='qb-questions'>
           <Reveal as="h2" className='qb-title' id='qb-title'>

@@ -2,7 +2,6 @@ import './page-styles/privacyPage.css';
 import { useState } from 'react';
 import { PageMeta } from '../components/pageMeta';
 import { isOptedOut, setOptedOut } from '../lib/analytics';
-import { SectionBar } from '../components/sectionBar';
 import { Reveal } from '../components/reveal';
 
 // When this was last changed; update it with the text.
@@ -28,10 +27,6 @@ export function PrivacyPage() {
 
       <div className='privacy-page'>
         <div className='privacy-container'>
-          <SectionBar label='Privacy' className='privacy-bar'>
-            <span>Updated {UPDATED}</span>
-          </SectionBar>
-
           <Reveal as="h1" className='privacy-title'>
             <span>Your details,</span> <span>kept simple.</span>
           </Reveal>
@@ -137,7 +132,8 @@ export function PrivacyPage() {
 
             <section>
               <h2>Changes</h2>
-              <p>If anything here changes, I'll update this page and the date at the top.</p>
+              <p>If anything here changes, I'll update this page and the date below.</p>
+              <p>Last updated {UPDATED}.</p>
             </section>
           </div>
         </div>

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { GoArrowUpRight, GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { packagesData, formatPrice } from '../data/packages';
 import { Reveal } from './reveal';
-import { SectionBar } from './sectionBar';
 import { ResultsDashboard } from './resultsDashboard';
 import { BuiltRightIcon, GrowthIcon, TapIcon } from './resultsIcons';
 import './component-styles/resultsLenses.css';
@@ -136,10 +135,6 @@ function LensCarousel() {
 export function ResultsLenses() {
   return (
     <section className='results-block'>
-      <SectionBar label="How we'll know" className='results-bar'>
-        <span>{String(resultLenses.length).padStart(2, '0')} layers</span>
-      </SectionBar>
-
       <Reveal as="h2" className='results-headline'>
         <span>Tracked from</span> <span>day one.</span>
       </Reveal>

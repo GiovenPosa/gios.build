@@ -9,10 +9,6 @@
   color: var(--text-color-dark);
 }
 
-.svc-bar {
-  margin-bottom: 3rem;
-}
-
 .svc-stack {
   display: flex;
   flex-direction: column;
@@ -198,10 +194,6 @@
      and notes beside it, still fits: about 9.8em of title plus ~340px */
   --svc-size: max(3rem, min(9.5rem, 8.4vw, calc((100vw - 4rem - 340px) / 9.8)));
     padding-top: 7rem;
-  }
-
-  .svc-bar {
-    margin-bottom: 2rem;
   }
 
   .svc-row {

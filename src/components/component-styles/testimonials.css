@@ -62,21 +62,10 @@
   gap: 3rem;
 }
 
-.tst-head,
 .tst-progress {
   width: calc(100% - 4rem);
   max-width: 1736px;
   margin: 0 auto;
-}
-
-/* the shared section bar, in the testimonials' ink */
-.tst-head {
-  color: var(--tst-ink);
-}
-
-.tst-count {
-  font-variant-numeric: tabular-nums;
-  color: var(--tst-ink-soft);
 }
 
 /* JS pads both ends so the first and last quotes sit centred in the frame */
@@ -192,8 +181,7 @@
   flex: none;
 }
 
-.tst.is-still .tst-progress,
-.tst.is-still .tst-count {
+.tst.is-still .tst-progress {
   display: none;
 }
 
@@ -202,7 +190,6 @@
     --panel: 80vw;
   }
 
-  .tst-head,
   .tst-progress {
     width: calc(100% - 3rem);
   }
@@ -217,13 +204,8 @@
     gap: 2rem;
   }
 
-  .tst-head,
   .tst-progress {
     width: calc(100% - 2rem);
-  }
-
-  .tst-head {
-    font-size: 12px;
   }
 
   .tst-progress {

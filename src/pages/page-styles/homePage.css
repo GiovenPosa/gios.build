@@ -462,29 +462,9 @@
   }
 }
 
-/* Selected work: the shared work grid (components/workGrid.tsx) under a
-   rule bar. */
+/* Selected work: the shared work grid (components/workGrid.tsx). */
 .home-work-section {
   margin-bottom: var(--section-gap-small);
-}
-
-.home-work-bar {
-  margin-bottom: 1.5rem;
-}
-
-.home-work-bar-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .home-work-bar-link:hover {
-    opacity: var(--opacity-hover);
-  }
 }
 
 .home-page-info-section {
@@ -572,12 +552,8 @@
   color: var(--text-color-dark);
 }
 
-/* Same poster treatment as the hero, one size down: muted eyebrow,
-   tight bold headline with a sentence per line, ink subtitle. */
-.process-bar {
-  margin-bottom: 3rem;
-}
-
+/* Same poster treatment as the hero, one size down: tight bold
+   headline with a sentence per line, ink subtitle. */
 .process-headline {
   font-family: var(--font-family-Bold);
   font-size: clamp(2.75rem, 6.4vw, 7rem);

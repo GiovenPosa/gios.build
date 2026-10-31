@@ -242,15 +242,12 @@ function WorkViewer({ opened, onClose }: { opened: Opened; onClose: () => void }
  * under each (unless `captions` is off). Clicking a card opens its reel larger. Shared by the home page
  * and the Work page so the two never drift apart.
  */
-export function WorkGrid({ items, hold = false, captions = true, onFirstRowIn }: {
+export function WorkGrid({ items, hold = false, captions = true }: {
   items: WorkItem[];
   /** the title and meta row under each card (the home page leaves it off) */
   captions?: boolean;
   /** keep the top row back (the home page holds it until the hero has built) */
   hold?: boolean;
-  /** the top row has started to come in, so anything that belongs with it
-   *  (the section's eyebrow) can come in too */
-  onFirstRowIn?: () => void;
 }) {
   // Real flex columns rather than CSS `columns`: Chrome drops the paint of
   // transformed items inside multi-column layout, so hovered cards vanished.
@@ -276,10 +273,6 @@ export function WorkGrid({ items, hold = false, captions = true, onFirstRowIn }:
   // the rest of the reels load once the top row is moving (or has had its
   // chance), so they don't take its bandwidth
   const firstRowDone = patienceUp || firstRow.every((title) => moving.has(title));
-  const firstRowIn = !hold && (patienceUp || firstRow.some((title) => moving.has(title)));
-  useEffect(() => {
-    if (firstRowIn) onFirstRowIn?.();
-  }, [firstRowIn, onFirstRowIn]);
 
   const open = (item: WorkItem, card: HTMLElement) => {
     const surface = card.querySelector('.work-surface') ?? card;

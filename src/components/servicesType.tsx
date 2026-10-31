@@ -2,7 +2,6 @@ import { useRef, useState, type CSSProperties } from 'react';
 import { servicesData } from '../data/services';
 import { useScrollFocus } from '../hooks/useScrollFocus';
 import { Reveal } from './reveal';
-import { SectionBar } from './sectionBar';
 import { HostingArt } from './serviceArt/hostingArt';
 import { NewSiteArt } from './serviceArt/newSiteArt';
 import { RedesignArt } from './serviceArt/redesignArt';
@@ -43,10 +42,6 @@ export function ServicesType() {
 
   return (
     <div className='svc'>
-      <SectionBar label='What I do' className='svc-bar'>
-        <span>{String(servicesData.length).padStart(2, '0')} services</span>
-      </SectionBar>
-
       <div className='svc-stack' ref={stackRef}>
         {servicesData.map((service, index) => {
           const { notes, thumb, ...tone } = layout[index % layout.length];

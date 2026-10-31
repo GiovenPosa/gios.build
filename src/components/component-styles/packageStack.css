@@ -7,10 +7,6 @@
   color: var(--text-color-dark);
 }
 
-.pk-bar {
-  margin-bottom: 1rem;
-}
-
 .pk-list {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import './page-styles/homePage.css';
 import { GoArrowUpRight } from "react-icons/go";
 // Paused with the "Where I've worked and built" section below — uncomment both together to bring it back.
@@ -18,7 +18,6 @@ import { ProcessSteps } from '../components/processSteps';
 import { ServicesType } from '../components/servicesType';
 import { FaqThread } from '../components/faqThread';
 import { Testimonials } from '../components/testimonials';
-import { SectionBar } from '../components/sectionBar';
 import { LoopVideo } from '../components/loopVideo';
 import { StoryStack } from '../components/storyStack';
 import { ClosingCta } from '../components/closingCta';
@@ -80,9 +79,6 @@ export function HomePage() {
   const heroBuild = useHeroBuild();
   // the work's top row comes in once the headline and buttons have landed
   const heroSettled = useHeroSettled(heroBuild);
-  // the work section's eyebrow comes in with the top row of cards
-  const [workIn, setWorkIn] = useState(false);
-  const showWork = useCallback(() => setWorkIn(true), []);
 
 
   return (
@@ -126,12 +122,7 @@ export function HomePage() {
           </section>
 
           <section className='home-work-section'>
-            <SectionBar label='Selected work' className='home-work-bar' when={workIn}>
-              <Link to='/work' className='home-work-bar-link'>
-                View all <GoArrowUpRight aria-hidden />
-              </Link>
-            </SectionBar>
-            <WorkGrid items={workData} hold={!heroSettled} captions={false} onFirstRowIn={showWork} />
+            <WorkGrid items={workData} hold={!heroSettled} captions={false} />
           </section>
 
           <section className='home-page-info-section'>
@@ -152,9 +143,6 @@ export function HomePage() {
             </div>
 
             <div className='process-info-block'>
-              <SectionBar label="How we'll work" className='process-bar'>
-                <span>04 steps</span>
-              </SectionBar>
               <Reveal as="p" className='process-headline' delay={60}>
                 <span>Four steps.</span> <span>No surprises.</span>
               </Reveal>

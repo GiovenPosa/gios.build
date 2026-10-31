@@ -1,10 +1,9 @@
 import { useRef, useState, type CSSProperties } from 'react';
 import { GoArrowUpRight } from 'react-icons/go';
-import { packagesData, formatPrice } from '../data/packages';
+import { packagesData } from '../data/packages';
 import { useBooking } from '../context/bookingContext';
 import { useScrollFocus } from '../hooks/useScrollFocus';
 import { Reveal } from './reveal';
-import { SectionBar } from './sectionBar';
 import { NewSiteArt } from './serviceArt/newSiteArt';
 import { RedesignArt } from './serviceArt/redesignArt';
 import { BookingArt } from './serviceArt/bookingArt';
@@ -31,10 +30,6 @@ export function PackageStack() {
 
   return (
     <section className='pk' aria-label='Packages'>
-      <SectionBar label='Packages' className='pk-bar'>
-        <span>From {formatPrice(packagesData[0].from)}</span>
-      </SectionBar>
-
       <div className='pk-list' ref={listRef}>
         {packagesData.map((pkg, index) => {
           const Art = ART[pkg.art];
