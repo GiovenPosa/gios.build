@@ -7,7 +7,9 @@
 //   PATCH /api/enquiry/:id       step 2 (or step 1 again, after going back):
 //                                saves the fields sent onto the draft.
 //   POST  /api/enquiry/:id/send  step 3: budget and message. Checks the whole
-//                                enquiry and copies it into booking_inquiries,
+//                                enquiry, finds or creates the visitor's
+//                                contact, and copies the enquiry into
+//                                booking_inquiries (linked to that contact),
 //                                where the lead app and its push notification
 //                                pick it up.
 //
@@ -119,6 +121,48 @@ async function saveDraft(env: EnquiryEnv, id: string, fields: Fields) {
   return rows[0] ?? null;
 }
 
+/** The contact for these details: the one with this email, with its blanks
+ *  filled in, or a new one. Every enquiry belongs to a contact (the lead app
+ *  shows them on its Contacts page). Contacts are matched by email, which the
+ *  database compares case-insensitively. */
+async function contactFor(env: EnquiryEnv, details: { name: string; email: string; phone: string | null; industry: string | null }) {
+  const find = async () =>
+    (await db(env, `contacts?email=eq.${encodeURIComponent(details.email)}&select=id,name,phone_numbers,industry&limit=1`))[0];
+
+  let existing = await find();
+  if (!existing) {
+    const created = await db(env, 'contacts?on_conflict=email', {
+      method: 'POST',
+      // if the same person sends two enquiries at once, the second finds the first's contact
+      headers: { Prefer: 'resolution=ignore-duplicates,return=representation' },
+      body: JSON.stringify({
+        email: details.email,
+        name: details.name,
+        phone_numbers: details.phone ? [details.phone] : [],
+        industry: details.industry,
+      }),
+    });
+    if (created[0]) return created[0].id as string;
+    existing = await find();
+    if (!existing) throw new Error('database');
+  }
+
+  // fill blanks only: anything typed in the lead app stays
+  const phones = (existing.phone_numbers as string[] | null) ?? [];
+  const gaps: Fields = {};
+  if (!(existing.name as string | null)?.trim()) gaps.name = details.name;
+  if (!(existing.industry as string | null)?.trim() && details.industry) gaps.industry = details.industry;
+  if (details.phone && !phones.includes(details.phone)) gaps.phone_numbers = [...phones, details.phone];
+  if (Object.keys(gaps).length > 0) {
+    await db(env, `contacts?id=eq.${existing.id}`, {
+      method: 'PATCH',
+      headers: { Prefer: 'return=minimal' },
+      body: JSON.stringify(gaps),
+    });
+  }
+  return existing.id as string;
+}
+
 /* ---------- Routes ---------- */
 
 async function start(request: Request, env: EnquiryEnv, body: Fields) {
@@ -159,10 +203,18 @@ async function send(env: EnquiryEnv, id: string, body: Fields) {
   if (types.length === 0) return fail(400, 'Please choose at least one kind of business.');
   if (!draft.selected_package) return fail(400, 'Please choose a package.');
 
+  const contactId = await contactFor(env, {
+    name: draft.name as string,
+    email: draft.email as string,
+    phone: (draft.phone as string | null) ?? null,
+    industry: types.join(', '),
+  });
+
   await db(env, 'booking_inquiries', {
     method: 'POST',
     headers: { Prefer: 'return=minimal' },
     body: JSON.stringify({
+      contact_id: contactId,
       name: draft.name,
       email: draft.email,
       phone: draft.phone,
