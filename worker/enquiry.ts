@@ -88,7 +88,8 @@ function details(body: Fields) {
 
 /* ---------- Supabase ---------- */
 
-async function db(env: EnquiryEnv, path: string, init: RequestInit = {}) {
+/** A call to Supabase's REST API with the secret key (the waitlist uses it too). */
+export async function db(env: Pick<EnquiryEnv, 'SUPABASE_URL' | 'SUPABASE_SECRET_KEY'>, path: string, init: RequestInit = {}) {
   const response = await fetch(`${env.SUPABASE_URL}/rest/v1/${path}`, {
     ...init,
     headers: {

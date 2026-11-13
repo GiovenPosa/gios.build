@@ -1,6 +1,9 @@
 /* Fixed behind the page and revealed as you reach the end (the page keeps
-   var(--footer-h) of room for it). Holds the contact section. */
+   var(--footer-h) of room for it). The logo and link columns up top, a quiet
+   bottom row, and the name huge along the bottom edge. */
 .footer {
+  --footer-ink-soft: rgba(255, 255, 255, 0.55);
+  --footer-hairline: rgba(255, 255, 255, 0.14);
   background-color: var(--bg-dark-color);
   color: var(--text-color-light);
   height: var(--footer-h);
@@ -11,8 +14,10 @@
   z-index: 0;
   display: flex;
   justify-content: center;
-  padding: 0 2rem;
+  padding: 0 var(--page-gutter);
   box-sizing: border-box;
+  /* the wordmark is cut off by the bottom edge */
+  overflow: hidden;
 }
 
 /* the footer's colour reaches up behind the page's rounded bottom corners
@@ -29,114 +34,136 @@
 
 .footer-container {
   position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 1800px;
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  grid-template-rows: 1fr auto;
-  column-gap: 4rem;
-  padding: var(--element-gap) 0 2.5rem;
+  max-width: var(--content-max);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-128);
+  padding-top: var(--space-128);
+  font-family: var(--font-family-Medium);
 }
 
 .footer-animate-item {
   will-change: transform, opacity;
 }
 
-/* ===== left: the invitation ===== */
-.footer-main {
-  align-self: center;
-  font-family: var(--font-family-Medium);
+/* ===== top: the logo, then the link columns at the right ===== */
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-64);
 }
 
-.footer-label {
-  margin: 0 0 var(--element-gap-small);
-  font-size: var(--font-size-medium);
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.footer-title {
-  margin: 0;
-  font-family: var(--font-family-Bold);
-  font-weight: normal;
-  font-size: clamp(3rem, 7vw, 7.5rem);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
-}
-
-.footer-text {
-  margin: 1.5rem 0 2.5rem;
-  max-width: 34rem;
+.footer-logo {
+  font-family: var(--font-Sonder-Regular);
   font-size: var(--font-size-xxlarge);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  line-height: 1;
+  color: inherit;
+  text-decoration: none;
 }
 
-.footer-button {
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 12rem);
+}
+
+.footer-column-title {
+  margin: 0 0 var(--gap-5);
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-regular);
+  color: var(--footer-ink-soft);
+}
+
+.footer-column ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-column a,
+.footer-column button {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 1.2rem 1.6rem;
-  font-family: var(--font-family-Medium);
+  gap: var(--gap-2);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
   font-size: var(--font-size-medium);
-  --radius: 28px;
-  border-radius: var(--corner);
-  background-color: var(--bg-light-color);
-  color: var(--text-color-dark);
+  color: var(--text-color-light);
+  text-decoration: none;
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
 
-.footer-button p {
-  margin: 0;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .footer-button:hover {
-    opacity: var(--opacity-hover);
-  }
-}
-
-/* ===== right: how to reach me ===== */
-.footer-details {
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+/* a small tag beside a link, like Mobbin's "New" */
+.footer-pill {
+  /* 1px more below than above: the lowercase letters sit low in the line,
+     so even padding leaves the word looking dropped */
+  padding: calc(var(--gap-1) - 1px) var(--gap-3) calc(var(--gap-1) + 1px);
+  /* taller than the text, but it mustn't push its row's spacing out */
+  margin-block: calc(var(--gap-1) * -1);
+  --radius: 999px;
+  border-radius: var(--corner);
+  background: rgba(255, 255, 255, 0.12);
   font-family: var(--font-family-Medium);
+  font-size: 14px;
+  line-height: 1.4;
+  /* the link's line box has more room above its letters than below, so a
+     box-centred pill reads high; this drops it onto the letters' middle */
+  translate: 0 calc(0.08em + 1px);
 }
 
-.footer-detail-label {
-  margin: 0 0 0.5rem;
-  font-size: var(--font-size-medium);
-  color: rgba(255, 255, 255, 0.55);
+/* ===== bottom row: copyright, then privacy and socials ===== */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--gap-6);
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-regular);
+  color: var(--footer-ink-soft);
 }
 
-.footer-detail-value {
+.footer-copy {
   margin: 0;
-  font-size: var(--font-size-large);
-  color: var(--text-color-light);
+}
+
+.footer-bottom-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-32);
+}
+
+.footer-small-link {
+  color: inherit;
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  a.footer-detail-value:hover {
-    opacity: var(--opacity-hover);
-  }
+.footer-rule {
+  width: 1px;
+  height: 20px;
+  background: var(--footer-hairline);
 }
 
 .footer-social {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: var(--gap-6);
 }
 
 .footer-social a {
   display: inline-flex;
-  width: 24px;
-  height: 24px;
-  color: inherit;
-  transition: opacity 0.2s ease;
+  width: 20px;
+  height: 20px;
+  color: var(--footer-ink-soft);
+  transition: color 0.2s ease;
 }
 
 .footer-social svg {
@@ -145,136 +172,81 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .footer-logo:hover,
+  .footer-column a:hover,
+  .footer-column button:hover {
+    opacity: var(--opacity-hover);
+  }
+
+  .footer-small-link:hover,
   .footer-social a:hover {
-    opacity: var(--opacity-hover);
+    color: var(--text-color-light);
   }
 }
 
-/* ===== bottom bar ===== */
-.footer-bottom {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.5rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.footer-nav {
-  display: flex;
-  gap: 2rem;
-  font-family: var(--font-family-Medium);
-  font-size: var(--font-size-regular);
-}
-
-.footer-nav a {
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .footer-nav a:hover {
-    opacity: var(--opacity-hover);
-  }
-}
-
-.footer-tag {
+/* ===== the name, huge and faint, cut off by the bottom edge ===== */
+.footer-wordmark {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
   margin: 0;
-  font-family: var(--font-family-Light);
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.6);
+  /* sized so the name spans the screen */
+  font-family: var(--font-Sonder-Regular);
+  font-size: 26vw;
+  line-height: 1;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.07);
+  /* centred, and dropped so the bottom edge cuts through it */
+  translate: -50% 38%;
+  pointer-events: none;
+  user-select: none;
 }
 
-/* ===== TABLET (900px and below): one column ===== */
+/* each letter rises in on its own (footer.tsx) */
+.footer-wordmark-letter {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ===== TABLET (900px and below): the columns go under the logo ===== */
 @media (max-width: 900px) {
-  .footer {
-    padding: 0 1.5rem;
-  }
-
   .footer-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
-    row-gap: 2.5rem;
-    padding: 3rem 0 2rem;
+    gap: var(--space-64);
+    padding-top: var(--space-64);
   }
 
-  .footer-main,
-  .footer-details {
-    align-self: start;
+  .footer-top {
+    flex-direction: column;
+    gap: var(--space-32);
   }
 
-  .footer-label {
-    margin-bottom: 1.25rem;
-  }
-
-  .footer-text {
-    font-size: 26px;
-    margin: 1.25rem 0 1.75rem;
-  }
-
-  .footer-details {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1.75rem 3rem;
-  }
-
-  .footer-bottom {
-    align-self: end;
+  .footer-columns {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: var(--gap-6);
   }
 }
 
 /* ===== MOBILE (600px and below) ===== */
 @media (max-width: 600px) {
-  .footer {
-    padding: 0 1rem;
+  .footer-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-32);
   }
 
-  .footer-container {
-    row-gap: 2rem;
-    padding: 2.25rem 0 1.5rem;
-  }
-
-  .footer-label,
-  .footer-detail-label {
+  .footer-column a,
+  .footer-column button {
     font-size: var(--font-size-regular);
-  }
-
-  .footer-text {
-    font-size: 20px;
-    margin: 1rem 0 1.5rem;
-  }
-
-  .footer-button {
-    padding: 0.85rem 1.4rem;
-    font-size: var(--font-size-regular);
-  }
-
-  .footer-details {
-    gap: 1.25rem 2rem;
-  }
-
-  .footer-detail-value {
-    font-size: var(--font-size-regular);
-  }
-
-  .footer-social a {
-    width: 22px;
-    height: 22px;
   }
 
   .footer-bottom {
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: flex-start;
-    gap: 0.9rem;
-    padding-top: 1.25rem;
-  }
-
-  .footer-nav {
-    gap: 1.5rem;
-  }
-
-  .footer-tag {
+    gap: var(--gap-4);
     font-size: var(--font-size-small);
+  }
+
+  .footer-bottom-end {
+    gap: var(--gap-5);
   }
 }

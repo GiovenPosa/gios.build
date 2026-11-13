@@ -1,0 +1,1068 @@
+/* gios.build/ui (pages/uiPage.tsx): the Gio UI landing page. Same gutters,
+   width and poster type as the other pages; Fragment Mono for anything that
+   is code. The demos inside take their look from themes.css only. */
+.ui-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--page-gutter);
+  box-sizing: border-box;
+  color: var(--text-color-dark);
+  /* one family with real weights (index.css): the themes inherit it and set
+     font-weight, as they would on any site */
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: clip;
+}
+
+.ui-page-container {
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+/* ---- 1. Hero: the pitch on the left, the live form on the right ---- */
+
+.ui-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: var(--space-64);
+  padding: calc(var(--space-128) + var(--space-64)) 0 var(--space-128);
+}
+
+.ui-hero-title {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--hero-headline-size);
+  line-height: var(--hero-headline-leading);
+  letter-spacing: var(--hero-headline-tracking);
+}
+
+.ui-hero-title span {
+  display: block;
+  text-wrap: balance;
+}
+
+.ui-hero-sub {
+  max-width: 36rem;
+  margin: var(--space-16) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-large);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.ui-install {
+  margin-top: var(--space-64);
+}
+
+/* the command, in a pill with its copy button */
+.ui-command {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-4);
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
+  --radius: 24px;
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+.ui-command code {
+  min-width: 0;
+  overflow-x: auto;
+  font-family: var(--font-family-Medium);
+  font-size: 0.95rem;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.ui-command code::-webkit-scrollbar {
+  display: none;
+}
+
+.ui-command-prompt {
+  color: #fe432a;
+}
+
+.ui-copy {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-2);
+  padding: var(--space-8) var(--space-16);
+  border: 0;
+  --radius: 20px;
+  border-radius: var(--corner);
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  color: var(--text-color-dark);
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ui-copy.is-copied {
+  background: #000;
+  color: #fff;
+}
+
+.ui-copy svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.ui-install-note {
+  max-width: 36rem;
+  margin: var(--space-8) 0 0 var(--space-8);
+  font-family: var(--font-family-Regular);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-color-muted);
+}
+
+.ui-install-note code {
+  font-family: var(--font-family-Medium);
+  font-size: 0.8rem;
+  color: var(--text-color-dark);
+  overflow-wrap: anywhere;
+}
+
+.ui-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-3);
+  margin-top: var(--space-32);
+}
+
+/* the home hero sets this font on its section; here the buttons carry it */
+.ui-hero-actions .hero-action-button {
+  font-family: var(--font-family-Medium);
+}
+
+/* the demo, with the red ring behind it */
+.ui-hero-demo {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-5);
+  min-width: 0;
+}
+
+.ui-hero-demo .hero-orb {
+  --orb-unit: clamp(300px, 36vw, 600px);
+}
+
+.ui-hero-demo .ui-demo-card {
+  width: 100%;
+  max-width: 34rem;
+  box-sizing: border-box;
+}
+
+/* ---- Theme pills ---- */
+
+.ui-pills {
+  display: flex;
+  gap: var(--gap-2);
+  padding: var(--space-8);
+  --radius: 26px;
+  border-radius: var(--corner);
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.ui-pill {
+  flex: none;
+  padding: var(--space-8) var(--space-16);
+  border: 0;
+  --radius: 22px;
+  border-radius: var(--corner);
+  background: transparent;
+  color: var(--text-color-dark);
+  font-family: var(--font-family-Medium);
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-pill:not(.is-on):hover {
+    background: var(--btn-color-muted);
+  }
+}
+
+.ui-pill.is-on {
+  background: #000;
+  color: #fff;
+}
+
+/* ---- The themed card a demo form sits on ---- */
+
+.ui-demo-card {
+  padding: var(--space-32);
+  border: var(--ui-border-width) solid var(--ui-surface-line);
+  --radius: var(--ui-radius-card);
+  border-radius: var(--corner);
+  background: var(--ui-surface);
+  box-shadow: var(--ui-card-shadow);
+  text-align: left;
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    border-radius 0.35s ease;
+}
+
+.ui-demo-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-4);
+}
+
+.ui-demo-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-4);
+}
+
+.ui-demo-title {
+  margin: 0;
+  color: var(--ui-text);
+  font-family: var(--ui-font-strong);
+  font-weight: var(--ui-strong-weight, 500);
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.ui-demo-note {
+  margin: var(--space-8) 0 0;
+  color: var(--ui-muted);
+  font-family: var(--ui-font);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.ui-demo-submit {
+  margin-top: var(--space-8);
+}
+
+/* the "sent" state keeps the card's height, so the page doesn't jump */
+.ui-demo-sent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--gap-3);
+  min-height: 27rem;
+}
+
+.ui-demo-sent .ui-demo-note {
+  margin: 0 0 var(--space-8);
+}
+
+/* ---- 2. How it works: the dark band ---- */
+
+.ui-band {
+  margin-top: var(--space-128);
+  padding: var(--space-128) var(--space-64);
+  --radius: 48px;
+  border-radius: var(--corner);
+  background: #0b0b0c;
+  color: #fff;
+  text-align: center;
+}
+
+.ui-band-title,
+.ui-section-title {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
+}
+
+.ui-band-title span,
+.ui-section-title span {
+  display: block;
+  text-wrap: balance;
+}
+
+.ui-band-sub,
+.ui-section-sub {
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  max-width: 40rem;
+  margin: var(--space-16) auto 0;
+  text-wrap: balance;
+}
+
+.ui-band-sub {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.ui-section-sub {
+  color: var(--text-color-secondary);
+}
+
+.ui-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap-6);
+  margin: var(--space-64) 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.ui-step {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* each step's screen, read like a terminal */
+.ui-term {
+  min-height: 15.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  --radius: 26px;
+  border-radius: var(--corner);
+  background: #161618;
+  color: rgba(255, 255, 255, 0.88);
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+}
+
+.ui-term-bar {
+  display: flex;
+  gap: var(--gap-2);
+  padding: var(--space-16) var(--space-16);
+}
+
+.ui-term-bar i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.ui-term-body {
+  padding: var(--space-8) var(--space-16) var(--space-16);
+}
+
+.ui-term-line,
+.ui-term-comment {
+  margin: 0;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ui-term-prompt {
+  color: #fe432a;
+}
+
+.ui-term-comment {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.ui-term-key {
+  color: #fff;
+}
+
+.ui-term-value {
+  color: #fdba74;
+}
+
+.ui-term-value.is-changed {
+  animation: ui-term-flash 0.9s ease-out;
+}
+
+@keyframes ui-term-flash {
+  from {
+    background: rgba(254, 67, 42, 0.35);
+  }
+}
+
+/* the line someone just edited */
+.ui-term-edit {
+  margin: 0 calc(var(--space-16) * -1);
+  padding: 0 var(--space-16);
+  background: rgba(254, 67, 42, 0.1);
+}
+
+.ui-term-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: currentColor;
+  animation: ui-caret 1s steps(1) infinite;
+}
+
+@keyframes ui-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.ui-term-files {
+  margin: var(--space-16) 0 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.75;
+}
+
+.ui-term-files li {
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i) * 140ms);
+}
+
+.ui-term-files li.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.ui-term-ok {
+  color: #4ade80;
+}
+
+/* the theme step's preview, following the values above it */
+.ui-term-preview {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-2);
+  margin-top: var(--space-16);
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+}
+
+.ui-term-chip,
+.ui-term-button {
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--r);
+  transition:
+    background-color 0.6s ease,
+    border-color 0.6s ease,
+    color 0.6s ease,
+    border-radius 0.6s ease;
+}
+
+.ui-term-chip {
+  border: 1px solid var(--accent);
+  /* the accent lifted towards white, so it stays readable on the dark
+     terminal whatever colour is picked */
+  color: color-mix(in oklab, var(--accent), white 35%);
+}
+
+.ui-term-button {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.ui-step-number {
+  margin: var(--space-32) 0 0 var(--space-8);
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.ui-step-title {
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--content-title-size);
+  line-height: var(--content-title-leading);
+  letter-spacing: var(--content-title-tracking);
+  margin: var(--space-8) 0 0 var(--space-8);
+}
+
+.ui-step-text {
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  max-width: 24rem;
+  margin: var(--space-8) 0 0 var(--space-8);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ---- Sections on the light page ---- */
+
+.ui-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: var(--space-256);
+}
+
+/* ---- 3. Component grid ---- */
+
+.ui-grid {
+  display: grid;
+  /* two cards a row (one on phones) */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-32) var(--gap-5);
+  align-self: stretch;
+  margin-top: var(--space-64);
+  text-align: left;
+}
+
+.ui-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ui-card-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* one height for every card, so each row lines up whatever the demo */
+  height: 17rem;
+  padding: var(--space-32);
+  box-sizing: border-box;
+  border: var(--ui-border-width) solid var(--ui-surface-line);
+  --radius: 28px;
+  border-radius: var(--corner);
+  background: var(--ui-surface);
+  transition: background-color 0.35s ease, border-color 0.35s ease;
+}
+
+.ui-card-stage {
+  width: 100%;
+  max-width: 21rem;
+}
+
+/* the cookie banner is a wide pill: give its card's stage the full width */
+.ui-card-stage:has([aria-label='Cookie notice'], .ui-cookie-done) {
+  max-width: none;
+}
+
+.ui-card-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-4);
+  margin: var(--space-16) var(--space-8) 0;
+}
+
+.ui-card-name {
+  margin: 0;
+  font-family: var(--font-family-Medium);
+  font-weight: normal;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.ui-tier {
+  padding: var(--space-8) var(--space-8);
+  --radius: 12px;
+  border-radius: var(--corner);
+  font-family: var(--font-family-Medium);
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.ui-tier.is-free {
+  background: var(--bg-surface-color);
+  color: var(--text-color-muted);
+}
+
+.ui-tier.is-pro {
+  background: rgba(254, 67, 42, 0.1);
+  color: #d92d20;
+}
+
+/* not in the library yet: a dashed outline, quieter than a tier */
+.ui-tier.is-soon {
+  border: 1px dashed rgba(0, 0, 0, 0.22);
+  background: none;
+  color: var(--text-color-muted);
+}
+
+.ui-card-blurb {
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  margin: var(--space-8) var(--space-8) 0;
+}
+
+/* the previews' own small parts, all from the theme's tokens */
+.ui-preview-center {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.ui-preview-center .ui-popover-demo {
+  display: inline-flex;
+  width: auto;
+}
+
+.ui-preview-center .ui-popover-panel {
+  right: auto;
+  min-width: 11rem;
+}
+
+.ui-popover-item {
+  width: 100%;
+  border: 0;
+  background: none;
+}
+
+.ui-cookie-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-2);
+  color: var(--ui-muted);
+  font-family: var(--ui-font);
+  font-size: 0.95rem;
+}
+
+.ui-text-button {
+  padding: var(--space-8);
+  border: 0;
+  background: none;
+  color: var(--ui-text);
+  font-family: var(--ui-font-strong);
+  font-weight: var(--ui-strong-weight, 500);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.ui-reveal-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-4);
+  width: 100%;
+}
+
+.ui-reveal-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+  width: 100%;
+}
+
+.ui-reveal-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-3);
+  padding: var(--space-8) var(--space-8);
+  border: var(--ui-border-width) solid var(--ui-field-border);
+  --radius: var(--ui-radius);
+  border-radius: var(--corner);
+  background: var(--ui-field-bg);
+}
+
+.ui-reveal-row span:first-child {
+  width: 1.35rem;
+  height: 1.35rem;
+  --radius: calc(var(--ui-radius) * 0.6);
+  border-radius: var(--corner);
+  background: var(--ui-accent);
+}
+
+.ui-reveal-row span:last-child {
+  flex: 1;
+  height: 0.55rem;
+  border-radius: 6px;
+  background: var(--ui-line);
+}
+
+.ui-smart-header {
+  position: relative;
+  height: 12rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: var(--ui-border-width) solid var(--ui-line);
+  --radius: var(--ui-radius);
+  border-radius: var(--corner);
+  background: var(--ui-field-bg);
+  scrollbar-width: thin;
+}
+
+.ui-smart-header:focus-visible {
+  outline: 2px solid var(--ui-ring);
+  outline-offset: 2px;
+}
+
+.ui-smart-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2.75rem;
+  padding: 0 var(--space-16);
+  border-bottom: var(--ui-border-width) solid var(--ui-line);
+  background: var(--ui-panel);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ui-smart-bar.is-hidden {
+  transform: translateY(-100%);
+}
+
+.ui-smart-logo {
+  width: 3.5rem;
+  height: 0.6rem;
+  border-radius: 4px;
+  background: var(--ui-text);
+}
+
+.ui-smart-links {
+  display: flex;
+  gap: var(--gap-2);
+}
+
+.ui-smart-links i {
+  width: 1.5rem;
+  height: 0.5rem;
+  border-radius: 4px;
+  background: var(--ui-faint);
+}
+
+.ui-smart-page {
+  padding: var(--space-16) var(--space-16) var(--space-16);
+}
+
+.ui-smart-page p {
+  margin: 0;
+  color: var(--ui-muted);
+  font-family: var(--ui-font-strong);
+  font-weight: var(--ui-strong-weight, 500);
+  font-size: 0.85rem;
+}
+
+.ui-smart-line {
+  display: block;
+  height: 0.55rem;
+  margin: var(--space-16) 0;
+  border-radius: 6px;
+  background: var(--ui-line);
+}
+
+.ui-smart-line:nth-child(odd) {
+  width: 82%;
+}
+
+.ui-smart-line:nth-child(3n) {
+  width: 64%;
+}
+
+/* ---- 4. One form, both themes, side by side ---- */
+
+.ui-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-6);
+  width: 100%;
+  max-width: 60rem;
+  margin-top: var(--space-64);
+}
+
+.ui-pair-item {
+  min-width: 0;
+}
+
+.ui-mini-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-4);
+}
+
+.ui-pair-label {
+  margin: var(--space-16) 0 0;
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+  color: var(--text-color-muted);
+}
+
+/* ---- 5. Where they come from ---- */
+
+.ui-origins {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-5);
+  align-self: stretch;
+  margin-top: var(--space-64);
+  text-align: left;
+}
+
+.ui-origin {
+  padding: var(--space-32);
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+.ui-origin-kind {
+  margin: 0;
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+  color: var(--text-color-muted);
+}
+
+.ui-origin-site {
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--content-title-size);
+  line-height: var(--content-title-leading);
+  letter-spacing: var(--content-title-tracking);
+  margin: var(--space-8) 0 0;
+}
+
+.ui-origin-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-2);
+  margin: var(--space-32) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ui-origin-list li {
+  padding: var(--space-8) var(--space-16);
+  --radius: 16px;
+  border-radius: var(--corner);
+  background: #fff;
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+}
+
+/* ---- 6. Waitlist ---- */
+
+.ui-waitlist {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-64);
+  margin-top: var(--space-256);
+  padding: var(--space-64);
+  --radius: 40px;
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+.ui-waitlist-title {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
+}
+
+.ui-waitlist-sub {
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  max-width: 30rem;
+  margin: var(--space-16) 0 0;
+}
+
+.ui-waitlist-sub a {
+  color: var(--text-color-dark);
+  text-underline-offset: 3px;
+}
+
+/* white fields here, since the card behind them is the gios field grey */
+.ui-waitlist .ui-waitlist-form-slot {
+  --ui-field-bg: #fff;
+  background: none;
+}
+
+.ui-waitlist-form {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-3);
+}
+
+.ui-waitlist-form .ui-waitlist-field {
+  flex: 1;
+}
+
+/* the button lines up with the input, not the label above it */
+.ui-waitlist-form .ui-waitlist-submit {
+  flex: none;
+  margin-top: calc(0.9375rem * 1.2 + 0.5rem);
+}
+
+.ui-waitlist-done {
+  margin: 0;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-large);
+  line-height: 1.4;
+}
+
+.ui-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* ---- Motion off: the steps show their finished state ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-term-caret,
+  .ui-term-value.is-changed {
+    animation: none;
+  }
+
+  .ui-term-files li,
+  .ui-term-chip,
+  .ui-term-button,
+  .ui-demo-card,
+  .ui-smart-bar {
+    transition: none;
+  }
+}
+
+/* ---- Smaller screens ---- */
+
+@media (max-width: 1100px) {
+  .ui-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-64);
+  }
+
+  .ui-steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-64);
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .ui-page {
+    padding: 0 var(--page-gutter);
+  }
+
+  .ui-band {
+    padding: var(--space-64) var(--space-32);
+    --radius: 36px;
+    border-radius: var(--corner);
+  }
+
+  .ui-pair {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 30rem;
+  }
+
+  .ui-origins,
+  .ui-waitlist {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ui-waitlist {
+    gap: var(--space-32);
+    padding: var(--space-32);
+  }
+}
+
+@media (max-width: 600px) {
+  .ui-page {
+    padding: 0 var(--page-gutter);
+  }
+
+  .ui-hero {
+    padding-top: var(--space-128);
+    padding-bottom: var(--space-64);
+  }
+
+  .ui-hero-sub,
+  .ui-band-sub,
+  .ui-section-sub {
+  }
+
+  .ui-command {
+    display: flex;
+  }
+
+  /* the pills scroll sideways under the full-width card */
+  .ui-pills {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .ui-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ui-demo-card {
+    padding: var(--space-16);
+  }
+
+  .ui-demo-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ui-band {
+    padding: var(--space-64) var(--space-16);
+    --radius: 28px;
+    border-radius: var(--corner);
+  }
+
+  .ui-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ui-card-preview {
+    height: 16rem;
+    padding: var(--space-16);
+  }
+
+  .ui-origin {
+    padding: var(--space-32);
+    --radius: var(--radius-card);
+    border-radius: var(--corner);
+  }
+
+  .ui-waitlist {
+    padding: var(--space-32);
+    --radius: 28px;
+    border-radius: var(--corner);
+  }
+
+  .ui-waitlist-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ui-waitlist-form .ui-waitlist-submit {
+    margin-top: 0;
+  }
+}

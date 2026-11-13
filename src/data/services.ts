@@ -1,4 +1,6 @@
-// The home page services stack (src/components/servicesType.tsx).
+// The home page services (src/components/servicesType.tsx). The cards only
+// show each title; the `items` aren't on the page right now, but KEEP THEM:
+// they're the points for each service, wanted for something planned later.
 export const servicesData = [
   {
     title: 'New Websites',

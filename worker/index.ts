@@ -5,9 +5,11 @@
 // /stats path rather than Umami's domain, so ad blockers that block
 // analytics domains leave them alone (see src/lib/analytics.ts).
 //
-// /api/enquiry is the enquiry form's endpoint (worker/enquiry.ts).
+// /api/enquiry is the enquiry form's endpoint (worker/enquiry.ts), and
+// /api/waitlist the Gio UI waitlist on /ui (worker/waitlist.ts).
 
 import { enquiry, type EnquiryEnv } from './enquiry';
+import { waitlist } from './waitlist';
 
 interface Env extends EnquiryEnv {
   ASSETS: { fetch: (request: Request) => Promise<Response> };
@@ -54,7 +56,11 @@ export default {
     if (pathname === '/stats/s.js' && request.method === 'GET') return tracker(request);
     if (pathname === '/stats/api/send' && request.method === 'POST') return send(request);
     if (pathname.startsWith('/api/')) {
-      return (await enquiry(request, env, pathname)) ?? new Response('Not found', { status: 404 });
+      return (
+        (await waitlist(request, env, pathname)) ??
+        (await enquiry(request, env, pathname)) ??
+        new Response('Not found', { status: 404 })
+      );
     }
     return env.ASSETS.fetch(request);
   },

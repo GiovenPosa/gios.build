@@ -3,8 +3,12 @@
   --font-family-Medium: "JakartaMedium", sans-serif;
   --font-family-Regular: "JakartaRegular", sans-serif;
   --font-family-Light: "JakartaLight", sans-serif;
+  /* Body text is Jakarta, everywhere: the four cuts above. Headlines are
+     Inter (below) and the logo Sonder; nothing else. */
   --font-Sonder-Regular: "SonderRegular", sans-serif;
-  --font-family-Mono: "FragmentMono", ui-monospace, monospace;
+  /* every headline: Inter at Mobbin's 652, falling back to Jakarta Bold */
+  --font-family-Headline: "Inter", "JakartaBold", sans-serif;
+  --headline-weight: 652;
 
   --font-size-small: 12px;
   --font-size-regular: 16px;
@@ -16,21 +20,125 @@
 
   --bg-light-color: #fff;
   --bg-dark-color: #000;
+  /* the light grey of a card that sits on the white page (Hosting & Care,
+     the services panels, the /ui cards) */
+  --bg-surface-color: #f4f4f5;
   --btn-color-muted: rgba(0, 0, 0, 0.090);
   --opacity-hover: 0.7;
+
+  /* every pill button (the hero's, the sections', the footer's, the
+     enquiry form's, the packages'): one size, set here. The header's
+     compact button and the package chooser's pills keep their own */
+  --btn-padding-y: var(--space-16);
+  --btn-padding-x: var(--gap-6);
+  --btn-font-size: var(--font-size-regular);
+  --btn-radius: 26px;
+  /* the hairline edge of a white card on the white page */
+  --border-color-hairline: rgba(64, 64, 64, 0.08);
+  /* the brand red: dots, live bars, focus rings */
+  --accent-color: #fe432a;
 
   --text-color-dark: #000;
   --text-color-muted: rgba(0, 0, 0, 0.6);
   --text-color-light: #fff;
 
-  --section-gap-small: 6rem;
-  --section-gap-medium: 10rem;
-  --section-gap-large: 15rem;
-  --section-gap-xlarge: 20rem;
-  --element-gap-small: 3rem;
-  --element-gap: 4rem;
-  --element-gap-h: 10rem;
-  --footer-h: 900px;
+  /* the widest the site's content gets (header, pages, footer), centred */
+  --content-max: 1140px;
+
+  /* Headline type, after Mobbin's scale (mobbin.com/mcp): sizes step at
+     breakpoints rather than scaling smoothly (the steps are in the media
+     queries just below this rule). Weight stays Bold: there's no SemiBold
+     file for Mobbin's 652. */
+
+  /* every page's hero headline: 40px, 56px from 769px wide, 80px from 1200px */
+  --hero-headline-size: 40px;
+  --hero-headline-leading: 1;
+  --hero-headline-tracking: -0.6px;
+
+  /* every section headline: 32px on 36px, then 44px on 48px from 768px */
+  --section-headline-size: 32px;
+  --section-headline-leading: 36px;
+  --section-headline-tracking: 0;
+
+  /* titles, after Mobbin's title-2 and title-3, plus title-4 and title-5
+     a step and two under: list and card titles. Same headline face and weight; sizes are
+     fixed */
+  --title-2-size: 32px;
+  --title-2-leading: 36px;
+  --title-2-tracking: 0;
+  --title-3-size: 24px;
+  --title-3-leading: 30px;
+  --title-3-tracking: 0;
+  --title-4-size: 22px;
+  --title-4-leading: 28px;
+  --title-4-tracking: 0;
+  --title-5-size: 20px;
+  --title-5-leading: 26px;
+  --title-5-tracking: 0;
+  /* a step lighter than the headline weight, to suit its smaller size */
+  --title-5-weight: 552;
+
+  /* a card's small title and its blurb, after Mobbin's feature-bold and
+     compact styles */
+  --feature-title-size: 20px;
+  --feature-title-leading: 26px;
+  --feature-title-tracking: 0;
+  --feature-title-weight: 600;
+  --compact-size: 14px;
+  --compact-leading: 20px;
+  --compact-tracking: 0.2px;
+  --text-color-secondary: #707070;
+
+  /* running text: descriptions, section sentences, card blurbs, after
+     Mobbin's body style (16/22px, a touch of tracking), the same at every
+     screen size. Regular weight: Mobbin's 456 isn't in the site's fonts. */
+  --body-size: 16px;
+  --body-leading: 22px;
+  --body-tracking: 0.2px;
+
+  /* a title inside a section (cards, lists, steps): title-3 on small
+     screens, title-2 from 768px wide (the step is in the media queries) */
+  --content-title-size: var(--title-3-size);
+  --content-title-leading: var(--title-3-leading);
+  --content-title-tracking: var(--title-3-tracking);
+
+  /* the other display headlines (card titles, quotes, the closing call to
+     action): Mobbin's line height ratio and their display tracking, in em so
+     it scales with each one's own size */
+  --headline-leading: 1.125;
+  --headline-tracking: -0.0075em;
+
+  /* the corner of a big card (story, results, Hosting & Care...): 32px,
+     24px on phones (the step is in the media queries) */
+  --radius-card: 32px;
+
+  /* Spacing: padding, margins and the bigger gaps, doubling from 8px */
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-32: 32px;
+  --space-64: 64px;
+  --space-128: 128px;
+  --space-256: 256px;
+  /* the space between the screen's edge and the content, on every page
+     (and the header and footer); smaller on phones, below */
+  --page-gutter: var(--space-32);
+
+  /* the space between one section and the next: from the last thing you see
+     in one to the first thing in the next (less on phones, below) */
+  --section-space: 208px;
+
+  /* Gaps between things inside a component: 4px steps up to 24px (above
+     that, a gap uses the spacing scale) */
+  --gap-1: 4px;
+  --gap-2: 8px;
+  --gap-3: 12px;
+  --gap-4: 16px;
+  --gap-5: 20px;
+  --gap-6: 24px;
+
+  /* never taller than the window: the footer is pinned to the bottom, so any
+     extra height would push its top (logo and links) up under the header */
+  --footer-h: min(900px, 100svh);
 
   color-scheme: light dark;
   background-color: var(--bg-light-color);
@@ -40,28 +148,45 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Apple-style continuous corners on every rounded box: the curve eases out
-   of the straight edge instead of starting abruptly.
-
-   A rounded rule sets its radius as --radius and draws it with
-   border-radius: var(--corner). Pills set --radius to about half their
-   height, not 999px, so the fallback below has a real size to scale.
-
-   Chrome and Edge draw a true squircle (corner-shape). Safari and Firefox
-   can't yet, so they get a plain round corner at 55% of the radius, which
-   takes the same bite out of the corner and reads almost the same.
-
-   Circles opt out with corner-shape: round, or they'd turn into rounded
-   squares. */
-*, *::before, *::after {
-  corner-shape: squircle;
-  --corner: var(--radius);
+/* the headline sizes' steps (see :root) */
+@media (max-width: 600px) {
+  :root {
+    --radius-card: 24px;
+    /* buttons a little narrower on phones */
+    --btn-padding-x: var(--space-16);
+    /* the same as the gap between cards, so the edge and the gaps match */
+    --page-gutter: var(--gap-5);
+  }
 }
 
-@supports not (corner-shape: squircle) {
-  *, *::before, *::after {
-    --corner: calc(var(--radius) * 0.55);
+@media (min-width: 768px) {
+  :root {
+    --content-title-size: var(--title-2-size);
+    --content-title-leading: var(--title-2-leading);
+    --content-title-tracking: var(--title-2-tracking);
+    --section-headline-size: 44px;
+    --section-headline-leading: 48px;
+    --section-headline-tracking: -0.4px;
   }
+}
+
+@media (min-width: 769px) {
+  :root {
+    --hero-headline-size: 56px;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --hero-headline-size: 80px;
+  }
+}
+
+/* Rounded boxes set their radius as --radius and draw it with
+   border-radius: var(--corner), so every corner on the site can be changed
+   in one place. For now a corner is simply its radius, drawn round. */
+*, *::before, *::after {
+  --corner: var(--radius);
 }
 
 /* Pill button labels: drop the font's uneven built-in line spacing so the
@@ -176,15 +301,11 @@
   }
 }
 
+/* phones: taller, as the footer's link columns stack two across */
 @media (max-width: 600px) {
   :root {
-    --footer-h: 600px;
-  }
-}
-
-@media (max-width: 400px) {
-  :root {
-    --footer-h: 550px;
+    --footer-h: 720px;
+    --section-space: var(--space-128);
   }
 }
 
@@ -220,10 +341,48 @@
   font-display: swap;
 }
 
+/* The same four files as one family with real weights, for code that picks
+   a weight rather than a family: the Gio UI themes inherit the page's font
+   and set font-weight (see the /ui page). Same URLs, so nothing extra loads. */
 @font-face {
-  font-family: "FragmentMono";
-  src: url("/src/assets/fonts/FragmentMono-Regular.woff2") format("woff2");
-  font-weight: normal;
+  font-family: "Plus Jakarta Sans";
+  src: url("/src/assets/fonts/PlusJakartaSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/src/assets/fonts/PlusJakartaSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/src/assets/fonts/PlusJakartaSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/src/assets/fonts/PlusJakartaSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Inter, the headline face (Rasmus Andersson, SIL Open Font License, see
+   Inter-OFL.txt). One variable file with weight and optical size axes: at
+   headline sizes the browser picks its tighter display cut by itself. */
+@font-face {
+  font-family: "Inter";
+  src: url("/src/assets/fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
@@ -314,13 +473,13 @@ html {
   html .qb-choice { --own: background-color 0.3s ease, color 0.3s ease, transform 0.5s cubic-bezier(0.12, 1.15, 0.3, 1); }
   html .faq-pill { --own: transform 0.6s cubic-bezier(0.12, 1.15, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease; }
   html .faq-composer { --own: border-color 0.2s ease, box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
-  html .work-viewer-close { --own: background-color 0.2s ease, transform 0.5s cubic-bezier(0.12, 1.15, 0.3, 1); }
+  html .work-panel-button { --own: opacity 0.2s ease; }
   html .not-found-button { --own: opacity 0.2s ease, transform 0.2s ease; }
   html :is(.work-surface, .tool-surface) { --own: transform 0.7s cubic-bezier(0.12, 1.15, 0.3, 1), box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
 
   html :is(.hero-action-button, .booking-submit, .success-button, .footer-button, .block-action,
     .mobile-menu-button, .mobile-menu-close, .booking-close, .footer-nav a,
-    .top-header-button, .pk-choose, .qb-choice, .faq-pill, .faq-composer, .work-viewer-close,
+    .top-header-button, .pk-choose, .qb-choice, .faq-pill, .faq-composer, .work-panel-button,
     .not-found-button, .work-surface, .tool-surface) {
     transition: var(--own), scale var(--press, 0.5s) cubic-bezier(0.12, 1.15, 0.3, 1);
   }
@@ -328,7 +487,7 @@ html {
   /* the press: quick down, soft spring back */
   html :is(.hero-action-button, .booking-submit, .success-button, .footer-button, .block-action,
     .mobile-menu-button, .mobile-menu-close, .booking-close, .footer-nav a,
-    .top-header-button, .pk-choose, .qb-choice, .faq-pill, .work-viewer-close, .not-found-button):active {
+    .top-header-button, .pk-choose, .qb-choice, .faq-pill, .work-panel-button, .not-found-button):active {
     scale: 0.95;
     --press: 0.08s;
   }
@@ -344,7 +503,7 @@ html {
    (:where), so each component's own styles still decide how it looks; they
    only strip the browser's default button and link styling. */
 :where(button.hero-action-button, button.footer-button, button.mobile-menu-button,
-  button.mobile-menu-close, button.pk-choose, button.not-found-button) {
+  button.mobile-menu-close, button.pk-choose, button.not-found-button, button.top-header-button) {
   font: inherit;
   color: inherit;
   background: none;
@@ -377,4 +536,16 @@ video::-webkit-media-controls-overlay-play-button,
 video::-webkit-media-controls-panel {
   display: none !important;
   -webkit-appearance: none;
+}
+
+/* The page's own font, so nothing ever falls back to the browser's serif:
+   Jakarta for all body text. Form controls don't inherit fonts by default,
+   so they're told to. Weightless (:where), so every component's own font
+   still wins. */
+:where(body) {
+  font-family: var(--font-family-Regular);
+}
+
+:where(button, input, select, textarea) {
+  font-family: inherit;
 }

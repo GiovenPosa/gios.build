@@ -7,7 +7,7 @@
 .qb-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 5rem;
+  gap: var(--space-64);
   align-items: start;
 }
 
@@ -15,11 +15,11 @@
 
 .qb-title {
   margin: 0;
-  font-family: var(--font-family-Bold);
-  font-weight: normal;
-  font-size: clamp(2.6rem, 5.2vw, 5.5rem);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
 }
 
 .qb-title span {
@@ -27,25 +27,26 @@
 }
 
 .qb-sub {
-  margin: 1.5rem 0 3rem;
-  max-width: 30rem;
   font-family: var(--font-family-Regular);
-  font-size: var(--font-size-large);
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  margin: var(--space-16) 0 var(--space-64);
+  max-width: 30rem;
 }
 
 .qb-group {
-  margin: 0 0 2rem;
+  margin: 0 0 var(--space-32);
   padding: 0;
   border: 0;
   min-width: 0;
 }
 
 .qb-group legend {
-  margin-bottom: 0.85rem;
+  margin-bottom: var(--space-16);
   padding: 0;
-  font-family: var(--font-family-Mono);
+  font-family: var(--font-family-Medium);
   font-size: 13px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -55,15 +56,15 @@
 .qb-choices {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: var(--gap-2);
 }
 
 /* a pill with a little dot that fills when it's chosen */
 .qb-choice {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.85rem 1.2rem;
+  gap: var(--gap-2);
+  padding: var(--space-16) var(--space-16);
   border: 0;
   --radius: 24px;
   border-radius: var(--corner);
@@ -97,7 +98,6 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  corner-shape: round;
   box-shadow: inset 0 0 0 1.5px currentColor;
   opacity: 0.45;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
@@ -123,9 +123,9 @@
 
 .qb-receipt {
   position: relative;
-  padding: 2rem 2rem 2.6rem;
+  padding: var(--space-32) var(--space-32) var(--space-32);
   background: #fff;
-  font-family: var(--font-family-Mono);
+  font-family: var(--font-family-Medium);
   font-size: 14px;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -146,8 +146,8 @@
 .qb-receipt-head {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 1.25rem;
+  gap: var(--gap-4);
+  padding-bottom: var(--space-16);
   border-bottom: 1.5px dashed rgba(0, 0, 0, 0.25);
   font-size: 12px;
   color: var(--text-color-muted);
@@ -161,7 +161,7 @@
 .qb-lines {
   list-style: none;
   margin: 0;
-  padding: 1.25rem 0;
+  padding: var(--space-16) 0;
   border-bottom: 1.5px dashed rgba(0, 0, 0, 0.25);
 }
 
@@ -169,13 +169,13 @@
 .qb-line {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
+  gap: var(--gap-2);
   overflow: hidden;
   animation: qb-print 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .qb-line + .qb-line {
-  margin-top: 0.55rem;
+  margin-top: var(--space-8);
 }
 
 @keyframes qb-print {
@@ -205,8 +205,8 @@
 .qb-package {
   display: grid;
   grid-template-columns: 1fr auto;
-  row-gap: 0.25rem;
-  padding: 1.25rem 0;
+  row-gap: var(--gap-1);
+  padding: var(--space-16) 0;
   border-bottom: 1.5px dashed rgba(0, 0, 0, 0.25);
 }
 
@@ -217,9 +217,11 @@
 }
 
 .qb-package-name {
-  font-family: var(--font-family-Bold);
-  font-size: 1.6rem;
-  letter-spacing: -0.03em;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-3-size);
+  line-height: var(--title-3-leading);
+  letter-spacing: var(--title-3-tracking);
   text-transform: none;
 }
 
@@ -234,35 +236,35 @@
 .qb-also {
   grid-column: 1 / -1;
   list-style: none;
-  margin: 1rem 0 0;
+  margin: var(--space-16) 0 0;
   padding: 0;
   font-size: 12px;
   color: var(--text-color-muted);
 }
 
 .qb-also-label {
-  margin-bottom: 0.45rem;
+  margin-bottom: var(--space-8);
   color: var(--text-color-dark);
 }
 
 .qb-also-item {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
+  gap: var(--gap-2);
   overflow: hidden;
   animation: qb-print 0.45s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--k) * 70ms) both;
 }
 
 .qb-also-item + .qb-also-item {
-  margin-top: 0.4rem;
+  margin-top: var(--space-8);
 }
 
 .qb-total {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
-  padding-top: 1.5rem;
+  gap: var(--gap-4);
+  padding-top: var(--space-32);
 }
 
 .qb-total-label {
@@ -280,7 +282,7 @@
 }
 
 .qb-range {
-  margin: 0.6rem 0 0;
+  margin: var(--space-8) 0 0;
   text-align: right;
   font-size: 12px;
   color: var(--text-color-muted);
@@ -289,7 +291,7 @@
 .qb-book {
   width: 100%;
   justify-content: center;
-  margin-top: 1.75rem;
+  margin-top: var(--space-32);
   box-sizing: border-box;
   border: 0;
   font-family: var(--font-family-Medium);
@@ -298,7 +300,7 @@
 }
 
 .qb-fine {
-  margin: 1rem 0 0;
+  margin: var(--space-16) 0 0;
   text-align: center;
   font-size: 11px;
   line-height: 1.5;
@@ -318,7 +320,7 @@
 
 @media (max-width: 1100px) {
   .qb-layout {
-    gap: 3rem;
+    gap: var(--space-64);
   }
 }
 
@@ -335,15 +337,14 @@
 
 @media (max-width: 600px) {
   .qb-sub {
-    font-size: var(--font-size-medium);
   }
 
   .qb-receipt {
-    padding: 1.5rem 1.25rem 2.2rem;
+    padding: var(--space-32) var(--space-16) var(--space-32);
     font-size: 12px;
   }
 
   .qb-choice {
-    padding: 0.75rem 1rem;
+    padding: var(--space-16) var(--space-16);
   }
 }

@@ -1,125 +1,150 @@
-/* "Your own dashboard": the words on the left, a drawing of the dashboard
-   on the right; stacked on narrow screens. */
+/* "Your own dashboard": a dark band after the tracked points, set like the UI
+   page's "Pull. Theme. Own it." band: the headline centred on top, then three
+   small windows, each with its number, title and a line under it. */
 .dash {
   align-self: stretch;
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  /* the headline starts level with the window, like the ladder's title */
-  align-items: start;
-  gap: var(--element-gap);
-  margin-top: var(--section-gap-xlarge);
-  text-align: left;
+  margin-top: var(--section-space);
+  padding: var(--space-128) var(--space-64);
+  --radius: 48px;
+  border-radius: var(--corner);
+  background: #0b0b0c;
+  color: #fff;
+  text-align: center;
 }
 
 .dash-title {
   margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
 }
 
-.dash-text {
-  margin: 1.5rem 0 0;
-  max-width: 30rem;
+.dash-title span {
+  display: block;
+  text-wrap: balance;
+}
+
+.dash-sub {
   font-family: var(--font-family-Regular);
-  font-size: var(--font-size-large);
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-  color: var(--text-color-muted);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  max-width: 40rem;
+  margin: var(--space-16) auto 0;
+  text-wrap: balance;
+  color: rgba(255, 255, 255, 0.65);
 }
 
-/* the three points, each led by the site's red dot */
-.dash-points {
-  list-style: none;
-  margin: 2rem 0 0;
+.dash-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap-6);
+  margin: var(--space-64) 0 0;
   padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.dash-step {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  min-width: 0;
 }
 
-.dash-points li {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  font-family: var(--font-family-Medium);
-  font-size: var(--font-size-medium);
-  color: var(--text-color-dark);
-}
-
-.dash-points li::before {
-  content: '';
-  flex: none;
-  width: 0.45em;
-  height: 0.45em;
-  border-radius: 50%;
-  corner-shape: round;
-  background: #fe432a;
-}
-
-/* ---- the drawing: a dark browser window ---- */
-
-.dash-window {
-  --radius: 22px;
-  border-radius: var(--corner);
-  background: #0d0d0d;
-  color: #fff;
+/* ---- the window ---- */
+.dash-term {
+  min-height: 15.5rem;
   overflow: hidden;
-  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  --radius: 26px;
+  border-radius: var(--corner);
+  background: #161618;
+  color: rgba(255, 255, 255, 0.88);
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
 }
 
-.dash-chrome {
+.dash-term-bar {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.9rem 1.2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: var(--gap-2);
+  padding: var(--space-16) var(--space-16);
 }
 
-.dash-lights {
-  display: flex;
-  gap: 6px;
-}
-
-.dash-lights i {
+.dash-term-bar i {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  corner-shape: round;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.16);
 }
 
-.dash-address {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding: 0.35rem 0.8rem;
-  --radius: 13px;
-  border-radius: var(--corner);
-  background: rgba(255, 255, 255, 0.07);
-  font-family: var(--font-family-Mono);
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.55);
+.dash-term-body {
+  padding: var(--space-8) var(--space-16) var(--space-16);
 }
 
-.dash-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-family: var(--font-family-Mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
+.dash-term-line,
+.dash-term-comment {
+  margin: 0;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.dash-term-comment {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dash-term-key {
+  color: #fdba74;
+}
+
+.dash-term-ok {
+  color: #4ade80;
+}
+
+/* the closing note, picked out like an edited line */
+.dash-term-note {
+  margin: var(--space-16) calc(var(--space-16) * -1) 0;
+  padding: 0 var(--space-16);
+  background: rgba(254, 67, 42, 0.1);
+}
+
+/* lines that arrive one after another once the window is in view */
+.dash-term-list,
+.dash-term-bars {
+  margin: var(--space-16) 0 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.75;
+}
+
+.dash-term-list li {
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(0.3s + var(--i) * 0.45s);
+}
+
+.dash-step.is-playing .dash-term-list li {
+  opacity: 1;
+  transform: none;
 }
 
 /* the live dot breathes, like a visitor could arrive any second */
+.dash-live {
+  display: inline-flex;
+  margin-right: var(--gap-1);
+}
+
 .dash-live i {
   position: relative;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  corner-shape: round;
-  background: #fe432a;
+  background: var(--accent-color);
 }
 
 .dash-live i::after {
@@ -127,8 +152,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  corner-shape: round;
-  background: #fe432a;
+  background: var(--accent-color);
   animation: dash-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
@@ -137,84 +161,18 @@
   to { transform: scale(3); opacity: 0; }
 }
 
-.dash-body {
-  padding: 1.4rem 1.4rem 1.6rem;
-}
-
-.dash-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-}
-
-.dash-stat {
-  padding: 0.9rem 1rem;
-  --radius: 14px;
-  border-radius: var(--corner);
-  background: rgba(255, 255, 255, 0.06);
+/* enquiries by page: a label, then a bar that grows to its share */
+.dash-term-bars {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: var(--gap-2);
 }
 
-.dash-stat-label {
-  font-family: var(--font-family-Mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-/* a figure's shape, not a figure: a bar that fills in */
-.dash-stat-value {
-  display: block;
-  height: 14px;
-  width: calc(45% + var(--k) * 12%);
-  --radius: 99px;
-  border-radius: var(--corner);
-  background: rgba(255, 255, 255, 0.85);
-  transform-origin: left;
-  transform: scaleX(0);
-}
-
-.dash-chart {
-  display: block;
-  width: 100%;
-  height: 9rem;
-  margin: 1.4rem 0 1.2rem;
-  overflow: visible;
-}
-
-.dash-line {
-  fill: none;
-  stroke: #6bff91;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-}
-
-.dash-area {
-  fill: #6bff91;
-  opacity: 0;
-}
-
-.dash-sources {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.dash-source {
+.dash-term-bars li {
   display: grid;
-  grid-template-columns: 6.5rem 1fr;
+  grid-template-columns: 5.5rem 1fr;
   align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-family-Medium);
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
+  gap: var(--gap-3);
 }
 
 .dash-bar {
@@ -230,103 +188,67 @@
   height: 100%;
   width: calc(var(--share) * 100%);
   border-radius: inherit;
-  background: rgba(255, 255, 255, 0.85);
+  background: #4ade80;
   transform-origin: left;
   transform: scaleX(0);
+  transition: transform 0.9s cubic-bezier(0.12, 1.1, 0.3, 1);
+  transition-delay: calc(0.3s + var(--i) * 0.15s);
 }
 
-/* ---- when it comes into view: figures fill, the line draws, bars grow ---- */
-
-.dash-window.reveal-in .dash-stat-value {
-  animation: dash-grow 0.8s cubic-bezier(0.12, 1.1, 0.3, 1) calc(0.3s + var(--k) * 0.12s) both;
+.dash-step.is-playing .dash-bar i {
+  transform: scaleX(1);
 }
 
-.dash-window.reveal-in .dash-line {
-  animation: dash-draw 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.5s both;
+/* ---- under each window ---- */
+.dash-step-number {
+  margin: var(--space-32) 0 0 var(--space-8);
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
 }
 
-.dash-window.reveal-in .dash-area {
-  animation: dash-shade 0.8s ease 1.5s both;
+.dash-step-title {
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--content-title-size);
+  line-height: var(--content-title-leading);
+  letter-spacing: var(--content-title-tracking);
+  margin: var(--space-8) 0 0 var(--space-8);
 }
 
-.dash-window.reveal-in .dash-bar i {
-  animation: dash-grow 0.9s cubic-bezier(0.12, 1.1, 0.3, 1) calc(1.2s + var(--k) * 0.12s) both;
+.dash-step-text {
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  max-width: 24rem;
+  margin: var(--space-8) 0 0 var(--space-8);
+  color: rgba(255, 255, 255, 0.65);
 }
 
-@keyframes dash-grow {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+/* ===== the windows stack ===== */
+@media (max-width: 1100px) {
+  .dash-steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-64);
+    max-width: 34rem;
+    margin-inline: auto;
+  }
 }
 
-@keyframes dash-draw {
-  from { stroke-dashoffset: 1; }
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes dash-shade {
-  from { opacity: 0; }
-  to { opacity: 0.12; }
-}
-
-/* ===== TABLET ===== */
 @media (max-width: 900px) {
   .dash {
-    grid-template-columns: 1fr;
-    gap: var(--element-gap-small);
+    padding: var(--space-64) var(--space-32);
+    --radius: 36px;
+    border-radius: var(--corner);
   }
 }
 
-/* ===== MOBILE ===== */
 @media (max-width: 600px) {
-  .dash-text {
-    font-size: var(--font-size-medium);
-  }
-
-  .dash-points li {
-    font-size: var(--font-size-regular);
-  }
-
-  .dash-window {
-    --radius: 18px;
+  .dash {
+    padding: var(--space-64) var(--space-16);
+    --radius: 28px;
     border-radius: var(--corner);
-  }
-
-  .dash-chrome {
-    gap: 0.6rem;
-    padding: 0.75rem 0.9rem;
-  }
-
-  .dash-address {
-    font-size: 10.5px;
-  }
-
-  .dash-range {
-    display: none;
-  }
-
-  .dash-body {
-    padding: 1rem;
-  }
-
-  .dash-stats {
-    gap: 0.5rem;
-  }
-
-  .dash-stat {
-    padding: 0.7rem;
-  }
-
-  .dash-stat-label {
-    font-size: 9.5px;
-  }
-
-  .dash-chart {
-    height: 6.5rem;
-  }
-
-  .dash-source {
-    grid-template-columns: 5rem 1fr;
-    font-size: 12.5px;
   }
 }
 
@@ -335,16 +257,8 @@
     animation: none;
   }
 
-  .dash-window.reveal-in .dash-stat-value,
-  .dash-window.reveal-in .dash-line,
-  .dash-window.reveal-in .dash-area,
-  .dash-window.reveal-in .dash-bar i {
-    animation: none;
-    transform: none;
-    stroke-dashoffset: 0;
-  }
-
-  .dash-window.reveal-in .dash-area {
-    opacity: 0.12;
+  .dash-term-list li,
+  .dash-bar i {
+    transition: none;
   }
 }

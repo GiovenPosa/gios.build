@@ -1,38 +1,49 @@
 import './component-styles/topHeader.css';
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { LuPackage2 } from "react-icons/lu";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
+import { GoArrowRight } from "react-icons/go";
+import { SiInstagram } from 'react-icons/si';
+import { track } from '../lib/analytics';
+import { useBooking } from '../context/bookingContext';
 
 export function TopHeader() {
   const { pathname } = useLocation();
   // the red dot that marks a link on hover, and stays on the current page
   const navClass = (path: string) => `nav-link${pathname === path ? ' is-current' : ''}`;
+  // on one of the nav's own pages, the other links step back
+  const navPages = ['/work', '/packages'];
+  const headerNavClass = (path: string) =>
+    `${navClass(path)}${navPages.includes(pathname) && pathname !== path ? ' is-muted' : ''}`;
   const dot = <i className='nav-dot' aria-hidden />;
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  // once the page moves, the header gets its white bar and hairline
+  const [isScrolled, setIsScrolled] = useState(false);
+  // the free mockup button at the far right: on the home page it slides in
+  // once the hero has scrolled away; on every other page it's always there
+  const [isPastHero, setIsPastHero] = useState(pathname !== '/');
+  const { openBooking } = useBooking();
   const [isDarkBackground, setIsDarkBackground] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY < lastScrollY || currentScrollY < 50) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-      
-      setLastScrollY(currentScrollY);
+      setIsScrolled(window.scrollY > 0);
+      // on the home page, once the hero's foot has gone up behind the
+      // header; every other page shows the button all along
+      const hero = pathname === '/' ? document.querySelector('.home-page-hero-section') : null;
+      const headerBottom = headerRef.current?.getBoundingClientRect().bottom ?? 0;
+      setIsPastHero(hero ? hero.getBoundingClientRect().bottom < headerBottom : pathname !== '/');
     };
-
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     const checkBackgroundColor = () => {
@@ -50,7 +61,8 @@ export function TopHeader() {
         .map((el) => el?.getBoundingClientRect())
         .filter((rect): rect is DOMRect => !!rect && rect.width > 0);
 
-      const darkRects = [...document.querySelectorAll('.work-card.is-dark .work-surface')].map((el) =>
+      // dark work cards, and any dark band that marks itself (the /ui page's)
+      const darkRects = [...document.querySelectorAll('.work-card.is-dark .work-surface, [data-header-dark]')].map((el) =>
         el.getBoundingClientRect()
       );
       const isDarkBehind = (probe: DOMRect) => {
@@ -113,22 +125,49 @@ export function TopHeader() {
     <>
       <div 
         ref={headerRef}
-        className={`top-header ${isVisible ? 'visible' : 'hidden'} ${isDarkBackground ? 'dark-bg' : ''}`}
+        className={`top-header${isScrolled ? ' is-scrolled' : ''}${isDarkBackground && !isScrolled ? ' dark-bg' : ''}`}
       >
         <div className='top-header-container'>
-          <Link to='/' className='top-header-logo' onClick={closeMenu} aria-label='gios.build, home'>
-            <p>gios.build</p>
-          </Link>
+          {/* the logo, with the nav beside it */}
+          <div className='top-header-start'>
+            <Link to='/' className='top-header-logo' onClick={closeMenu} aria-label='gios.build, home'>
+              <p>gios.build</p>
+            </Link>
+            <nav className='top-header-links' aria-label='Main'>
+              <Link to='/work' className={headerNavClass('/work')} aria-current={pathname === '/work' ? 'page' : undefined}>
+                {dot}
+                <p>Work</p>
+              </Link>
+              <Link to='/packages' className={headerNavClass('/packages')} aria-current={pathname === '/packages' ? 'page' : undefined}>
+                {dot}
+                <p>Packages</p>
+              </Link>
+            </nav>
+          </div>
 
-          <div className='top-header-links'>
-            <Link to='/work' className={navClass('/work')} aria-current={pathname === '/work' ? 'page' : undefined}>
-              {dot}
-              <p>WORK</p>
-            </Link>
-            <Link to='/packages' className='top-header-button' aria-current={pathname === '/packages' ? 'page' : undefined}>
-              <p>Packages</p>
-              <LuPackage2 aria-hidden />
-            </Link>
+          {/* Instagram, then a thin rule and the free mockup button */}
+          <div className='top-header-end'>
+            <a
+              className='top-header-social'
+              href='https://www.instagram.com/gios.build'
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label='Instagram, @gios.build'
+              onClick={() => track('Contact link', { to: 'instagram', from: 'header' })}
+            >
+              <SiInstagram aria-hidden />
+            </a>
+            {/* opens from nothing (the rule with it), so its width pushes
+                Instagram left */}
+            <div className={`top-header-cta${isPastHero ? ' is-shown' : ''}`} inert={!isPastHero}>
+              <div className='top-header-cta-clip'>
+                <span className='top-header-rule' aria-hidden />
+                <button type='button' className='top-header-button' onClick={() => openBooking('Header')}>
+                  <p>Get a free mockup</p>
+                  <GoArrowRight aria-hidden />
+                </button>
+              </div>
+            </div>
           </div>
 
           <button type='button' className='mobile-menu-button' onClick={() => setIsMobileMenuOpen(true)} aria-label='Open menu' aria-expanded={isMobileMenuOpen} aria-controls='mobile-menu'>

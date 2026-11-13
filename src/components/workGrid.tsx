@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
+import { GoArrowLeft, GoArrowRight, GoX } from 'react-icons/go';
 import { useColumnCount } from '../hooks/useColumnCount';
 import { useKeepPlaying } from '../hooks/useKeepPlaying';
 import type { WorkItem, WorkMedia } from '../data/work';
@@ -27,6 +28,27 @@ function balanceColumns<T extends { ratio: string }>(cards: T[], count: number):
 // still instead
 const FIRST_ROW_PATIENCE = 1200;
 
+// Reels wait for the page itself to finish loading (and the browser to catch
+// its breath), so they never compete with the first paint; the stills show
+// until then.
+const pageSettled = new Promise<void>((resolve) => {
+  const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 1500 }) : setTimeout(resolve, 200));
+  if (document.readyState === 'complete') idle();
+  else window.addEventListener('load', idle, { once: true });
+});
+
+function usePageSettled() {
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    let live = true;
+    pageSettled.then(() => live && setSettled(true));
+    return () => {
+      live = false;
+    };
+  }, []);
+  return settled;
+}
+
 interface CardMediaProps {
   media: WorkMedia;
   /** on screen at load: starts loading with the page */
@@ -40,8 +62,8 @@ interface CardMediaProps {
 /**
  * A card's media. Its still (the reel's first frame, as the video's own
  * poster) holds the place while the reel loads, and the reel carries on from
- * that same frame, so there's no jump. Top-row cards (`eager`) load with the
- * page; the rest wait for them, then load once they're near the screen. Reels
+ * that same frame, so there's no jump. Top-row cards (`eager`) load as soon
+ * as they're near the screen; the rest wait for them as well. Reels
  * only play while on screen, so a page of them stays light.
  */
 function CardMedia({ media, eager = false, canLoad = true, onReady }: CardMediaProps) {
@@ -54,8 +76,10 @@ function CardMedia({ media, eager = false, canLoad = true, onReady }: CardMediaP
   // fades in once it has a frame, so a loading card never flashes black
   const [ready, setReady] = useState(!!media.poster);
   const visibleRef = useRef(false);
-  // the sources are attached (and stay, once loaded)
-  const load = eager || (near && canLoad);
+  const settled = usePageSettled();
+  // the sources are attached (and stay, once loaded). Even the top row waits
+  // until it's near the screen and the page has loaded: its still holds till then
+  const load = settled && near && (eager || canLoad);
 
   useEffect(() => {
     const video = ref.current;
@@ -150,16 +174,23 @@ interface Opened {
 }
 
 /**
- * The larger view: the project's full, uncropped media over a dark scrim.
- * It grows out of the card that opened it and shrinks back into it.
+ * The larger view: the project's full, uncropped media over the blurred
+ * page, with a panel down the left saying what it is (after Mobbin's
+ * detail view): a close button and arrows to the previous and next
+ * projects, its kind, name, a line about it and when, then its facts. The
+ * media grows out of the card that opened it and shrinks back into it.
  */
-function WorkViewer({ opened, onClose }: { opened: Opened; onClose: () => void }) {
+function WorkViewer({ opened, items, onClose }: { opened: Opened; items: WorkItem[]; onClose: () => void }) {
   const frameRef = useRef<HTMLDivElement>(null);
   const scrimRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const closing = useRef(false);
-  const { item, from } = opened;
+  const { from } = opened;
+  const [index, setIndex] = useState(() => Math.max(0, items.indexOf(opened.item)));
+  const item = items[index];
   const media = item.full ?? item.media;
+  const about = item.about;
 
   // from the card's place and size to the middle of the screen, scaled
   // evenly so nothing stretches on the way
@@ -172,6 +203,7 @@ function WorkViewer({ opened, onClose }: { opened: Opened; onClose: () => void }
   };
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const step = (by: 1 | -1) => setIndex((at) => (at + by + items.length) % items.length);
 
   const close = () => {
     if (closing.current) return;
@@ -180,6 +212,10 @@ function WorkViewer({ opened, onClose }: { opened: Opened; onClose: () => void }
     const ease = 'cubic-bezier(0.5, 0, 0.75, 0)';
     frameRef.current.animate(
       [{ transform: 'none', opacity: 1 }, { transform: fromCard(), opacity: 0 }],
+      { duration: 320, easing: ease, fill: 'forwards' }
+    );
+    panelRef.current?.animate(
+      [{ transform: 'none' }, { transform: 'translateX(-100%)' }],
       { duration: 320, easing: ease, fill: 'forwards' }
     );
     scrimRef.current?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, easing: 'ease', fill: 'forwards' })
@@ -194,6 +230,7 @@ function WorkViewer({ opened, onClose }: { opened: Opened; onClose: () => void }
         [{ transform: fromCard(), opacity: 0.4 }, { transform: 'none', opacity: 1 }],
         { duration: 560, easing: ease }
       );
+      panelRef.current?.animate([{ transform: 'translateX(-100%)' }, { transform: 'none' }], { duration: 560, easing: ease });
       scrimRef.current?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, easing: 'ease' });
     }
     const previous = document.activeElement as HTMLElement | null;
@@ -202,6 +239,8 @@ function WorkViewer({ opened, onClose }: { opened: Opened; onClose: () => void }
     document.body.style.overflow = 'hidden';
     const onKey = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
     };
     window.addEventListener('keydown', onKey);
     return () => {
@@ -216,22 +255,59 @@ function WorkViewer({ opened, onClose }: { opened: Opened; onClose: () => void }
   return createPortal(
     <div className='work-viewer' role='dialog' aria-modal='true' aria-label={item.title} onClick={close}>
       <div className='work-viewer-scrim' ref={scrimRef} />
+
+      {/* the panel: clicks in it stay in it */}
+      <aside className='work-panel' ref={panelRef} onClick={(e) => e.stopPropagation()}>
+        <div className='work-panel-bar'>
+          <button className='work-panel-button' ref={closeRef} type='button' aria-label='Close' onClick={close}>
+            <GoX aria-hidden />
+          </button>
+          {items.length > 1 && (
+            <span className='work-panel-steps'>
+              <button className='work-panel-button' type='button' aria-label='Previous project' onClick={() => step(-1)}>
+                <GoArrowLeft aria-hidden />
+              </button>
+              <button className='work-panel-button' type='button' aria-label='Next project' onClick={() => step(1)}>
+                <GoArrowRight aria-hidden />
+              </button>
+            </span>
+          )}
+        </div>
+
+        {/* keyed, so each project's details fade in as you step through */}
+        <div className='work-panel-body' key={item.title}>
+          <header className='work-panel-head'>
+            {about && <p className='work-panel-kind'>{about.kind}</p>}
+            <h2 className='work-panel-title'>{item.title}</h2>
+            {about && <p className='work-panel-summary'>{about.summary}</p>}
+            {about?.when && <p className='work-panel-when'>{about.when}</p>}
+          </header>
+          {about && (
+            <dl className='work-facts'>
+              {about.facts.map(({ label, values }) => (
+                <div className='work-fact' key={label}>
+                  <dt>{label}</dt>
+                  <dd>
+                    {values.map((value) => (
+                      <span key={value}>{value}</span>
+                    ))}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </div>
+      </aside>
+
       <div className='work-viewer-frame' ref={frameRef} style={{ '--aspect': item.aspect } as CSSProperties}>
-        <div className='work-viewer-media'>
+        <div className='work-viewer-media' key={item.title}>
           {media.type === 'video' ? (
             <LoopVideo src={media.src} />
           ) : (
             <img src={media.src} alt={item.title} draggable={false} />
           )}
         </div>
-        <div className='work-viewer-caption'>
-          <span>{item.title}</span>
-          <span className='work-viewer-meta'>{item.meta}</span>
-        </div>
       </div>
-      <button className='work-viewer-close' ref={closeRef} type='button' aria-label='Close' onClick={close}>
-        <i /><i />
-      </button>
     </div>,
     document.body
   );
@@ -251,7 +327,9 @@ export function WorkGrid({ items, hold = false, captions = true }: {
 }) {
   // Real flex columns rather than CSS `columns`: Chrome drops the paint of
   // transformed items inside multi-column layout, so hovered cards vanished.
-  const columnCount = useColumnCount();
+  // never more columns than projects, so one or two span the width rather
+  // than leaving empty columns beside them
+  const columnCount = Math.min(useColumnCount(), Math.max(1, items.length));
   const columns = columnCount === 2
     ? balanceColumns(items, 2)
     : Array.from({ length: columnCount }, (_, column) => items.filter((_, index) => index % columnCount === column));
@@ -332,7 +410,7 @@ export function WorkGrid({ items, hold = false, captions = true }: {
           </div>
         ))}
       </div>
-      {opened && <WorkViewer key={opened.item.title} opened={opened} onClose={() => setOpened(null)} />}
+      {opened && <WorkViewer key={opened.item.title} opened={opened} items={items} onClose={() => setOpened(null)} />}
     </>
   );
 }

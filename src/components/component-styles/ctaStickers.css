@@ -1,0 +1,331 @@
+/* The stickers round "Let's build yours" (ctaStickers.tsx). Each sits at
+   its own spot (--x, --y), inside three layers: the pop (animated from the
+   headline's middle by the script), the float (moved every frame by the
+   script) and the tilt (its resting angle). */
+
+.cta-stickers {
+  /* wider than the page's content: the stickers break out past
+     --content-max, right up to the screen's edges, capped so they stay
+     round the headline on very wide screens */
+  --stickers-max: 2000px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(100vw, var(--stickers-max));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.cta-sticker {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: translateX(-50%);
+}
+
+.cta-sticker-pop,
+.cta-sticker-float,
+.cta-sticker-tilt {
+  display: block;
+}
+
+/* hidden until the headline locks in and they pop out */
+.cta-stickers:not(.is-out) .cta-sticker-pop {
+  opacity: 0;
+}
+
+.cta-sticker-float {
+  will-change: transform;
+}
+
+.cta-sticker-tilt {
+  transform: rotate(var(--tilt));
+}
+
+/* ---- blobs: a shape with eyes ---- */
+
+.stk-blob {
+  position: relative;
+  display: block;
+  width: 72px;
+  height: 72px;
+  color: var(--blob);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(0, 0, 0, 0.06) 100%),
+    var(--blob);
+  box-shadow: 0 18px 32px -18px rgba(20, 25, 40, 0.45);
+}
+
+.stk-blob.is-circle {
+  border-radius: 50%;
+}
+
+.stk-blob.is-square {
+  --radius: 22px;
+  border-radius: var(--corner);
+}
+
+.stk-blob.is-squircle {
+  width: 66px;
+  height: 66px;
+  border-radius: 34%;
+}
+
+.stk-blob.is-pebble {
+  width: 84px;
+  height: 62px;
+  border-radius: 52% 48% 46% 54% / 60% 58% 42% 40%;
+}
+
+/* the triangle is drawn, so the box itself goes clear */
+.stk-blob.is-triangle {
+  width: 80px;
+  height: 74px;
+  background: none;
+  box-shadow: none;
+  filter: drop-shadow(0 14px 14px rgba(20, 25, 40, 0.25));
+}
+
+.stk-blob-shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.stk-eyes {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  gap: 12px;
+  margin: -8px 0 0 -15px;
+}
+
+.stk-blob.is-triangle .stk-eyes {
+  top: 62%;
+}
+
+.stk-eyes i {
+  display: block;
+  width: 9px;
+  height: 16px;
+  border-radius: 5px;
+  background: var(--ink);
+  transform-origin: 50% 50%;
+  animation: stk-blink 5.2s ease-in-out var(--blink-delay) infinite;
+}
+
+@keyframes stk-blink {
+  0%, 93%, 100% { transform: scaleY(1); }
+  95.5% { transform: scaleY(0.12); }
+}
+
+/* ---- the "+" button, and a cursor that clicks it now and then ---- */
+
+.stk-plus {
+  position: relative;
+  display: block;
+  width: 84px;
+  height: 84px;
+}
+
+.stk-plus-button {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #3d9bff 0%, #0a7cff 100%);
+  color: #fff;
+  box-shadow: 0 14px 26px -12px rgba(10, 124, 255, 0.7);
+  animation: stk-press 4s ease-in-out infinite;
+}
+
+.stk-plus-button svg {
+  width: 28px;
+  height: 28px;
+}
+
+.stk-cursor {
+  position: absolute;
+  right: -2px;
+  bottom: -4px;
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+  animation: stk-click 4s ease-in-out infinite;
+}
+
+/* the cursor drifts in over the button, presses, and eases back out */
+@keyframes stk-click {
+  0%, 20% { transform: translate(14px, 16px); }
+  38% { transform: translate(-4px, -6px); }
+  42% { transform: translate(-4px, -6px) scale(0.86); }
+  48% { transform: translate(-4px, -6px); }
+  70%, 100% { transform: translate(14px, 16px); }
+}
+
+@keyframes stk-press {
+  0%, 39%, 50%, 100% { transform: scale(1); }
+  43% { transform: scale(0.9); }
+}
+
+/* ---- a glossy pill with a tick ---- */
+
+.stk-toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 50px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffb6df 0%, #ff63b8 55%, #f0459e 100%);
+  color: #3a0c25;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -4px 8px rgba(150, 0, 80, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.35),
+    0 12px 28px -8px rgba(255, 79, 168, 0.65),
+    0 0 26px rgba(255, 99, 184, 0.45);
+}
+
+/* the shine along its top */
+.stk-toggle::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 14px;
+  right: 14px;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+}
+
+.stk-toggle svg {
+  position: relative;
+  width: 26px;
+  height: 26px;
+}
+
+/* ---- little cards: a notification, a rating, a booking, a search ---- */
+
+.stk-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  --radius: 16px;
+  border-radius: var(--corner);
+  background: var(--bg-light-color);
+  box-shadow:
+    0 0 0 1px var(--border-color-hairline),
+    0 18px 32px -18px rgba(20, 25, 40, 0.35);
+  font-family: var(--font-family-Medium);
+  font-size: 14px;
+  line-height: 1.25;
+  color: var(--text-color-dark);
+  white-space: nowrap;
+}
+
+.stk-card b {
+  font-family: var(--font-family-Bold);
+  font-weight: normal;
+}
+
+.stk-note-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  box-shadow: 0 0 0 4px rgba(254, 67, 42, 0.15);
+}
+
+.stk-note-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.stk-note-text small {
+  font-family: var(--font-family-Regular);
+  font-size: 12px;
+  color: var(--text-color-secondary);
+}
+
+.stk-stars-row {
+  display: flex;
+  gap: 2px;
+}
+
+.stk-stars-row svg {
+  width: 16px;
+  height: 16px;
+}
+
+.stk-booked-check {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.stk-booked-check svg {
+  width: 16px;
+  height: 16px;
+}
+
+.stk-search {
+  --radius: 999px;
+  padding: 10px 18px 10px 14px;
+  color: var(--text-color-secondary);
+}
+
+.stk-search svg {
+  width: 18px;
+  height: 18px;
+}
+
+.stk-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 16px;
+  margin-left: 2px;
+  vertical-align: -3px;
+  background: var(--text-color-dark);
+  animation: stk-caret 1s steps(1, end) infinite;
+}
+
+@keyframes stk-caret {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stk-eyes i,
+  .stk-plus-button,
+  .stk-cursor,
+  .stk-caret {
+    animation: none;
+  }
+}
+
+/* ---- tablets and phones: a few of them, smaller, above the headline ---- */
+@media (max-width: 900px) {
+  .cta-sticker.is-wide-only {
+    display: none;
+  }
+
+  .cta-sticker {
+    left: var(--mx);
+    top: var(--my);
+    transform: translateX(-50%) scale(0.72);
+  }
+}

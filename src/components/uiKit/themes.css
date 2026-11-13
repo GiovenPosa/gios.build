@@ -1,0 +1,113 @@
+/* The /ui page's themes, as one set of --ui-* token values each.
+
+   saas and bold are the real Gio UI themes, installed from the registry with
+   `npx shadcn add @giosbuild/theme-saas @giosbuild/theme-bold` into
+   components/ui/ and left exactly as the library ships them. Below are only
+   the extra tokens this page's demos use that the library doesn't have yet
+   (the card a form sits on, chips). gios is the site's own look for
+   its waitlist form, not a library theme, so it sets every token itself.
+
+   Every theme must set every token: one left out is inherited from :root,
+   where the library's theme files also write theirs.
+
+   Page-only tokens:
+   --ui-surface, -surface-line    the card a form sits on
+   --ui-card-shadow, -radius-card that card's shadow and corners
+   --ui-chip-radius               chips */
+
+/* the demos inherit the page's font (set on .ui-page) through --ui-font */
+[data-ui-theme] {
+  color: var(--ui-text);
+  font-family: var(--ui-font);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* saas: the library theme (components/ui/theme-saas.css), plus the page's extras */
+[data-ui-theme='saas'] {
+  --ui-surface: #ffffff;
+  --ui-surface-line: rgb(24 24 28 / 0.08);
+  --ui-card-shadow: 0 30px 60px -30px rgb(24 24 28 / 0.22), 0 8px 18px -10px rgb(24 24 28 / 0.08);
+  --ui-radius-card: 24px;
+  --ui-chip-radius: 22px;
+}
+
+/* bold: the library theme (components/ui/theme-bold.css), plus the page's extras */
+[data-ui-theme='bold'] {
+  --ui-surface: #fff4cc;
+  --ui-surface-line: #0a0a0a;
+  --ui-card-shadow: 6px 6px 0 #0a0a0a;
+  --ui-radius-card: 10px;
+  --ui-chip-radius: 6px;
+}
+
+/* gios: this site's own look (its red, rounded corners, pill buttons), for the
+   page's own waitlist form. Not a library theme, so not one of the theme pills. */
+[data-ui-theme='gios'] {
+  --ui-font: inherit;
+  --ui-font-strong: inherit;
+  --ui-strong-weight: 500;
+  --ui-label-case: none;
+  --ui-label-tracking: 0;
+  --ui-text: #000000;
+  --ui-muted: rgb(0 0 0 / 0.6);
+  --ui-faint: rgb(0 0 0 / 0.38);
+  --ui-surface: #ffffff;
+  --ui-surface-line: rgb(0 0 0 / 0.08);
+  --ui-field-bg: #f4f4f5;
+  --ui-field-bg-focus: #ffffff;
+  --ui-field-border: transparent;
+  --ui-line: rgb(0 0 0 / 0.12);
+  --ui-panel: #ffffff;
+  --ui-hover: rgb(0 0 0 / 0.05);
+  --ui-accent: #fe432a;
+  --ui-on-accent: #ffffff;
+  --ui-ring: #fe432a;
+  --ui-danger: #d92d20;
+  --ui-button-bg: #000000;
+  --ui-button-text: #ffffff;
+  --ui-button-border: transparent;
+  --ui-button-hover-bg: #262626;
+  --ui-button-weight: 500;
+  --ui-button-shadow: 0 0 0 0 transparent;
+  --ui-button-shadow-pressed: 0 0 0 0 transparent;
+  --ui-button-press: scale(0.97);
+  --ui-button-corner: round;
+  --ui-radius: 18px;
+  --ui-radius-panel: 18px;
+  --ui-chip-radius: 24px;
+  --ui-button-radius: 28px;
+  --ui-radius-card: 32px;
+  --ui-border-width: 1px;
+  --ui-control-h: 3.5rem;
+  --ui-control-shadow: 0 0 0 0 transparent;
+  --ui-shadow: 0 24px 48px -20px rgb(0 0 0 / 0.22), 0 8px 18px -10px rgb(0 0 0 / 0.12);
+  --ui-card-shadow: 0 24px 48px -20px rgb(0 0 0 / 0.22), 0 8px 18px -10px rgb(0 0 0 / 0.12), 0 -10px 28px -14px rgb(0 0 0 / 0.16);
+  /* the library's spacing scales (the same values as the site's own) */
+  --ui-space-8: 8px;
+  --ui-space-16: 16px;
+  --ui-space-32: 32px;
+  --ui-space-64: 64px;
+  --ui-space-128: 128px;
+  --ui-space-256: 256px;
+  --ui-gap-1: 4px;
+  --ui-gap-2: 8px;
+  --ui-gap-3: 12px;
+  --ui-gap-4: 16px;
+  --ui-gap-5: 20px;
+  --ui-gap-6: 24px;
+  /* the cookie notice: a black pill, like the site's own buttons */
+  --ui-notice-bg: rgb(0 0 0 / 0.9);
+  --ui-notice-text: #ffffff;
+  --ui-notice-border: transparent;
+  --ui-notice-radius: 999px;
+  --ui-notice-radius-stacked: 24px;
+  --ui-notice-shadow: 0 16px 40px rgb(0 0 0 / 0.3);
+  --ui-notice-button-radius: 999px;
+  --ui-notice-accept-bg: #ffffff;
+  --ui-notice-accept-text: #000000;
+  --ui-notice-accept-hover-bg: #ececec;
+  --ui-notice-deny-bg: rgb(255 255 255 / 0.08);
+  --ui-notice-deny-border: rgb(255 255 255 / 0.18);
+  --ui-notice-deny-hover-bg: rgb(255 255 255 / 0.14);
+  --ui-notice-deny-hover-border: rgb(255 255 255 / 0.35);
+}

@@ -4,7 +4,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0 2rem;
+  padding: 0 var(--page-gutter);
   box-sizing: border-box;
   color: var(--text-color-dark);
   overflow-x: clip;
@@ -12,7 +12,7 @@
 
 .pricing-page-container {
   width: 100%;
-  max-width: 1800px;
+  max-width: var(--content-max);
 }
 
 /* the same centred poster hero as the home page, a size smaller */
@@ -21,16 +21,16 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: calc(var(--section-gap-small) + 3rem) 0 var(--section-gap-medium);
+  padding: calc(var(--space-128) + var(--space-64)) 0 var(--space-128);
 }
 
 .pricing-hero-title {
   margin: 0;
-  font-family: var(--font-family-Bold);
-  font-weight: normal;
-  font-size: clamp(2.8rem, 7.2vw, 8rem);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--hero-headline-size);
+  line-height: var(--hero-headline-leading);
+  letter-spacing: var(--hero-headline-tracking);
 }
 
 .pricing-hero-title span {
@@ -40,7 +40,7 @@
 
 .pricing-hero-sub {
   max-width: 38rem;
-  margin: 2.5rem auto 0;
+  margin: var(--space-16) auto 0;
   font-family: var(--font-family-Regular);
   font-size: var(--font-size-large);
   line-height: 1.35;
@@ -50,7 +50,7 @@
 
 /* padding, not margin, so the gaps can't collapse into each other */
 .pricing-quote {
-  padding-top: var(--section-gap-large);
+  padding-top: var(--space-256);
 }
 
 /* ---- hosting & care: one line, its graphic, one button ---- */
@@ -59,12 +59,12 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 2.5rem;
-  margin-top: var(--section-gap-large);
-  padding: 2rem;
-  --radius: 32px;
+  gap: var(--space-32);
+  margin-top: var(--space-256);
+  padding: var(--space-32);
+  --radius: var(--radius-card);
   border-radius: var(--corner);
-  background: #f4f4f5;
+  background: var(--bg-surface-color);
 }
 
 .pricing-care-slot {
@@ -88,21 +88,22 @@
 }
 
 .pricing-care-copy h2 {
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--content-title-size);
+  line-height: var(--content-title-leading);
+  letter-spacing: var(--content-title-tracking);
   margin: 0;
-  font-family: var(--font-family-Bold);
-  font-weight: normal;
-  font-size: clamp(2rem, 3.4vw, 3.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
 }
 
 .pricing-care-copy p {
-  margin: 0.75rem 0 0;
-  max-width: 34rem;
   font-family: var(--font-family-Regular);
-  font-size: var(--font-size-regular);
-  line-height: 1.45;
-  color: var(--text-color-muted);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  margin: var(--space-16) 0 0;
+  max-width: 34rem;
 }
 
 .pricing-care-button {
@@ -111,17 +112,17 @@
 }
 
 .pricing-faq {
-  padding-top: var(--section-gap-large);
+  padding-top: var(--space-256);
 }
 
 @media (max-width: 900px) {
   .pricing-page {
-    padding: 0 1.5rem;
+    padding: 0 var(--page-gutter);
   }
 
   .pricing-care {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: var(--gap-6);
   }
 
   .pricing-care-slot {
@@ -136,12 +137,12 @@
 
 @media (max-width: 600px) {
   .pricing-page {
-    padding: 0 1rem;
+    padding: 0 var(--page-gutter);
   }
 
   .pricing-hero {
-    padding-top: 8rem;
-    padding-bottom: 4rem;
+    padding-top: var(--space-128);
+    padding-bottom: var(--space-64);
   }
 
   .pricing-hero-sub {
@@ -149,8 +150,8 @@
   }
 
   .pricing-care {
-    padding: 1.25rem;
-    --radius: 24px;
+    padding: var(--space-16);
+    --radius: var(--radius-card);
     border-radius: var(--corner);
   }
 }

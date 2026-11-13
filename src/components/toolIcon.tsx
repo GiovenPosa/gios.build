@@ -11,6 +11,15 @@ export function ToolIcon({ tool }: ToolIconProps) {
     return <img src={tool.src} alt={tool.name} className="tool-icon-img" />;
   }
 
+  // a mark in several colours keeps its own, whatever the tile
+  if (tool.kind === 'paths') {
+    return (
+      <svg viewBox={tool.viewBox ?? '0 0 24 24'} className="tool-icon-svg" aria-hidden="true">
+        {tool.paths?.map((part) => <path key={part.d} d={part.d} fill={part.fill} />)}
+      </svg>
+    );
+  }
+
   const path = tool.kind === 'star' ? STAR_PATH : tool.path;
 
   return (

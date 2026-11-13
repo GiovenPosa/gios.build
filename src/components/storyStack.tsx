@@ -1,5 +1,5 @@
 import { useEffect, useRef, type CSSProperties } from 'react';
-import { GoArrowUpRight } from 'react-icons/go';
+import { GoArrowRight } from 'react-icons/go';
 import { journeyData } from '../data/journey';
 import { useBooking } from '../context/bookingContext';
 import { Reveal } from './reveal';
@@ -121,15 +121,12 @@ export function StoryStack() {
             style={{ '--i': index } as CSSProperties}
           >
             <div className='story-copy'>
-              <p className='story-chapter'>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-              </p>
               <h3 className='story-title'>{step.title}</h3>
               <p className='story-text'>{step.text}</p>
               {index === last && (
                 <button type='button' className='hero-action-button story-cta' onClick={() => openBooking('Story')}>
                   <p>Get a free mockup</p>
-                  <GoArrowUpRight aria-hidden />
+                  <GoArrowRight aria-hidden />
                 </button>
               )}
             </div>

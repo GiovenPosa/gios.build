@@ -3,7 +3,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0 2rem;
+  padding: 0 var(--page-gutter);
   box-sizing: border-box;
   /* the testimonials frame is 100vw wide; clip any scrollbar-width spill
      sideways. clip (not hidden) so the sticky frame still pins. */
@@ -12,17 +12,17 @@
 
 .home-page-container {
   width: 100%;
-  max-width: 1800px;
+  max-width: var(--content-max);
 }
 
 .home-page-hero-section {
   /* the orb (components/heroOrb.tsx) sits behind the headline, inside here */
   position: relative;
   isolation: isolate;
-  margin-top: var(--section-gap-small);
+  margin-top: var(--space-128);
   color: var(--text-color-dark);
   font-family: var(--font-family-Medium);
-  margin-bottom: var(--section-gap-medium);
+  margin-bottom: var(--space-128);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,11 +33,11 @@
    leading and tracking, centred. Fluid so it scales with the viewport
    instead of stepping at each breakpoint. It's the page's h1. */
 .hero-main-text {
-  font-family: var(--font-family-Bold);
-  font-weight: normal;
-  font-size: clamp(3rem, 8vw, 9rem);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--hero-headline-size);
+  line-height: var(--hero-headline-leading);
+  letter-spacing: var(--hero-headline-tracking);
   margin: 0 auto;
 }
 
@@ -66,6 +66,104 @@
   transform-origin: 100% 80%;
 }
 
+/* An app icon set into the headline (HeroIcon in homePage.tsx): a rounded
+   tile about as tall as the capitals, sitting on their middle, with the
+   soft edge and shadow of a real icon. Placeholders until they get
+   images: a light tile and a dark one, each with a faint sheen. */
+.hero-icon {
+  display: inline-block;
+  position: relative;
+  width: 0.86em;
+  height: 0.86em;
+  /* centred on the capitals rather than sat on the baseline */
+  vertical-align: -0.09em;
+  --radius: 0.2em;
+  border-radius: var(--corner);
+  overflow: hidden;
+  box-shadow:
+    0 0.06em 0.14em -0.06em rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px var(--border-color-hairline);
+}
+
+/* its colour (--tile, set in homePage.tsx; --tile-image for a gradient one)
+   under a faint sheen. homePage.tsx swaps the face at the low point of the
+   dip below, as the tile is smallest, and the colour and shape turn over
+   with it there and then (no delay of their own, or the new face would
+   show on the old colour) */
+.hero-icon {
+  background-color: var(--tile);
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(0, 0, 0, 0.06) 100%),
+    var(--tile-image, none);
+  transition:
+    background-color 0.12s ease,
+    border-radius 0.12s ease;
+}
+
+/* the "+" and the tick are round buttons, not tiles */
+.hero-icon.is-round {
+  border-radius: 50%;
+}
+
+/* a symbol or an app's mark, centred on the tile */
+/* Laid over the tile rather than in its flow: the tile stays an empty
+   inline-block, so it always sits on the line by its own bottom edge, never
+   by whatever's drawn on it (which would drop some faces lower than others) */
+.hero-icon-mark,
+.hero-icon-eyes {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+
+.hero-icon-mark {
+  width: 66%;
+  height: 66%;
+}
+
+/* a new face grows in with the tile as it pops back up from the dip */
+.hero-icon.is-swap-a .hero-icon-mark,
+.hero-icon.is-swap-a .hero-icon-eyes,
+.hero-icon.is-swap-b .hero-icon-mark,
+.hero-icon.is-swap-b .hero-icon-eyes {
+  animation: hero-icon-face-in 0.36s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes hero-icon-face-in {
+  from { opacity: 0; scale: 0.4; }
+  to { opacity: 1; scale: 1; }
+}
+
+/* an app's mark, big enough to read at a glance in the headline */
+.hero-icon-mark.is-app {
+  width: 62%;
+  height: 62%;
+}
+
+/* a face: two eyes, like the closing call's stickers, blinking now and then */
+.hero-icon-eyes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15em;
+  /* a touch above centre, where eyes sit on a face */
+  translate: 0 -0.04em;
+}
+
+.hero-icon-eyes i {
+  display: block;
+  width: 0.125em;
+  height: 0.23em;
+  border-radius: 0.07em;
+  background: var(--ink);
+  animation: hero-icon-blink 4.6s ease-in-out 1.2s infinite;
+}
+
+@keyframes hero-icon-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.12); }
+}
+
 /* The build, on first load. Each line is built from its outer edges: a
    red dot lands at the edge, a tiny word appears beside it, then it steps
    up through a few clear sizes, a quick snap and a short hold at each,
@@ -92,9 +190,50 @@
   width: 0.16em;
   height: 0.16em;
   border-radius: 50%;
-  corner-shape: round;
   background: #fe432a;
   animation: hero-dot var(--build) linear var(--d) both;
+}
+
+/* the icons stay hidden while their words step up, then pop in with a
+   little overshoot as the words land */
+.hero-main-text.is-wait .hero-icon {
+  opacity: 0;
+}
+
+.hero-main-text.is-build .hero-icon {
+  animation: hero-icon-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--d) + var(--build) * 0.7) both;
+}
+
+@keyframes hero-icon-pop {
+  from { opacity: 0; transform: scale(0.4) rotate(-12deg); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Every three seconds a new colour: the tile dips a little smaller, takes
+   its new colour at the bottom of the dip, pops back past full size, and
+   settles with a tiny bounce. Two identical copies, swapped each time, so it replays */
+.hero-main-text .hero-icon.is-swap-a {
+  animation: hero-icon-swap-a 0.6s both;
+}
+
+.hero-main-text .hero-icon.is-swap-b {
+  animation: hero-icon-swap-b 0.6s both;
+}
+
+@keyframes hero-icon-swap-a {
+  0% { transform: scale(1); animation-timing-function: cubic-bezier(0.4, 0, 1, 1); }
+  30% { transform: scale(0.84); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  60% { transform: scale(1.04); animation-timing-function: ease-in-out; }
+  80% { transform: scale(0.98); animation-timing-function: ease-in-out; }
+  100% { transform: scale(1); }
+}
+
+@keyframes hero-icon-swap-b {
+  0% { transform: scale(1); animation-timing-function: cubic-bezier(0.4, 0, 1, 1); }
+  30% { transform: scale(0.84); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  60% { transform: scale(1.04); animation-timing-function: ease-in-out; }
+  80% { transform: scale(0.98); animation-timing-function: ease-in-out; }
+  100% { transform: scale(1); }
 }
 
 .hero-main-text.is-build .hero-stop {
@@ -193,7 +332,8 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-main-text .hero-word,
   .hero-main-text .hero-word::before,
-  .hero-main-text .hero-stop {
+  .hero-main-text .hero-stop,
+  .hero-main-text .hero-icon {
     animation: none !important;
     opacity: 1;
   }
@@ -219,9 +359,11 @@
   font-size: var(--font-size-large);
   line-height: 1.35;
   letter-spacing: -0.01em;
-  color: var(--text-color-dark);
+  color: var(--text-color-secondary);
   max-width: 44rem;
-  margin: 2.5rem auto 2.5rem;
+  /* 16px under the headline, then 64px before the buttons, like every
+     section with buttons under its subtitle */
+  margin: var(--space-16) auto var(--space-64);
   text-wrap: balance;
 }
 
@@ -229,16 +371,16 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.75rem;
+  gap: var(--gap-3);
 }
 
 .hero-action-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 1.4rem 1.5rem;
-  font-size: var(--font-size-medium);
-  --radius: 32px;
+  gap: var(--gap-2);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-size: var(--btn-font-size);
+  --radius: var(--btn-radius);
   border-radius: var(--corner);
   background-color: var(--bg-dark-color);
   color: var(--text-color-light);
@@ -299,7 +441,8 @@
    on hover. */
 .hero-work-button {
   gap: 0;
-  padding-inline: 1.4rem;
+  /* the same all round, so it's square */
+  padding-inline: var(--btn-padding-y);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -308,11 +451,13 @@
   }
 }
 
+/* as tall as a button's label (1em), so the work button stays the same
+   height as every other button rather than growing round it */
 .work-icon {
   display: flex;
   gap: 0.14em;
-  width: 1.2em;
-  height: 1.2em;
+  width: 1em;
+  height: 1em;
 }
 
 .work-icon > span {
@@ -362,8 +507,11 @@
   max-width: 0;
   overflow: hidden;
   opacity: 0;
-  /* the same type as the button beside it */
+  /* the same type as the button beside it, trimmed the same way as the
+     other buttons' labels (index.css), so it doesn't make this one taller */
   white-space: nowrap;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
   transition:
     max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1),
     margin 0.5s cubic-bezier(0.16, 1, 0.3, 1),
@@ -464,18 +612,38 @@
 
 /* Selected work: the shared work grid (components/workGrid.tsx). */
 .home-work-section {
-  margin-bottom: var(--section-gap-small);
+  margin-bottom: var(--section-space);
 }
 
+/* Every section after the work, one under another, with the same space
+   between each: from the last thing you see in one section to the first in
+   the next is always var(--section-space). So the sections keep no space of
+   their own above or below them; this gap is the only one. (The
+   testimonials' quotes sit centred in a full-screen frame, so that section
+   pulls itself in by the frame's empty space, see testimonials.tsx.) */
 .home-page-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-space);
   color: var(--text-color-dark);
+}
+
+.home-page-info-section > * {
+  flex-shrink: 0;
+}
+
+/* The closing call keeps its own padding (it's the space the stickers float
+   in, and other pages rely on it); here the section gap already gives that
+   space above it, so it's drawn back up by the same amount. */
+.home-page-info-section > .cta {
+  margin-top: calc(var(--section-space) * -1);
 }
 
 .story-block {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--section-gap-small);
+  margin-bottom: var(--space-128);
 }
 
 .section-label {
@@ -483,7 +651,7 @@
   font-family: var(--font-family-Medium);
   white-space: nowrap;
   margin: 0;
-  margin-right: var(--element-gap-h);
+  margin-right: var(--space-128);
   flex-shrink: 0;
 }
 
@@ -495,14 +663,14 @@
 }
 
 .block-action {
-  margin-left: var(--element-gap-h);
+  margin-left: var(--space-128);
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 1.4rem 1.8rem;
-  font-size: var(--font-size-medium);
+  gap: var(--gap-2);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-size: var(--btn-font-size);
   background-color: var(--btn-color-muted);
-  --radius: 26px;
+  --radius: var(--btn-radius);
   border-radius: var(--corner);
   color: var(--text-color-dark);
   cursor: pointer;
@@ -518,232 +686,63 @@
   }
 }
 
-.home-visual-pair {
-  display: flex;
-  flex-direction: row;
-  gap: 1.5rem;
-  margin-bottom: var(--section-gap-small);
-}
-
-.home-visual-half {
-  flex: 1;
-  height: 500px;
-  --radius: 30px;
-  border-radius: var(--corner);
-  overflow: hidden;
-}
-
-.home-visual-image,
-.home-visual-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.process-info-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  /* padding, not margin: the parent is a plain block, so a top margin would
-     collapse into the visual pair's bottom margin and add nothing */
-  padding-top: var(--section-gap-large);
-  margin-bottom: var(--section-gap-medium);
-  color: var(--text-color-dark);
-}
-
-/* Same poster treatment as the hero, one size down: tight bold
-   headline with a sentence per line, ink subtitle. */
-.process-headline {
-  font-family: var(--font-family-Bold);
-  font-size: clamp(2.75rem, 6.4vw, 7rem);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
-  margin: 0;
-}
-
-.process-headline span {
-  display: block;
-  text-wrap: balance;
-}
-
-.process-subtext {
-  font-family: var(--font-family-Regular);
-  font-size: var(--font-size-large);
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  color: var(--text-color-dark);
-  max-width: 44rem;
-  margin: 2.5rem auto 0;
-  text-wrap: balance;
-}
-
-.process-info-block .process-steps {
-  margin-top: 4rem;
-  align-self: stretch;
-  text-align: left;
-}
-
-/* Integrations, in the same language as the process section: centred poster
-   headline one size below it, then the tile wall. */
+/* Integrations: the centred poster headline and its line in the middle,
+   a wheel of tool tiles either side (components/toolsWheel.tsx). */
 .tools-info-block {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /* the words' column only as wide as the words, so the wheels sit in
+     close beside them rather than out at the page's edges */
+  grid-template-columns: auto minmax(0, 34rem) auto;
+  justify-content: center;
   align-items: center;
+  gap: var(--space-16);
   text-align: center;
-  /* padding, not margin: a margin would collapse into the process section's */
-  padding-top: var(--section-gap-large);
-  margin-bottom: var(--section-gap-medium);
   color: var(--text-color-dark);
 }
 
 .tools-headline,
 .home-faq-headline {
-  font-family: var(--font-family-Bold);
-  font-size: clamp(2.4rem, 4.8vw, 5.25rem);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
   margin: 0;
 }
 
-.tools-headline span,
 .home-faq-headline span {
   display: block;
+  text-wrap: balance;
+}
+
+/* one line: the phrases run on, and only wrap (evenly) where the screen is narrow */
+.tools-headline {
   text-wrap: balance;
 }
 
 .tools-subtext,
 .home-faq-subtext {
   font-family: var(--font-family-Regular);
-  font-size: var(--font-size-large);
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  color: var(--text-color-dark);
-  max-width: 40rem;
-  margin: 2rem auto 0;
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  max-width: 48rem;
+  margin: var(--space-16) auto 0;
   text-wrap: balance;
 }
 
-/* The tool wall as two marquees. The rows fade out at both edges, pause
-   while hovered, and leave room above and below for a tile's hover lift. */
-.tools-marquee {
-  align-self: stretch;
+.tools-copy {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-}
-
-/* Each row clips its own track, so it carries enough padding for a hovered
-   tile's lift and shadow; the rows then overlap by most of that padding so
-   the visible gap between them stays small. */
-.tools-marquee-row {
-  overflow: hidden;
-  padding: 44px 0;
-}
-
-.tools-marquee-row + .tools-marquee-row {
-  margin-top: -74px;
-}
-
-.tools-marquee-track {
-  display: flex;
-  width: max-content;
-  animation: tools-marquee 80s linear infinite;
-}
-
-.tools-marquee-row.is-reverse .tools-marquee-track {
-  animation-duration: 90s;
-  animation-direction: reverse;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .tools-marquee-row:hover .tools-marquee-track {
-    animation-play-state: paused;
-  }
-}
-
-@keyframes tools-marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-/* a margin rather than a gap, so both halves of the track are the same width */
-.tools-marquee-track .tool-card {
-  margin-right: 12px;
-}
-
-.tool-card {
-  position: relative;
-  display: flex;
-  flex-shrink: 0;
-  width: 112px;
-  height: 112px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tools-marquee-track {
-    animation: none;
-  }
-
-  .tools-marquee-row {
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .tool-card:hover {
-    z-index: 10;
-  }
-}
-
-/* Same hover as the work cards: fast to a soft stop, plus a soft lift. */
-.tool-surface {
-  position: relative;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  --radius: 24px;
-  border-radius: var(--corner);
-  background-color: var(--btn-color-muted);
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  transition:
-    transform 0.7s cubic-bezier(0.12, 1.15, 0.3, 1),
-    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .tool-card:hover .tool-surface {
-    transform: scale(1.1);
-    box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.25), 0 6px 14px -8px rgba(0, 0, 0, 0.12);
-  }
-}
-
-.tool-name {
-  /* the icon says it; the name stays for screen readers only */
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tool-surface {
-    transition: opacity 0.2s ease;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .tool-card:hover .tool-surface {
-      transform: none;
-    }
-  }
+/* the primary button under the line, as in the hero (whose section sets
+   the font its buttons inherit, so it's set here too) */
+.tools-action {
+  margin-top: var(--space-64);
+  font-family: var(--font-family-Medium);
 }
 
 .tool-icon-svg {
@@ -766,14 +765,11 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  /* padding, not margin: a margin would collapse into the tools section's */
-  padding-top: var(--section-gap-large);
-  margin-bottom: var(--section-gap-medium);
   color: var(--text-color-dark);
 }
 
 .home-faq-block .faq-thread {
-  margin-top: 4rem;
+  margin-top: var(--space-64);
   text-align: left;
 }
 
@@ -789,9 +785,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20rem;
+  gap: var(--space-256);
   height: 300px;
-  margin-bottom: var(--section-gap-large);
+  margin-bottom: var(--space-256);
 }
 
 .client-icon {
@@ -805,23 +801,23 @@
 @media (max-width: 1400px) {
   
   .section-label {
-    margin-right: 6rem;
+    margin-right: var(--space-128);
   }
   
   .block-action {
-    margin-left: 6rem;
+    margin-left: var(--space-128);
     
   }
   
   .clients-block {
-    gap: 12rem;
+    gap: var(--space-256);
   }
 }
 
 /* ===== MEDIUM-LARGE SCREENS (1100px and below) ===== */
 @media (max-width: 1100px) {
   .section-label {
-    margin-right: 4rem;
+    margin-right: var(--space-64);
   }
   
   .section-value {
@@ -829,43 +825,31 @@
   }
   
   .block-action {
-    margin-left: 4rem;
+    margin-left: var(--space-64);
   }
   
   
   
   .clients-block {
-    gap: 8rem;
+    gap: var(--space-128);
   }
 }
 
 /* ===== TABLET (900px and below) ===== */
 @media (max-width: 900px) {
   .home-page {
-    padding: 0 1.5rem;
+    padding: 0 var(--page-gutter);
   }
   
   .home-page-hero-section {
-    margin-top: 4rem;
-    margin-bottom: 4rem;
+    margin-top: var(--space-64);
+    margin-bottom: var(--space-64);
   }
   
 
-  .home-visual-pair {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .home-visual-half {
-    height: 350px;
-    --radius: 20px;
-    border-radius: var(--corner);
-  }
-
-
   .story-block {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: var(--gap-6);
   }
 
   .section-label {
@@ -884,90 +868,58 @@
   
   
   .clients-block {
-    gap: 5rem;
+    gap: var(--space-64);
     height: 200px;
-    margin-bottom: var(--section-gap-medium);
+    margin-bottom: var(--space-128);
   }
 
   .client-icon {
     height: 32px;
   }
 
-  .tool-card {
-    width: 84px;
-    height: 84px;
-  }
-
-  .tools-marquee-track .tool-card {
-    margin-right: 10px;
-  }
-
-  .tools-marquee {
-    margin-top: 0.5rem;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-  }
-
-  .tool-surface {
-    --radius: 18px;
-    border-radius: var(--corner);
-  }
-
-  .tool-icon-svg,
-  .tool-icon-img {
-    width: 30px;
-    height: 30px;
+  /* the wheels lie on their side: one above the words, one below */
+  .tools-info-block {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-16);
   }
 }
 
 /* ===== MOBILE (600px and below) ===== */
 @media (max-width: 600px) {
+  /* on a phone the closing call's stickers need the room above the
+     headline, so it keeps the full gap plus its own padding */
+  .home-page-info-section > .cta {
+    margin-top: 0;
+  }
+
   .home-page {
-    padding: 0 1rem;
+    padding: 0 var(--page-gutter);
   }
   
   .home-page-hero-section {
-    margin-top: 6rem;
-    margin-bottom: 3rem;
+    margin-top: var(--space-128);
+    margin-bottom: var(--space-64);
   }
 
   .hero-sub {
    font-size: var(--font-size-medium);
-   margin-top: 1.75rem;
-  }
-
-  .process-subtext {
-    font-size: var(--font-size-medium);
-    margin-top: 1.75rem;
-  }
-  
-  .hero-action-button {
-    padding: 0.9rem 1.3rem;
-    font-size: var(--font-size-regular);
+   margin-top: var(--space-16);
   }
 
   .hero-work-button {
-    padding-inline: 0.9rem;
+    padding-inline: var(--space-16);
   }
   
-  .home-work-section {
-    margin-bottom: 4rem;
-  }
 
   .story-block {
-    margin-bottom: 4rem;
+    margin-bottom: var(--space-64);
   }
 
   .section-value {
     font-size: 24px;
   }
 
-
   
-  .block-action {
-    padding: 0.5rem 1.5rem;
-    font-size: var(--font-size-regular);
-  }
   
   
   
@@ -975,10 +927,10 @@
   
   .clients-block {
     flex-wrap: wrap;
-    gap: 3rem;
+    gap: var(--space-64);
     height: auto;
-    padding: 2rem 0;
-    margin-bottom: 4rem;
+    padding: var(--space-32) 0;
+    margin-bottom: var(--space-64);
   }
   
   .client-icon {
@@ -988,10 +940,6 @@
 
 /* ===== SMALL MOBILE (400px and below) ===== */
 @media (max-width: 400px) {
-  .hero-main-text {
-    font-size: 2.6rem;
-  }
-  
   .section-value {
     font-size: 20px;
   }
@@ -999,7 +947,7 @@
   
   
   .clients-block {
-    gap: 2rem;
+    gap: var(--space-32);
   }
 
   

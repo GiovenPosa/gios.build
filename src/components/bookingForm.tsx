@@ -4,7 +4,7 @@ import { track } from '../lib/analytics';
 import { BUSINESS_TYPES, ENQUIRY_PACKAGES, EMAIL_PATTERN } from '../data/enquiry';
 import { IoCloseOutline, IoCheckmarkCircle } from "react-icons/io5";
 import { useState, useEffect, useRef } from 'react';
-import { GoArrowUpRight } from "react-icons/go";
+import { GoArrowRight } from "react-icons/go";
 
 // The form is a three-step wizard. Each step is saved as the visitor moves on
 // (worker/enquiry.ts), so their contact details are kept from step 1 even if
@@ -259,6 +259,20 @@ export function BookingForm() {
   }, [isBookingOpen, closeBooking]);
 
   const isLastStep = step === STEPS.length - 1;
+
+  // How full each step's bar is: the share of that step's required fields
+  // filled in. Steps already passed are full; the last step has nothing
+  // required, so it fills on arrival.
+  const required: boolean[][] = [
+    [formData.name.trim() !== '', EMAIL_PATTERN.test(formData.email.trim())],
+    [formData.selectedTypes.length > 0, formData.selectedPackage !== ''],
+    [],
+  ];
+  const fill = required.map((fields, i) => {
+    if (i < step) return 1;
+    if (i > step) return 0;
+    return fields.length ? fields.filter(Boolean).length / fields.length : 1;
+  });
   const nextLabel = isSubmitting
     ? (isLastStep ? 'Sending...' : 'Saving...')
     : (isLastStep ? 'Send Request' : 'Next');
@@ -305,7 +319,7 @@ export function BookingForm() {
             </div>
             <button className='success-button' onClick={handleClose}>
               <p>Done</p>
-              <GoArrowUpRight />
+              <GoArrowRight />
             </button>
           </div>
         ) : (
@@ -322,13 +336,19 @@ export function BookingForm() {
               </p>
             </div>
 
-            {/* where the visitor is: one segment per step, filled up to this one */}
+            {/* where the visitor is: one segment per step, each filling as
+                its required fields are filled in */}
             <div className='booking-progress'>
               <ol className='booking-progress-bar' aria-hidden>
-                {STEPS.map((name, i) => <li key={name} className={i <= step ? 'is-done' : ''} />)}
+                {STEPS.map((name, i) => (
+                  <li key={name}>
+                    <i style={{ transform: `scaleX(${fill[i]})` }} />
+                  </li>
+                ))}
               </ol>
               <p className='booking-progress-label' aria-live='polite'>
-                Step {step + 1} of {STEPS.length} <span>{STEPS[step]}</span>
+                <span className='visually-hidden'>Step {step + 1} of {STEPS.length}: </span>
+                {STEPS[step]}
               </p>
             </div>
 
@@ -488,7 +508,7 @@ export function BookingForm() {
                 )}
                 <button type='submit' className='booking-submit' disabled={isSubmitting}>
                   <p>{nextLabel}</p>
-                  <GoArrowUpRight />
+                  <GoArrowRight />
                 </button>
               </div>
               <p className='booking-privacy'>

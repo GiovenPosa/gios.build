@@ -53,13 +53,14 @@ const RING = `
  * size and its edge softens from crisp to blurred. It pauses while off
  * screen or in a background tab, and visitors who turn motion off get the
  * finished ring as one still frame. Without WebGL it simply isn't drawn.
+ * `hidden` leaves it out entirely (no canvas, no WebGL) without removing it.
  */
-export function HeroOrb({ play, delay = 0 }: { play: boolean; delay?: number }) {
+export function HeroOrb({ play, delay = 0, hidden = false }: { play: boolean; delay?: number; hidden?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!play || !canvas) return;
+    if (hidden || !play || !canvas) return;
     const shader = createOrbShader(canvas, RING);
     if (!shader) return;
     shader.set('u_size', ORB_RADIUS);
@@ -96,7 +97,8 @@ export function HeroOrb({ play, delay = 0 }: { play: boolean; delay?: number }) 
       loop.stop();
       shader.dispose();
     };
-  }, [play, delay]);
+  }, [play, delay, hidden]);
 
+  if (hidden) return null;
   return <canvas ref={canvasRef} className='hero-orb' aria-hidden />;
 }

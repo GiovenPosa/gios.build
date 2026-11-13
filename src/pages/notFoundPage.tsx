@@ -1,5 +1,5 @@
 import './page-styles/notFoundPage.css';
-import { GoArrowUpRight } from 'react-icons/go';
+import { GoArrowRight } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Reveal } from '../components/reveal';
@@ -29,7 +29,7 @@ export function NotFoundPage() {
             <Reveal as="div" className='not-found-actions' delay={160}>
               <Link to='/' className='hero-action-button'>
                 <p>Back to home</p>
-                <GoArrowUpRight aria-hidden />
+                <GoArrowRight aria-hidden />
               </Link>
               <Link to='/work' className='hero-action-button secondary'>
                 <p>See my work</p>

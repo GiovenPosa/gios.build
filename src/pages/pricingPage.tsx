@@ -57,7 +57,7 @@ export function PricingPage() {
           </Reveal>
 
           <section className='home-faq-block pricing-faq'>
-            <Reveal as="p" className='home-faq-headline'>
+            <Reveal as="h2" className='home-faq-headline'>
               <span>Questions?</span> <span>Just ask.</span>
             </Reveal>
             <Reveal as="p" className='home-faq-subtext' delay={60}>

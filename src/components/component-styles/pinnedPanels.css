@@ -1,0 +1,326 @@
+/* A pinned list on the left, a column of big panels scrolling past on the
+   right (components/pinnedPanels.tsx): the home page's four steps. */
+
+.pinned {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: var(--space-64);
+  /* no space of its own above or below: the home page sets the same gap
+     between every section */
+  color: var(--text-color-dark);
+}
+
+/* ---- Left: pinned while the panels scroll ---- */
+
+.pinned-side {
+  position: sticky;
+  top: 6.5rem;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+}
+
+.pinned-headline {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
+}
+
+.pinned-headline span {
+  display: block;
+  text-wrap: balance;
+}
+
+.pinned-list {
+  margin: var(--space-32) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pinned-item + .pinned-item {
+  border-top: 1px solid var(--border-color-hairline);
+}
+
+.pinned-name {
+  display: block;
+  width: 100%;
+  padding: var(--space-16) 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--content-title-size);
+  line-height: var(--content-title-leading);
+  letter-spacing: var(--content-title-tracking);
+  text-align: left;
+  color: rgba(0, 0, 0, 0.26);
+  cursor: pointer;
+  transition: color 0.35s ease;
+}
+
+.pinned-item.is-active .pinned-name {
+  color: var(--text-color-dark);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pinned-item:not(.is-active) .pinned-name:hover {
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.pinned-name:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
+  --radius: 8px;
+  border-radius: var(--corner);
+}
+
+/* the active item's points open under its name */
+.pinned-details {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pinned-item.is-active .pinned-details {
+  grid-template-rows: 1fr;
+}
+
+.pinned-details ul {
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  min-height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pinned-details li {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pinned-details li:last-child {
+  padding-bottom: var(--space-16);
+}
+
+.pinned-item.is-active .pinned-details li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(120ms + var(--k) * 50ms);
+}
+
+.pinned-foot {
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  max-width: 30rem;
+  margin: var(--space-32) 0 0;
+}
+
+/* ---- Right: one big panel per item ---- */
+
+.pinned-panels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-128);
+}
+
+/* square cards, never taller than the screen leaves room for */
+.pinned-canvas {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: calc(100vh - 9rem);
+  margin-left: auto;
+  aspect-ratio: 1;
+  overflow: hidden;
+  --radius: 36px;
+  border-radius: var(--corner);
+  /* the placeholder: the site's light card grey, with the service's colour
+     on the tile inside it */
+  background: var(--bg-surface-color);
+}
+
+/* the animation's own card: the panel's full colour, the story photos'
+   rounded corners and soft shadow, tilted a touch until its panel is the
+   active one, when it settles upright */
+.pinned-tile {
+  position: relative;
+  width: min(62%, 22rem);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 18% / 17%;
+  background: var(--panel);
+  box-shadow:
+    0 18px 32px -18px rgba(20, 25, 40, 0.45),
+    0 3px 8px -4px rgba(20, 25, 40, 0.2);
+  transform: rotate(-5deg) scale(0.96);
+  transition: transform 0.7s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+.pinned-panel.is-active .pinned-tile {
+  transform: none;
+}
+
+/* Two phones side by side, filling the square's height and running past
+   it: the left one raised, so its lower half is in view, the right one
+   lowered, so its upper half is. They ease into those places as their
+   step becomes the active one. */
+.pinned-phones {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6%;
+}
+
+.pinned-phone {
+  display: block;
+  flex: none;
+  width: 36%;
+  height: auto;
+  --radius: 28px;
+  border-radius: var(--corner);
+  box-shadow:
+    0 0 0 1px var(--border-color-hairline),
+    0 30px 60px -32px rgba(20, 25, 40, 0.45);
+  transition: transform 0.9s cubic-bezier(0.12, 1.15, 0.3, 1);
+}
+
+.pinned-phone:first-child {
+  transform: translateY(-22%);
+}
+
+.pinned-phone:last-child {
+  transform: translateY(22%);
+}
+
+.pinned-panel.is-active .pinned-phone:first-child {
+  transform: translateY(-38%);
+}
+
+.pinned-panel.is-active .pinned-phone:last-child {
+  transform: translateY(38%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pinned-phone {
+    transition: none;
+  }
+}
+
+/* the graphic, centred on its card. The drawings were made for a small
+   slot, so their line work only fills the middle of the box: it's drawn
+   wider than the card and the empty edges are cut off. */
+.pinned-tile .svc-art {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 190%;
+  height: auto;
+  aspect-ratio: 210 / 100;
+  transform: translate(-50%, -50%);
+}
+
+/* phones only */
+.pinned-caption {
+  display: none;
+}
+
+/* The graphics' own base rule (also used by the hosting graphic on the
+   Packages page): an SVG that fills the box it's given. */
+.svc-art {
+  display: block;
+}
+
+/* short screens: the closing line goes, so the pinned list always fits */
+@media (min-width: 901px) and (max-height: 820px) {
+  .pinned-foot {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pinned-tile,
+  .pinned-name,
+  .pinned-details,
+  .pinned-details li {
+    transition: none;
+  }
+}
+
+/* ---- Tablets and phones: nothing pinned; each panel carries its name ---- */
+
+@media (max-width: 900px) {
+  .pinned {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-64);
+  }
+
+  .pinned-side {
+    position: static;
+    min-height: 0;
+  }
+
+  .pinned-list {
+    display: none;
+  }
+
+  .pinned-foot {
+    margin-top: var(--space-16);
+  }
+
+  .pinned-panels {
+    gap: var(--space-64);
+  }
+
+  .pinned-canvas {
+    max-width: none;
+    --radius: 28px;
+    border-radius: var(--corner);
+  }
+
+  .pinned-tile {
+    width: 64%;
+  }
+
+  .pinned-caption {
+    display: block;
+    padding: var(--space-16) var(--space-8) 0;
+  }
+
+  .pinned-caption h3 {
+    margin: 0;
+    font-family: var(--font-family-Headline);
+    font-weight: var(--headline-weight);
+    font-size: var(--content-title-size);
+    line-height: var(--content-title-leading);
+    letter-spacing: var(--content-title-tracking);
+  }
+
+  .pinned-caption ul {
+    font-family: var(--font-family-Regular);
+    font-size: var(--body-size);
+    line-height: var(--body-leading);
+    letter-spacing: var(--body-tracking);
+    color: var(--text-color-secondary);
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+}

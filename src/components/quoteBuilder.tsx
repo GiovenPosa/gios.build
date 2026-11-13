@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { GoArrowUpRight } from 'react-icons/go';
+import { GoArrowRight } from 'react-icons/go';
 import { packagesData, formatPrice, priceRange } from '../data/packages';
 import { useBooking } from '../context/bookingContext';
 import { track } from '../lib/analytics';
@@ -251,7 +251,7 @@ export function QuoteBuilder() {
 
             <button type='button' className='hero-action-button qb-book' onClick={book}>
               <p>Ask about this build</p>
-              <GoArrowUpRight />
+              <GoArrowRight />
             </button>
             <p className='qb-fine'>A quick discovery call within 24 hours, then your free homepage mockup.</p>
           </div>

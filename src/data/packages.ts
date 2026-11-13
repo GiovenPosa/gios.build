@@ -14,9 +14,6 @@ export interface PackageItem {
   /** what's in it, beyond the tier below */
   items: string[];
   timeline: string;
-  /** the animated graphic in its slot, and the slot's colour */
-  art: 'site' | 'redesign' | 'booking';
-  slot: string;
 }
 
 export const packagesData: PackageItem[] = [
@@ -28,8 +25,6 @@ export const packagesData: PackageItem[] = [
     to: 800,
     items: ['One-page website', 'Mobile-friendly design', 'Contact form to your inbox', 'Visit tracking & a 30-day review'],
     timeline: 'Live in about 4 weeks',
-    art: 'site',
-    slot: '#7cc4e4',
   },
   {
     id: 'redesign',
@@ -39,8 +34,6 @@ export const packagesData: PackageItem[] = [
     to: 1500,
     items: ['A modern redesign of your site', 'Faster loading pages', 'Clearer messaging that sells'],
     timeline: 'Usually 4 to 6 weeks',
-    art: 'redesign',
-    slot: '#95fc9c',
   },
   {
     id: 'lead-system',
@@ -49,8 +42,6 @@ export const packagesData: PackageItem[] = [
     from: 1500,
     items: ['Multiple pages', 'Bookings, maps & integrations', 'Detailed enquiry forms', 'SEO foundations & enquiry tracking'],
     timeline: 'Typically 6 to 8 weeks',
-    art: 'booking',
-    slot: '#e1ead9',
   },
 ];
 

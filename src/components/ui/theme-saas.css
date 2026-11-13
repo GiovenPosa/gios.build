@@ -1,0 +1,93 @@
+/* @giosbuild/theme-saas 0.4.0
+   The filled, rounded field style shared by gios-lead-app and Prime Stock
+   Central: soft grey fills, no edge until focus, then a solid edge and a soft
+   halo. Import it once (e.g. in your root layout or main.tsx) and change any
+   value here; components only ever read these tokens.
+
+   On :root it styles the whole site. [data-ui-theme="saas"] lets a page show
+   several themes at once: put the attribute on any element and everything
+   inside it follows this theme. */
+
+:root,
+[data-ui-theme="saas"] {
+  /* type: inherits the site's font; labels and buttons a weight heavier */
+  --ui-font: inherit;
+  --ui-font-strong: inherit;
+  --ui-strong-weight: 500;
+  --ui-label-case: none;
+  --ui-label-tracking: 0;
+
+  /* ink */
+  --ui-text: #18181c;
+  --ui-muted: #6b6b73;
+  --ui-faint: #9a9aa2;
+
+  /* controls */
+  --ui-field-bg: #f1f0f4;
+  --ui-field-bg-focus: #ffffff;
+  --ui-field-border: transparent;
+  --ui-line: rgb(24 24 28 / 0.14);
+  --ui-control-h: 3.5rem;
+  --ui-border-width: 1px;
+  --ui-control-shadow: 0 0 0 0 transparent;
+
+  /* brand */
+  --ui-accent: #3b82f6;
+  --ui-on-accent: #ffffff;
+  --ui-ring: #3b82f6;
+  --ui-danger: #c8102e;
+
+  /* floating panels (the dropdown's list) */
+  --ui-panel: #ffffff;
+  --ui-hover: rgb(24 24 28 / 0.05);
+  --ui-shadow: 0 12px 32px rgb(24 24 28 / 0.14), 0 2px 8px rgb(24 24 28 / 0.06);
+
+  /* corners */
+  --ui-radius: 14px;
+  --ui-radius-panel: 12px;
+
+  /* the primary button: a full pill in the accent, as in both apps */
+  --ui-button-bg: #3b82f6;
+  --ui-button-hover-bg: color-mix(in srgb, #3b82f6 88%, #000000);
+  --ui-button-text: #ffffff;
+  --ui-button-border: transparent;
+  --ui-button-radius: 999px;
+  --ui-button-weight: 600;
+  --ui-button-shadow: 0 0 0 0 transparent;
+  --ui-button-shadow-pressed: 0 0 0 0 transparent;
+  --ui-button-corner: round;
+  --ui-button-press: scale(0.97);
+
+  /* the cookie notice: Prime Stock Central's dark, blurred pill */
+  --ui-notice-bg: rgb(30 30 35 / 0.92);
+  --ui-notice-text: #ffffff;
+  --ui-notice-border: transparent;
+  --ui-notice-radius: 999px;
+  --ui-notice-radius-stacked: 1.375rem;
+  --ui-notice-shadow: 0 16px 40px rgb(0 0 0 / 0.4);
+  --ui-notice-button-radius: 999px;
+  --ui-notice-accept-bg: #ffffff;
+  --ui-notice-accept-text: #18181c;
+  --ui-notice-accept-hover-bg: #e9e9ee;
+  --ui-notice-deny-bg: rgb(255 255 255 / 0.08);
+  --ui-notice-deny-border: rgb(255 255 255 / 0.18);
+  --ui-notice-deny-hover-bg: rgb(255 255 255 / 0.14);
+  --ui-notice-deny-hover-border: rgb(255 255 255 / 0.35);
+
+  /* spacing: padding, margins and the bigger gaps, doubling from 8px
+     (the same scale as gios.build) */
+  --ui-space-8: 8px;
+  --ui-space-16: 16px;
+  --ui-space-32: 32px;
+  --ui-space-64: 64px;
+  --ui-space-128: 128px;
+  --ui-space-256: 256px;
+
+  /* gaps between things inside a component: 4px steps up to 24px */
+  --ui-gap-1: 4px;
+  --ui-gap-2: 8px;
+  --ui-gap-3: 12px;
+  --ui-gap-4: 16px;
+  --ui-gap-5: 20px;
+  --ui-gap-6: 24px;
+}

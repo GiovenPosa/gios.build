@@ -4,25 +4,25 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: var(--section-gap-small) 2rem 0;
+  padding: var(--space-128) var(--page-gutter) 0;
   box-sizing: border-box;
   color: var(--text-color-dark);
 }
 
 .work-page-container {
   width: 100%;
-  max-width: 1800px;
+  max-width: var(--content-max);
 }
 
 @media (max-width: 900px) {
   .work-page {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: var(--page-gutter);
+    padding-right: var(--page-gutter);
   }
 }
 
 @media (max-width: 600px) {
   .work-page {
-    padding: 6rem 1rem 0;
+    padding: var(--space-128) var(--page-gutter) 0;
   }
 }

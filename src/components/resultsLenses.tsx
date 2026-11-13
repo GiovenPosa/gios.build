@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
-import { resultLenses, trackingLadder, type ResultLens } from '../data/results';
-import { Link } from 'react-router-dom';
-import { GoArrowUpRight, GoChevronLeft, GoChevronRight } from 'react-icons/go';
-import { packagesData, formatPrice } from '../data/packages';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { resultLenses, trackingPoints, type ResultLens, type TrackingIcon } from '../data/results';
+import type { IconType } from 'react-icons';
+import { GoCalendar, GoChevronLeft, GoChevronRight, GoFilter, GoGraph, GoHistory, GoInbox, GoZap } from 'react-icons/go';
 import { Reveal } from './reveal';
 import { ResultsDashboard } from './resultsDashboard';
 import { BuiltRightIcon, GrowthIcon, TapIcon } from './resultsIcons';
@@ -13,15 +12,14 @@ const ART = { technical: BuiltRightIcon, experience: TapIcon, business: GrowthIc
 const STAGGER_MS = 350;
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// The ladder builds itself level by level: the floors draw, the first block
-// rises out of every floor, then each level drops onto the pillars that have
-// it. Each block lands black (new) and turns grey as the next one lands on
-// it, so the black "new" climbs the stairs.
-const FLOOR_MS = 450; // the floors and names are in
-const LEVEL_MS = 750; // between one level and the next
-const PILLAR_MS = 90; // left to right within a level
-const LAND_MS = 380; // from a block setting off to it landing
-const blockStart = (level: number, pillar: number) => FLOOR_MS + level * LEVEL_MS + pillar * PILLAR_MS;
+const POINT_ICON: Record<TrackingIcon, IconType> = {
+  dashboard: GoGraph,
+  speed: GoZap,
+  review: GoCalendar,
+  before: GoHistory,
+  enquiry: GoInbox,
+  dropoff: GoFilter,
+};
 
 /** true while the element is well on screen, after `delay` ms */
 function usePlaying(delay: number) {
@@ -57,21 +55,15 @@ function Lens({ lens, index }: { lens: ResultLens; index: number }) {
     <Reveal
       as="article"
       className={`results-lens${playing ? ' is-playing' : ''}`}
-      style={{ backgroundColor: lens.slot }}
       delay={index * 80}
     >
       {/* the words first, then the graphic below them */}
       <div className='results-lens-body'>
-        <p className='results-lens-layer'>{lens.layer}</p>
         <h3 className='results-title'>{lens.title}</h3>
         <p className='results-text'>{lens.text}</p>
-        <ul className='results-tracks'>
-          {lens.tracks.map((track, k) => (
-            <li key={track} style={{ '--k': k } as CSSProperties}>{track}</li>
-          ))}
-        </ul>
       </div>
-      <div className='results-slot' ref={ref}>
+      {/* the graphic, on its own panel in the card's colour */}
+      <div className='results-slot' ref={ref} style={{ backgroundColor: lens.slot }}>
         <Art />
       </div>
     </Reveal>
@@ -112,7 +104,7 @@ function LensCarousel() {
   return (
     <div className='results-carousel'>
       <div className='results-lenses' ref={trackRef} onScroll={update}>
-        {resultLenses.map((lens, i) => <Lens key={lens.layer} lens={lens} index={i} />)}
+        {resultLenses.map((lens, i) => <Lens key={lens.title} lens={lens} index={i} />)}
       </div>
       <div className='results-nav'>
         <button type='button' className='results-nav-button' onClick={() => step(-1)} disabled={edge.start} aria-label='Previous card'>
@@ -127,12 +119,12 @@ function LensCarousel() {
 }
 
 /**
- * "How we'll know": the three layers every project is measured on, as
+ * "Tracked from day one": the three layers every project is measured on, as
  * portrait colour cards each playing its own line-work graphic while it's on
- * screen, then the packages as a ladder of pillars, each stacking one more
- * block of tracking on the one before.
+ * screen. Not on any page right now (taken off the home page in November
+ * 2026), but kept, with its graphics, to use somewhere else later.
  */
-export function ResultsLenses() {
+export function TrackedFromDayOne() {
   return (
     <section className='results-block'>
       <Reveal as="h2" className='results-headline'>
@@ -143,45 +135,32 @@ export function ResultsLenses() {
       </Reveal>
 
       <LensCarousel />
+    </section>
+  );
+}
 
-      {/* the tier bars, poster-sized: each package is a pillar of blocks,
-          and each one up the ladder stacks a new block of tracking on top */}
+/**
+ * What gets tracked, one point to a card, then the client dashboard.
+ */
+export function ResultsLenses() {
+  return (
+    <section className='results-block'>
+      {/* what gets tracked, one point to a card, after Mobbin's prompt cards */}
       <div className='results-ladder'>
-        <Reveal as="p" className='results-ladder-title'>
+        <Reveal as="h2" className='results-ladder-title'>
           <span>On every package.</span> <span>Bigger builds go deeper.</span>
         </Reveal>
-        <Reveal as="div" className='results-pillars' threshold={0.3}>
-          {packagesData.map((pkg, index) => (
-            <div key={pkg.id} className='results-pillar' style={{ '--p': index } as CSSProperties}>
-              <div className='results-blocks'>
-                {trackingLadder.slice(0, index + 1).map((block, k) => (
-                  <div
-                    key={block.adds}
-                    className={`results-block-item${k === 0 ? ' is-floor' : ''}${k === index ? ' is-new' : ' will-dim'}`}
-                    style={{ '--d': `${blockStart(k, index)}ms`, '--dim': `${blockStart(k + 1, index) + LAND_MS}ms` } as CSSProperties}
-                  >
-                    <span className='results-block-adds'>{block.adds}</span>
-                    <span className='results-block-detail'>{block.detail}</span>
-                  </div>
-                ))}
-              </div>
-              {/* the package itself, as the pillar's base: tier bars, name and
-                  price, like a row of the package list, linking to it */}
-              <Link to='/packages' className='results-pillar-base'>
-                <span className='results-pillar-bars' aria-hidden>
-                  {packagesData.map((_, bar) => (
-                    <i key={bar} className={bar <= index ? 'is-on' : ''} style={{ '--b': bar } as CSSProperties} />
-                  ))}
-                </span>
-                <span className='results-pillar-name'>{pkg.name}</span>
-                <span className='results-pillar-price'>
-                  From {formatPrice(pkg.from)}
-                  <GoArrowUpRight aria-hidden />
-                </span>
-              </Link>
-            </div>
-          ))}
-        </Reveal>
+        <div className='results-points'>
+          {trackingPoints.map((point, i) => {
+            const Icon = POINT_ICON[point.icon];
+            return (
+              <Reveal key={point.text} as="article" className='results-point' delay={i * 60}>
+                <p className='results-point-text'>{point.text}</p>
+                <Icon className='results-point-icon' aria-hidden />
+              </Reveal>
+            );
+          })}
+        </div>
       </div>
 
       <ResultsDashboard />

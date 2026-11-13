@@ -1,0 +1,251 @@
+/* Before the services (components/searchShowcase.tsx): two big lines on
+   the left (ink, then grey, the same size), a "search" typing itself out,
+   then a row of the work drifting past, edge to edge. */
+
+.showcase {
+  /* no space of its own above or below: the home page sets the same gap
+     between every section */
+  color: var(--text-color-dark);
+}
+
+.showcase-copy {
+  max-width: 54rem;
+}
+
+/* the headline, the grey lines and the query all share the headline type */
+.showcase-headline,
+.showcase-lines,
+.showcase-query {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
+}
+
+.showcase-headline span {
+  display: block;
+  text-wrap: balance;
+}
+
+/* the grey: each phrase on a line of its own where there's room */
+.showcase-lines {
+  margin-top: var(--space-64);
+  color: var(--text-color-secondary);
+}
+
+.showcase-lines span {
+  display: block;
+}
+
+/* the search: the glyph, then the words typing out beside it */
+/* the glyph sits with the first line, should the words wrap */
+.showcase-query {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35em;
+  margin-top: var(--space-128);
+}
+
+.showcase-query-icon {
+  flex: none;
+  width: 0.92em;
+  height: 0.92em;
+  /* centred on the first line: (its line height - the glyph) / 2 */
+  margin-top: calc((var(--section-headline-leading) - 0.92em) / 2);
+}
+
+/* The search types itself out after a text cursor, holds, erases, and the
+   next one types in. The cursor blinks while it waits and holds solid while
+   it types or erases; the magnifier gives a little swing as its spark pops
+   each time a new search starts. */
+.showcase-query-words {
+  /* never empty, so the line keeps its height between searches */
+  min-height: var(--section-headline-leading);
+  white-space: pre-wrap;
+}
+
+.showcase-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 0.06em;
+  vertical-align: -0.17em;
+  border-radius: 1px;
+  background: currentColor;
+  animation: showcase-blink 1s steps(1, end) infinite;
+}
+
+.showcase-caret.is-busy {
+  animation: none;
+}
+
+@keyframes showcase-blink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0; }
+}
+
+.showcase-query-lens {
+  transform-box: fill-box;
+  transform-origin: 40% 40%;
+  animation: showcase-lens 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.showcase-query-spark {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: showcase-spark 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+}
+
+@keyframes showcase-lens {
+  0% { transform: rotate(0); }
+  35% { transform: rotate(-16deg) scale(0.92); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes showcase-spark {
+  from { transform: scale(0) rotate(-90deg); }
+  to { transform: scale(1) rotate(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-caret,
+  .showcase-query-lens,
+  .showcase-query-spark {
+    animation: none;
+  }
+}
+
+/* ---- the row of work ---- */
+
+/* the full width of the screen, past the page's own side padding */
+.showcase-row {
+  margin: var(--space-64) calc(50% - 50vw) 0;
+  overflow: hidden;
+}
+
+.showcase-track {
+  display: flex;
+  width: max-content;
+  animation: showcase-drift 70s linear infinite;
+}
+
+@keyframes showcase-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Each card: the site's light grey, its project's still set in from the top
+   and sides and running off the foot, its monogram tucked over the corner.
+   Its width comes from the project's own shape. A margin rather than a gap,
+   so both halves of the track are the same width. */
+.showcase-card {
+  position: relative;
+  flex: none;
+  height: 24rem;
+  aspect-ratio: var(--ratio);
+  margin-right: var(--gap-5);
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+  overflow: hidden;
+}
+
+.showcase-shot {
+  position: absolute;
+  inset: var(--space-32) var(--space-32) 0;
+  width: calc(100% - 2 * var(--space-32));
+  height: calc(100% - var(--space-32));
+  object-fit: cover;
+  object-position: top center;
+  --radius: 18px;
+  border-radius: var(--corner) var(--corner) 0 0;
+}
+
+/* the project's favicon (or its initial on a black tile), like an app icon
+   over the still's corner */
+.showcase-mark {
+  position: absolute;
+  top: var(--space-16);
+  left: var(--space-16);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  --radius: 16px;
+  border-radius: var(--corner);
+  background: var(--bg-dark-color);
+  color: var(--text-color-light);
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-3-size);
+  object-fit: cover;
+  box-shadow: 0 10px 22px -12px rgba(0, 0, 0, 0.45);
+}
+
+/* the dark fill is for the letter stand-in; behind a real icon it would show
+   as a dark line round a light icon's rounded edge */
+img.showcase-mark {
+  background: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-track {
+    animation: none;
+  }
+
+  /* still, so it scrolls by hand instead */
+  .showcase-row {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 900px) {
+  .showcase-lines {
+    margin-top: var(--space-32);
+  }
+
+  .showcase-query {
+    margin-top: var(--space-64);
+  }
+
+  .showcase-row {
+    margin-top: var(--space-32);
+  }
+
+  .showcase-card {
+    height: 18rem;
+    margin-right: var(--gap-3);
+  }
+
+  .showcase-shot {
+    inset: var(--space-16) var(--space-16) 0;
+    width: calc(100% - 2 * var(--space-16));
+    height: calc(100% - var(--space-16));
+  }
+
+  .showcase-mark {
+    top: var(--space-8);
+    left: var(--space-8);
+    width: 2.75rem;
+    height: 2.75rem;
+    --radius: 12px;
+    font-size: var(--feature-title-size);
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  /* too narrow to keep each phrase on its own line: they run on */
+  .showcase-lines span {
+    display: inline;
+  }
+
+  .showcase-card {
+    height: 14rem;
+  }
+}

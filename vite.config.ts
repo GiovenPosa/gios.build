@@ -48,11 +48,70 @@ const pageHeads = () => ({
   },
 })
 
+/**
+ * Local stand-in for the enquiry form's endpoint. On the live site /api/enquiry
+ * is the Cloudflare Worker (worker/enquiry.ts), which `vite` and `vite preview`
+ * don't run, so locally every step failed with a 404. This answers the same
+ * three calls the same way, so the form can be clicked through end to end,
+ * but saves nothing: no test enquiries land in Supabase or the lead app. To
+ * try the real thing, build and run `npx wrangler dev` (see wrangler.jsonc).
+ */
+const localEnquiry = () => {
+  type Next = () => void
+  type Req = import('http').IncomingMessage
+  type Res = import('http').ServerResponse
+  const handle = (req: Req, res: Res, next: Next) => {
+    const match = req.url?.split('?')[0].match(/^\/api\/enquiry(?:\/([^/]+))?(\/send)?$/)
+    if (!match) return next()
+    const [, id, isSend] = match
+    let raw = ''
+    req.on('data', (chunk) => (raw += chunk))
+    req.on('end', () => {
+      const reply = (status: number, body: object) => {
+        res.statusCode = status
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify(body))
+      }
+      let body: Record<string, unknown> = {}
+      try {
+        body = JSON.parse(raw || '{}')
+      } catch {
+        return reply(400, { error: 'Something went wrong sending the form. Please try again.' })
+      }
+      if (!id && req.method === 'POST') {
+        if (!String(body.name ?? '').trim()) return reply(400, { error: 'Please enter your name.' })
+        if (!String(body.email ?? '').includes('@')) return reply(400, { error: 'Please enter a valid email.' })
+        console.log('[local enquiry] step 1 (not saved):', body.name, body.email)
+        return reply(200, { id: crypto.randomUUID() })
+      }
+      if (id && !isSend && req.method === 'PATCH') {
+        console.log('[local enquiry] step update (not saved)')
+        return reply(200, { id })
+      }
+      if (id && isSend && req.method === 'POST') {
+        console.log('[local enquiry] sent (not saved)')
+        return reply(200, { ok: true })
+      }
+      reply(405, { error: 'Not allowed.' })
+    })
+  }
+  return {
+    name: 'local-enquiry',
+    configureServer(server: { middlewares: { use: (fn: typeof handle) => void } }) {
+      server.middlewares.use(handle)
+    },
+    configurePreviewServer(server: { middlewares: { use: (fn: typeof handle) => void } }) {
+      server.middlewares.use(handle)
+    },
+  }
+}
+
 export default defineConfig({
   plugins: [
     react(),
     svgr(),
     pageHeads(),
+    localEnquiry(),
   ],
   base: '/',
   build: {

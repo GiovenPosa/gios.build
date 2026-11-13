@@ -28,7 +28,7 @@
   max-width: 600px;
   max-height: 90vh;
   background: var(--bg-light-color);
-  padding: 2.5rem;
+  padding: var(--space-32);
   box-sizing: border-box;
   --radius: 24px;
   border-radius: var(--corner);
@@ -60,9 +60,8 @@
   background: var(--btn-color-muted);
   border: none;
   border-radius: 50%;
-  corner-shape: round;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: var(--space-8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,14 +81,14 @@
 }
 
 .booking-header {
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-32);
 }
 
 .booking-label {
   font-family: var(--font-Sonder-Regular);
   font-size: var(--font-size-large);
   color: var(--text-color-muted);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 var(--space-8) 0;
 }
 
 .booking-title {
@@ -97,7 +96,7 @@
   font-weight: normal;
   font-size: var(--font-size-xxlarge);
   color: var(--text-color-dark);
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 var(--space-16) 0;
 }
 
 .booking-subtitle {
@@ -112,21 +111,21 @@
 .booking-step {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--gap-6);
 }
 
 /* ===== Wizard: progress, step change, buttons ===== */
 .booking-progress {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
+  gap: var(--gap-3);
+  margin-bottom: var(--space-32);
 }
 
 .booking-progress-bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.375rem;
+  gap: var(--gap-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -137,24 +136,25 @@
   --radius: 99px;
   border-radius: var(--corner);
   background: var(--btn-color-muted);
-  transition: background-color 0.3s ease;
+  overflow: hidden;
 }
 
-.booking-progress-bar li.is-done {
+/* the fill: grows from the left by the share of the step's required fields
+   filled in (set in bookingForm.tsx) */
+.booking-progress-bar i {
+  display: block;
+  height: 100%;
   background: var(--bg-dark-color);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .booking-progress-label {
   margin: 0;
-  font-family: var(--font-family-Mono);
+  font-family: var(--font-family-Medium);
   font-size: 13px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--text-color-muted);
-}
-
-.booking-progress-label span {
-  margin-left: 0.5rem;
   color: var(--text-color-dark);
 }
 
@@ -172,12 +172,16 @@
   .booking-step {
     animation: none;
   }
+
+  .booking-progress-bar i {
+    transition: none;
+  }
 }
 
 .booking-actions {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: var(--gap-2);
+  margin-top: var(--space-8);
 }
 
 .booking-actions .booking-submit {
@@ -186,7 +190,7 @@
 }
 
 .booking-back {
-  padding: 1.1rem 1.5rem;
+  padding: var(--space-16) var(--space-32);
   font-family: var(--font-family-Medium);
   font-size: var(--font-size-medium);
   --radius: 27px;
@@ -212,7 +216,7 @@
 
 .booking-error {
   margin: 0;
-  padding: 0.875rem 1rem;
+  padding: var(--space-16) var(--space-16);
   --radius: 12px;
   border-radius: var(--corner);
   background: rgba(229, 57, 53, 0.08);
@@ -225,7 +229,7 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--gap-2);
 }
 
 .form-group label {
@@ -243,7 +247,7 @@
   border: 2px solid transparent;
   --radius: 12px;
   border-radius: var(--corner);
-  padding: 1rem 1.25rem;
+  padding: var(--space-16) var(--space-16);
   outline: none;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
@@ -267,8 +271,8 @@
 .type-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
+  gap: var(--gap-2);
+  margin-top: var(--space-8);
 }
 
 .type-tag {
@@ -279,7 +283,7 @@
   border: 2px solid transparent;
   --radius: 21px;
   border-radius: var(--corner);
-  padding: 0.6rem 1.25rem;
+  padding: var(--space-8) var(--space-16);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -299,8 +303,8 @@
 .package-options {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
+  gap: var(--gap-2);
+  margin-top: var(--space-8);
 }
 
 .package-option {
@@ -314,7 +318,7 @@
   border: 2px solid transparent;
   --radius: 12px;
   border-radius: var(--corner);
-  padding: 1rem 1.25rem;
+  padding: var(--space-16) var(--space-16);
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
@@ -364,7 +368,7 @@
 
 .budget-input-wrapper input {
   width: 100%;
-  padding-left: 2.5rem;
+  padding-left: var(--space-32);
 }
 
 .budget-input-wrapper input::-webkit-outer-spin-button,
@@ -382,13 +386,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--gap-2);
   width: 100%;
-  padding: 1.1rem 1.5rem;
-  margin-top: 0.5rem;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  margin-top: var(--space-8);
   font-family: var(--font-family-Medium);
-  font-size: var(--font-size-medium);
-  --radius: 27px;
+  font-size: var(--btn-font-size);
+  --radius: var(--btn-radius);
   border-radius: var(--corner);
   background-color: var(--bg-dark-color);
   color: var(--text-color-light);
@@ -435,9 +439,8 @@
   font-family: var(--font-family-Regular);
   font-size: 14px;
   color: #e53935;
-  margin-top: 0.25rem;
+  margin-top: var(--space-8);
 }
-
 
 /* ===== SUCCESS PANEL STYLES ===== */
 .success-panel {
@@ -445,7 +448,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 2rem 0;
+  padding: var(--space-32) 0;
   animation: successFadeIn 0.4s ease;
 }
 
@@ -463,7 +466,7 @@
 .success-icon {
   width: 80px;
   height: 80px;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-32);
   animation: iconPop 0.5s ease 0.2s both;
 }
 
@@ -492,14 +495,14 @@
   font-weight: normal;
   font-size: var(--font-size-xxlarge);
   color: var(--text-color-dark);
-  margin: 0 0 1rem 0;
+  margin: 0 0 var(--space-16) 0;
 }
 
 .success-message {
   font-family: var(--font-family-Regular);
   font-size: var(--font-size-regular);
   color: var(--text-color-muted);
-  margin: 0 0 2rem 0;
+  margin: 0 0 var(--space-32) 0;
   line-height: 1.6;
   max-width: 320px;
 }
@@ -509,11 +512,11 @@
   background: var(--btn-color-muted);
   --radius: 16px;
   border-radius: var(--corner);
-  padding: 1.25rem;
-  margin-bottom: 2rem;
+  padding: var(--space-16);
+  margin-bottom: var(--space-32);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--gap-4);
 }
 
 .success-detail-item {
@@ -538,12 +541,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--gap-2);
   width: 100%;
-  padding: 1.1rem 1.5rem;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
   font-family: var(--font-family-Medium);
-  font-size: var(--font-size-medium);
-  --radius: 27px;
+  font-size: var(--btn-font-size);
+  --radius: var(--btn-radius);
   border-radius: var(--corner);
   background-color: var(--bg-dark-color);
   color: var(--text-color-light);
@@ -562,11 +565,10 @@
   margin: 0;
 }
 
-
 /* ===== TABLET (900px and below) ===== */
 @media (max-width: 900px) {
   .booking-form {
-    padding: 2rem;
+    padding: var(--space-32);
   }
   
   .booking-title {
@@ -578,19 +580,18 @@
   }
 }
 
-
 /* ===== MOBILE (600px and below) ===== */
 @media (max-width: 600px) {
   .booking-form {
     width: 95%;
-    padding: 1.5rem;
+    padding: var(--space-32);
     --radius: 20px;
     border-radius: var(--corner);
     max-height: 85vh;
   }
   
   .booking-header {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-32);
   }
   
   .booking-title {
@@ -608,22 +609,22 @@
   }
   
   .booking-form-content {
-    gap: 1.25rem;
+    gap: var(--gap-5);
   }
   
   .form-group input,
   .form-group textarea {
-    padding: 0.875rem 1rem;
+    padding: var(--space-16) var(--space-16);
     font-size: var(--font-size-regular);
   }
   
   .type-tag {
     font-size: 14px;
-    padding: 0.5rem 1rem;
+    padding: var(--space-8) var(--space-16);
   }
   
   .package-option {
-    padding: 0.875rem 1rem;
+    padding: var(--space-16) var(--space-16);
     font-size: var(--font-size-regular);
   }
   
@@ -636,32 +637,31 @@
   }
   
   .budget-input-wrapper input {
-    padding-left: 2.25rem;
+    padding-left: var(--space-32);
   }
   
-  .booking-submit,
   .booking-back {
-    padding: 1rem 1.25rem;
+    padding: var(--space-16) var(--space-16);
     font-size: var(--font-size-regular);
   }
 
   .booking-progress {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-32);
   }
 
   .booking-step {
-    gap: 1.25rem;
+    gap: var(--gap-5);
   }
   
   /* Success panel mobile */
   .success-panel {
-    padding: 1rem 0;
+    padding: var(--space-16) 0;
   }
   
   .success-icon {
     width: 64px;
     height: 64px;
-    margin-bottom: 1.25rem;
+    margin-bottom: var(--space-16);
   }
   
   .success-title {
@@ -670,12 +670,12 @@
   
   .success-message {
     font-size: 15px;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-32);
   }
   
   .success-details {
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+    padding: var(--space-16);
+    margin-bottom: var(--space-32);
   }
   
   .success-detail-label,
@@ -683,17 +683,12 @@
     font-size: 14px;
   }
   
-  .success-button {
-    padding: 1rem 1.25rem;
-    font-size: var(--font-size-regular);
-  }
 }
-
 
 /* ===== SMALL MOBILE (400px and below) ===== */
 @media (max-width: 400px) {
   .booking-form {
-    padding: 1.25rem;
+    padding: var(--space-16);
   }
   
   .booking-title {
@@ -705,16 +700,16 @@
   }
   
   .type-tags {
-    gap: 0.4rem;
+    gap: var(--gap-2);
   }
   
   .type-tag {
     font-size: 13px;
-    padding: 0.45rem 0.9rem;
+    padding: var(--space-8) var(--space-16);
   }
   
   .package-option {
-    padding: 0.75rem 0.875rem;
+    padding: var(--space-16) var(--space-16);
     font-size: 14px;
   }
   
@@ -727,7 +722,7 @@
   }
   
   .budget-input-wrapper input {
-    padding-left: 2rem;
+    padding-left: var(--space-32);
   }
   
   /* Success panel small mobile */
@@ -747,7 +742,7 @@
 
 /* a quiet line under the submit button pointing to the privacy notice */
 .booking-privacy {
-  margin: 1rem 0 0;
+  margin: var(--space-16) 0 0;
   font-family: var(--font-family-Regular);
   font-size: 13px;
   text-align: center;

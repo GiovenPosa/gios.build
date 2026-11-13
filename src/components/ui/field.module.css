@@ -1,0 +1,114 @@
+/* @giosbuild/field 0.4.0
+   Every value is a --ui-* token from the theme file (theme-saas.css,
+   theme-bold.css). Rounded boxes set --radius and draw
+   border-radius: var(--corner, var(--radius)), so a site that defines
+   --corner (for squircle corners) gets its own shape, and any other site gets
+   a plain radius. */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-gap-2);
+  min-width: 0;
+}
+
+.label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ui-gap-2);
+  margin-left: var(--ui-space-8);
+  color: var(--ui-muted);
+  font-family: var(--ui-font-strong);
+  font-weight: var(--ui-strong-weight, 500);
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  letter-spacing: var(--ui-label-tracking, 0);
+  text-transform: var(--ui-label-case, none);
+}
+
+.optional {
+  color: var(--ui-faint);
+  font-family: var(--ui-font);
+  font-size: 0.75rem;
+  text-transform: none;
+}
+
+/* the shared control: inputs, text areas, and the dropdown's trigger
+   (dropdown.module.css composes it) */
+.control {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--ui-control-h);
+  margin: 0;
+  padding: var(--ui-space-16) var(--ui-space-16);
+  border: var(--ui-border-width) solid var(--ui-field-border);
+  --radius: var(--ui-radius);
+  border-radius: var(--corner, var(--radius));
+  background-color: var(--ui-field-bg);
+  box-shadow: var(--ui-control-shadow);
+  color: var(--ui-text);
+  /* 16px or more: iOS doesn't zoom in on focus */
+  font-family: var(--ui-font);
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  outline: none;
+  transition:
+    border-color 0.1s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.control::placeholder {
+  color: var(--ui-faint);
+}
+
+@media (hover: hover) {
+  .control:hover:not(:focus):not(:disabled) {
+    background-color: color-mix(in oklab, var(--ui-field-bg) 92%, var(--ui-text));
+  }
+}
+
+/* focus: two layers, a solid edge and a soft halo outside it */
+.control:focus,
+.control:focus-visible {
+  border-color: var(--ui-ring);
+  background-color: var(--ui-field-bg-focus);
+  box-shadow: var(--ui-control-shadow), 0 0 0 3px color-mix(in srgb, var(--ui-ring) 22%, transparent);
+  outline: none;
+}
+
+.control[aria-invalid="true"] {
+  border-color: var(--ui-danger);
+}
+
+.control[aria-invalid="true"]:focus {
+  box-shadow: var(--ui-control-shadow), 0 0 0 3px color-mix(in srgb, var(--ui-danger) 18%, transparent);
+}
+
+.control:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.textarea {
+  min-height: 7rem;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.error {
+  margin: 0 0 0 var(--ui-space-8);
+  color: var(--ui-danger);
+  font-family: var(--ui-font-strong);
+  font-weight: var(--ui-strong-weight, 500);
+  font-size: 0.8125rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control {
+    transition: none;
+  }
+}

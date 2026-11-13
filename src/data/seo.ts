@@ -46,6 +46,14 @@ export const PAGES = {
     shareTitle: 'Packages & Pricing | gios.build',
     shareDescription: 'Starter sites from £500, redesigns from £800, growth websites from £1,500. Every project starts with a free homepage mockup.',
   },
+  '/ui': {
+    title: 'Gio UI | A React Component Library You Own | gios.build',
+    description:
+      'Gio UI is a copy-in React component library: pull components into your project, theme them with CSS variables, and hand plain code to your client. Join the waitlist.',
+    keywords: 'react component library, copy-in components, shadcn registry, css modules components, react ui kit, design system, gios.build',
+    shareTitle: 'Gio UI | Copy it in. Make it yours.',
+    shareDescription: 'A React component library you copy into your project, theme with CSS variables and hand over as plain code.',
+  },
   '/privacy': {
     title: 'Privacy | gios.build',
     description:

@@ -1,0 +1,46 @@
+/* @giosbuild/popover 0.4.0 */
+
+.anchor {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.anchor > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  padding: var(--ui-space-8);
+  border: var(--ui-border-width) solid var(--ui-line);
+  --radius: var(--ui-radius-panel);
+  border-radius: var(--corner, var(--radius));
+  background: var(--ui-panel);
+  box-shadow: var(--ui-shadow);
+  animation: pop-in 0.14s ease-out;
+}
+
+/* not enough room below: open above the trigger instead */
+.up {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}

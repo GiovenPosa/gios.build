@@ -2,8 +2,15 @@
    travel). Its frame is full-bleed and pins to the whole viewport. */
 .tst {
   position: relative;
-  /* padding, not margin, so it can't collapse into the tools section's margin */
-  padding-top: var(--section-gap-medium);
+  /* no space of its own: the quotes sit centred in a full-screen frame, and
+     testimonials.tsx pulls the section in (negative margins) by the empty
+     frame above the first quote and below the last, so the home page's
+     section gap runs from the quote itself.
+     (testimonials.tsx reads this padding, so it can change freely) */
+  padding-top: 0;
+  /* so it reaches over the sections either side, only the quotes take the
+     pointer (see .tst-panel), never its empty frame */
+  pointer-events: none;
   color: var(--text-color-dark);
   box-sizing: content-box;
 }
@@ -11,7 +18,6 @@
 .tst-frame {
   --tst-ink: #0c0c0c;
   --tst-ink-soft: rgba(12, 12, 12, 0.6);
-  --tst-ink-faint: rgba(12, 12, 12, 0.2);
   --tst-accent: #fe432a;
   position: sticky;
   top: 0;
@@ -59,13 +65,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 3rem;
-}
-
-.tst-progress {
-  width: calc(100% - 4rem);
-  max-width: 1736px;
-  margin: 0 auto;
 }
 
 /* JS pads both ends so the first and last quotes sit centred in the frame */
@@ -81,50 +80,49 @@
 .tst-panel {
   flex: 0 0 var(--panel);
   margin: 0;
+  pointer-events: auto;
 }
 
 .tst-text {
   margin: 0;
-  font-family: var(--font-family-Bold);
-  font-size: clamp(2.4rem, 5.4vw, 6rem);
-  line-height: 1;
-  letter-spacing: -0.045em;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  /* the section headline size, like every other section */
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
   text-wrap: balance;
-}
-
-.tst-mark {
-  color: var(--tst-accent);
+  /* centred in its panel, so each quote sits in the middle of the screen */
+  text-align: center;
 }
 
 .tst-cite {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.6rem;
-  margin-top: 2rem;
-  font-family: var(--font-family-Mono);
-  font-size: 14px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  justify-content: center;
+  gap: 0 var(--gap-2);
+  margin-top: var(--space-32);
+  /* the body style, in Jakarta, in plain sentence case */
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
 }
 
-.tst-cite i {
-  font-style: normal;
-  color: var(--tst-ink-soft);
-}
-
-/* how they know Gio, on its own line under the name: quieter, so the name
-   leads, and it keeps an endorsement from reading as a client review */
-.tst-rel {
+/* their role and where, on its own line under the name, quieter so the
+   name leads */
+.tst-role {
   flex-basis: 100%;
+  text-align: center;
   color: var(--tst-ink-soft);
 }
 
-/* result pill, in the brand red like the quote marks */
+/* result pill, in the brand red */
 .tst-cite em {
   font-style: normal;
-  margin-left: 0.4rem;
-  padding: 0.25rem 0.6rem;
+  margin-left: var(--space-8);
+  padding: var(--space-8) var(--space-8);
   --radius: 11px;
   border-radius: var(--corner);
   background: var(--tst-accent);
@@ -132,36 +130,11 @@
   color: #0c0c0c;
 }
 
-/* how far through the quotes you are */
-.tst-progress {
-  display: flex;
-  gap: 10px;
-}
-
-/* one rounded segment per quote; JS clips each fill to its length */
-.tst-segment {
-  position: relative;
-  flex: 1;
-  height: 5px;
-  --radius: 999px;
-  border-radius: var(--corner);
-  background: var(--tst-ink-faint);
-}
-
-.tst-segment-fill {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--tst-ink);
-  visibility: hidden;
-  clip-path: inset(0 100% 0 0 round 999px);
-}
-
 /* reduced motion: no pinning, the quotes stack over a still gradient */
 .tst.is-still .tst-frame {
   position: relative;
   height: auto;
-  padding: 6rem 0;
+  padding: var(--space-128) 0;
 }
 
 .tst.is-still .tst-backdrop {
@@ -172,61 +145,28 @@
 .tst.is-still .tst-track {
   flex-direction: column;
   width: calc(100% - 4rem);
-  max-width: 1736px;
+  max-width: calc(var(--content-max) - 4rem);
   margin: 0 auto;
-  gap: 4rem;
+  gap: var(--space-64);
 }
 
 .tst.is-still .tst-panel {
   flex: none;
 }
 
-.tst.is-still .tst-progress {
-  display: none;
-}
-
 @media (max-width: 900px) {
   .tst-track {
     --panel: 80vw;
   }
-
-  .tst-progress {
-    width: calc(100% - 3rem);
-  }
 }
 
 @media (max-width: 600px) {
-  .tst {
-    padding-top: 4rem;
-  }
-
-  .tst-inner {
-    gap: 2rem;
-  }
-
-  .tst-progress {
-    width: calc(100% - 2rem);
-  }
-
-  .tst-progress {
-    gap: 6px;
-  }
-
-  .tst-segment {
-    height: 4px;
-  }
-
   .tst-track {
     --panel: 84vw;
     gap: 10vw;
   }
 
-  .tst-text {
-    font-size: clamp(2rem, 9vw, 2.8rem);
-  }
-
   .tst-cite {
-    margin-top: 1.25rem;
-    font-size: 12px;
+    margin-top: var(--space-16);
   }
 }

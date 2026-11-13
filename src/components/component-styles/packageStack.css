@@ -18,8 +18,8 @@
      prices line up like a price list and never shift as a slot opens */
   grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr) 22rem;
   align-items: center;
-  gap: 3rem;
-  padding: 2.5rem 0;
+  gap: var(--space-64);
+  padding: var(--space-32) 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
@@ -27,21 +27,22 @@
 /* ---- name, ladder and who it's for ---- */
 
 .pk-name h2 {
-  margin: 1rem 0 0;
-  font-family: var(--font-family-Bold);
-  font-weight: normal;
-  font-size: clamp(1.75rem, 2.6vw, 2.75rem);
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--content-title-size);
+  line-height: var(--content-title-leading);
+  letter-spacing: var(--content-title-tracking);
+  margin: var(--space-16) 0 0;
 }
 
 .pk-name p {
-  margin: 0.6rem 0 0;
-  max-width: 22rem;
   font-family: var(--font-family-Regular);
-  font-size: var(--font-size-regular);
-  line-height: 1.4;
-  color: var(--text-color-muted);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  margin: var(--space-8) 0 0;
+  max-width: 22rem;
 }
 
 /* one bar per tier, rising like signal bars; a package lights as many as
@@ -49,7 +50,7 @@
 .pk-ladder {
   display: flex;
   align-items: flex-end;
-  gap: 4px;
+  gap: var(--gap-1);
   height: 22px;
 }
 
@@ -99,7 +100,7 @@
   position: absolute;
   top: -1.4rem;
   left: 0.1em;
-  font-family: var(--font-family-Mono);
+  font-family: var(--font-family-Medium);
   font-size: 13px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -115,37 +116,6 @@
 
 .pk-row.is-active .pk-amount {
   color: var(--text-color-dark);
-}
-
-/* the slot: closed to nothing beside the price, it springs open on the
-   active row and plays that package's graphic, like the services stack */
-.pk-slot {
-  position: relative;
-  display: inline-block;
-  width: 0;
-  height: 0.74em;
-  margin-left: 0;
-  --radius: 0.14em;
-  border-radius: var(--corner);
-  overflow: hidden;
-  transition:
-    width 0.7s cubic-bezier(0.12, 1.15, 0.3, 1),
-    margin 0.7s cubic-bezier(0.12, 1.15, 0.3, 1);
-}
-
-.pk-row.is-active .pk-slot {
-  width: 1.55em;
-  margin-left: 0.18em;
-}
-
-.pk-slot .svc-art {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 1.55em;
-  height: 100%;
-  transform: translateX(-50%);
-  display: block;
 }
 
 /* ---- what's in it ---- */
@@ -184,8 +154,8 @@
 }
 
 .pk-range {
-  margin: 0.9rem 0 0;
-  font-family: var(--font-family-Mono);
+  margin: var(--space-16) 0 0;
+  font-family: var(--font-family-Medium);
   font-size: 13px;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -195,9 +165,9 @@
 .pk-choose {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  margin-top: 1.25rem;
-  padding: 0.75rem 1.1rem;
+  gap: var(--gap-2);
+  margin-top: var(--space-16);
+  padding: var(--space-16) var(--space-16);
   border: 0;
   --radius: 22px;
   border-radius: var(--corner);
@@ -220,7 +190,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pk-slot,
   .pk-notes li {
     transition: none;
   }
@@ -238,13 +207,13 @@
     grid-template-areas:
       'price price'
       'name notes';
-    gap: 1.75rem 2rem;
+    gap: var(--space-32) var(--space-32);
     align-items: start;
   }
 
   .pk-price {
     grid-area: price;
-    margin-top: 1.4rem;
+    margin-top: var(--space-16);
   }
 
   .pk-name {
@@ -274,25 +243,16 @@
       'name'
       'price'
       'notes';
-    gap: 1.25rem;
-    padding: 2rem 0;
+    gap: var(--gap-5);
+    padding: var(--space-32) 0;
   }
 
   .pk-price {
-    margin-top: 1.6rem;
+    margin-top: var(--space-32);
   }
 
   .pk-notes ul {
     font-size: 12px;
   }
 
-  /* a narrower slot, so the widest price and its slot stay inside the margins */
-  .pk-row.is-active .pk-slot {
-    width: 1.2em;
-    margin-left: 0.14em;
-  }
-
-  .pk-slot .svc-art {
-    width: 1.2em;
-  }
 }

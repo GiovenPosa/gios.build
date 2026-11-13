@@ -1,0 +1,92 @@
+/* @giosbuild/theme-bold 0.4.0
+   Thick ink edges, hard offset shadows and a loud yellow, with uppercase
+   labels. Import it once (e.g. in your root layout or main.tsx) and change any
+   value here; components only ever read these tokens.
+
+   On :root it styles the whole site. [data-ui-theme="bold"] lets a page show
+   several themes at once: put the attribute on any element and everything
+   inside it follows this theme. */
+
+:root,
+[data-ui-theme="bold"] {
+  /* type: inherits the site's font; labels heavy and uppercase */
+  --ui-font: inherit;
+  --ui-font-strong: inherit;
+  --ui-strong-weight: 700;
+  --ui-label-case: uppercase;
+  --ui-label-tracking: 0.04em;
+
+  /* ink */
+  --ui-text: #0a0a0a;
+  --ui-muted: #262626;
+  --ui-faint: #737373;
+
+  /* controls */
+  --ui-field-bg: #ffffff;
+  --ui-field-bg-focus: #ffffff;
+  --ui-field-border: #0a0a0a;
+  --ui-line: #0a0a0a;
+  --ui-control-h: 3.25rem;
+  --ui-border-width: 2px;
+  --ui-control-shadow: 3px 3px 0 #0a0a0a;
+
+  /* brand */
+  --ui-accent: #ffd60a;
+  --ui-on-accent: #0a0a0a;
+  --ui-ring: #0a0a0a;
+  --ui-danger: #d90429;
+
+  /* floating panels (the dropdown's list) */
+  --ui-panel: #ffffff;
+  --ui-hover: #ffe566;
+  --ui-shadow: 5px 5px 0 #0a0a0a;
+
+  /* corners */
+  --ui-radius: 6px;
+  --ui-radius-panel: 6px;
+
+  /* the primary button: an ink block on a hard shadow, pressed flat onto it */
+  --ui-button-bg: #0a0a0a;
+  --ui-button-hover-bg: #262626;
+  --ui-button-text: #ffd60a;
+  --ui-button-border: #0a0a0a;
+  --ui-button-radius: 6px;
+  --ui-button-weight: 700;
+  --ui-button-shadow: 3px 3px 0 #0a0a0a;
+  --ui-button-shadow-pressed: 0 0 0 #0a0a0a;
+  --ui-button-corner: round;
+  --ui-button-press: translate(3px, 3px);
+
+  /* the cookie notice: an ink block on a hard yellow shadow */
+  --ui-notice-bg: #0a0a0a;
+  --ui-notice-text: #ffffff;
+  --ui-notice-border: #0a0a0a;
+  --ui-notice-radius: 6px;
+  --ui-notice-radius-stacked: 6px;
+  --ui-notice-shadow: 5px 5px 0 #ffd60a;
+  --ui-notice-button-radius: 4px;
+  --ui-notice-accept-bg: #ffd60a;
+  --ui-notice-accept-text: #0a0a0a;
+  --ui-notice-accept-hover-bg: #ffe566;
+  --ui-notice-deny-bg: transparent;
+  --ui-notice-deny-border: rgb(255 255 255 / 0.35);
+  --ui-notice-deny-hover-bg: rgb(255 255 255 / 0.1);
+  --ui-notice-deny-hover-border: #ffffff;
+
+  /* spacing: padding, margins and the bigger gaps, doubling from 8px
+     (the same scale as gios.build) */
+  --ui-space-8: 8px;
+  --ui-space-16: 16px;
+  --ui-space-32: 32px;
+  --ui-space-64: 64px;
+  --ui-space-128: 128px;
+  --ui-space-256: 256px;
+
+  /* gaps between things inside a component: 4px steps up to 24px */
+  --ui-gap-1: 4px;
+  --ui-gap-2: 8px;
+  --ui-gap-3: 12px;
+  --ui-gap-4: 16px;
+  --ui-gap-5: 20px;
+  --ui-gap-6: 24px;
+}

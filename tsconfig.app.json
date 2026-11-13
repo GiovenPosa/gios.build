@@ -22,7 +22,10 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Where `npx shadcn add @giosbuild/...` puts components (components.json) */
+    "paths": { "@/*": ["./src/*"] }
   },
   "include": ["src"]
 }

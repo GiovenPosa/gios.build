@@ -1,11 +1,12 @@
 import './page-styles/privacyPage.css';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PageMeta } from '../components/pageMeta';
 import { isOptedOut, setOptedOut } from '../lib/analytics';
 import { Reveal } from '../components/reveal';
 
 // When this was last changed; update it with the text.
-const UPDATED = '19 October 2026';
+const UPDATED = '10 November 2026';
 
 // The ICO registration number, once the data protection fee is paid
 // (ico.org.uk/fee). The line under "Who I am" shows only once it's set.
@@ -31,7 +32,7 @@ export function PrivacyPage() {
             <span>Your details,</span> <span>kept simple.</span>
           </Reveal>
           <Reveal as="p" className='privacy-lede' delay={80}>
-            I only collect what I need to reply to you and quote for your website. No cookies, no ads, no mailing lists.
+            I only collect what I need to reply to you and quote for your website. No cookies, no ads, no newsletters.
           </Reveal>
 
           <div className='privacy-body'>
@@ -59,6 +60,16 @@ export function PrivacyPage() {
                 if you'd still like a mockup.
               </p>
               <p>If you email me directly, I'll have whatever you put in that email.</p>
+            </section>
+
+            <section>
+              <h2>The UI library waitlist</h2>
+              <p>
+                If you join the waitlist on the <Link to='/ui'>Gio UI page</Link>, I keep your email address and the page you
+                joined from. I use it for one thing: a single email when the library launches. You won't get a newsletter, and
+                I delete the list within 3 months of the launch. To come off it sooner, email{' '}
+                <a href='mailto:contact@gios.build'>contact@gios.build</a>.
+              </p>
             </section>
 
             <section>
@@ -94,7 +105,8 @@ export function PrivacyPage() {
               <p>
                 To reply to your enquiry, design your free homepage mockup and send you a quote. If we then work together, I use
                 them to plan, build and look after your website. That's me taking steps you've asked for before we agree a project,
-                and replying to the enquiries people send me.
+                and replying to the enquiries people send me. For the waitlist, it's because you asked me to tell you when
+                the library launches.
               </p>
               <p>I'll never sell your details, share them for marketing, or add you to a mailing list.</p>
             </section>
@@ -102,7 +114,7 @@ export function PrivacyPage() {
             <section>
               <h2>Where they're kept</h2>
               <p>
-                Form enquiries are stored with Supabase, a database service. The site is hosted by Cloudflare, and visits are
+                Form enquiries and waitlist emails are stored with Supabase, a database service. The site is hosted by Cloudflare, and visits are
                 counted by Umami. All three handle your details only on my behalf. Some of them store data outside the UK; where
                 they do, they use the safeguards UK law requires.
               </p>

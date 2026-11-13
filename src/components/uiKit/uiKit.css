@@ -1,0 +1,232 @@
+/* The Gio UI stand-in components (uiKit.tsx). Every colour, radius, border
+   and font is a --ui-* token from themes.css, so a theme reskins all of them
+   and nothing here needs to change. Rounded boxes set --radius and draw
+   border-radius: var(--corner), with a plain radius as the fallback anywhere
+   --corner isn't defined. */
+
+/* ---- Button ---- */
+
+.gui-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-2);
+  min-height: var(--ui-control-h);
+  margin: 0;
+  padding: 0 var(--space-32);
+  border: var(--ui-border-width) solid var(--ui-button-border);
+  --radius: var(--ui-button-radius);
+  border-radius: var(--corner, var(--radius));
+  background: var(--ui-button-bg);
+  box-shadow: var(--ui-control-shadow);
+  color: var(--ui-button-text);
+  font-family: var(--ui-font-strong);
+  font-weight: var(--ui-strong-weight, 500);
+  font-size: 1rem;
+  letter-spacing: var(--ui-label-tracking, 0);
+  text-transform: var(--ui-label-case, none);
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.gui-button.is-secondary {
+  background: var(--ui-field-bg);
+  color: var(--ui-text);
+  border-color: var(--ui-field-border);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gui-button:hover {
+    opacity: 0.82;
+  }
+}
+
+.gui-button:active {
+  transform: translateY(1px);
+}
+
+.gui-button:focus-visible {
+  outline: 2px solid var(--ui-ring);
+  outline-offset: 3px;
+}
+
+.gui-button:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+/* ---- A list of options (the popover demo's menu) ---- */
+
+.gui-listbox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-1);
+  max-height: min(320px, 50vh);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+}
+
+.gui-option {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-2);
+  padding: var(--space-16) var(--space-16);
+  --radius: calc(var(--ui-radius-panel) - 2px);
+  border-radius: var(--corner, var(--radius));
+  color: var(--ui-text);
+  font-family: var(--ui-font);
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.gui-option.is-active {
+  background-color: var(--ui-hover);
+}
+
+/* ---- Chips (a quick single pick) ---- */
+
+.gui-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-2);
+}
+
+.gui-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-1);
+  min-height: 2.75rem;
+  padding: 0 var(--space-16);
+  border: var(--ui-border-width) solid var(--ui-line);
+  --radius: var(--ui-chip-radius);
+  border-radius: var(--corner, var(--radius));
+  color: var(--ui-text);
+  font-family: var(--ui-font-strong);
+  font-weight: var(--ui-strong-weight, 500);
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition:
+    background-color 0.1s ease,
+    border-color 0.1s ease,
+    color 0.1s ease;
+}
+
+@media (hover: hover) {
+  .gui-chip:hover {
+    border-color: color-mix(in oklab, var(--ui-line), var(--ui-text) 25%);
+  }
+}
+
+.gui-chip.is-on,
+.gui-chip.is-on:hover {
+  border-color: var(--ui-accent);
+  background-color: var(--ui-accent);
+  color: var(--ui-on-accent);
+}
+
+.gui-chips[aria-invalid='true'] .gui-chip {
+  border-color: color-mix(in srgb, var(--ui-danger) 60%, transparent);
+}
+
+.gui-chip-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.gui-chip:has(.gui-chip-input:focus-visible) {
+  outline: 2px solid var(--ui-ring);
+  outline-offset: 2px;
+}
+
+.gui-chip-check {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-left: -0.2rem;
+}
+
+/* ---- Accordion ---- */
+
+.gui-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+  text-align: left;
+}
+
+.gui-accordion-row {
+  border: var(--ui-border-width) solid var(--ui-field-border);
+  --radius: var(--ui-radius);
+  border-radius: var(--corner, var(--radius));
+  background: var(--ui-field-bg);
+  box-shadow: var(--ui-control-shadow);
+  overflow: hidden;
+}
+
+.gui-accordion-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-4);
+  padding: var(--space-16) var(--space-16);
+  color: var(--ui-text);
+  font-family: var(--ui-font-strong);
+  font-weight: var(--ui-strong-weight, 500);
+  font-size: 1rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.gui-accordion-summary::-webkit-details-marker {
+  display: none;
+}
+
+.gui-accordion-summary:focus-visible {
+  outline: 2px solid var(--ui-ring);
+  outline-offset: -2px;
+}
+
+.gui-accordion-icon {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--ui-muted);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0, 1);
+}
+
+.gui-accordion-row[open]:not([data-closing]) .gui-accordion-icon {
+  transform: rotate(45deg);
+}
+
+.gui-accordion-body {
+  margin: 0;
+  padding: 0 var(--space-16) var(--space-16);
+  color: var(--ui-muted);
+  font-family: var(--ui-font);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gui-control,
+  .gui-chip,
+  .gui-button,
+  .gui-accordion-icon {
+    transition: none;
+  }
+
+  .gui-panel {
+    animation: none;
+  }
+}

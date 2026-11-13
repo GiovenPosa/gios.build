@@ -2,45 +2,37 @@
   position: fixed;
   top: 0;
   left: 0;
+  /* tall at the very top of the page, slimmer once it scrolls */
   height: 100px;
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0 2rem;
+  padding: 0 var(--page-gutter);
   box-sizing: border-box;
   background-color: transparent;
   z-index: 100;
 }
 
-/* coming back: fast, then a soft stop */
-.top-header.visible {
-  transform: translateY(0);
-  opacity: 1;
-  visibility: visible;
+/* once the page scrolls: our white behind it, and a hairline along its
+   foot. It stays put rather than hiding. The words keep their dark ink on
+   the white, so the light-on-dark switch only applies at the very top. */
+.top-header {
+  border-bottom: 1px solid transparent;
   transition:
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.3s ease,
-    visibility 0s;
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Going away: it slides up and fades out as it goes. Fading matters on
-   iPhone Safari, whose see-through glass toolbar shows whatever sits above
-   the page, so a header that only slid out of view was still visible through
-   it. Once it's gone it's taken out of view entirely. */
-.top-header.hidden {
-  transform: translateY(calc(-100% - env(safe-area-inset-top, 0px)));
-  opacity: 0;
-  visibility: hidden;
-  /* the slide leads and the fade follows it, so you see it go up */
-  transition:
-    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.2s ease 0.2s,
-    visibility 0s linear 0.4s;
+.top-header.is-scrolled {
+  height: 72px;
+  background-color: var(--bg-light-color);
+  border-bottom-color: var(--border-color-hairline);
 }
 
 .top-header-container {
   width: 100%;
-  max-width: 1800px;
+  max-width: var(--content-max);
   color: var(--text-color-dark);
   display: flex;
   justify-content: space-between;
@@ -83,11 +75,57 @@
   }
 }
 
+/* the logo with the nav beside it, on the left */
+.top-header-start {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-32) + var(--space-16));
+}
+
+/* Instagram, the rule and the free mockup button, on the right */
+.top-header-end {
+  --end-gap: var(--gap-5);
+  display: flex;
+  align-items: center;
+  gap: var(--end-gap);
+}
+
+.top-header-social {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-right: calc(-1 * var(--gap-2));
+  color: inherit;
+  font-size: 20px;
+  text-shadow: none;
+  transition: opacity 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .top-header-social:hover {
+    opacity: var(--opacity-hover);
+  }
+}
+
+/* a short, thin rule between Instagram and the button, in the text's own
+   colour, faint (so it suits the light-on-dark header too) */
+.top-header-rule {
+  flex: none;
+  /* a single device pixel on retina screens */
+  width: 0.5px;
+  height: 24px;
+  background: currentColor;
+  opacity: 0.1;
+}
+
 .top-header-links {
   display: flex;
   align-items: center;
-  /* sized to its links, so the spacing is just the gap */
-  gap: 1.5rem;
+  /* sized to its links, so the spacing is just the gap; wide enough for
+     the red dot that lands before each link */
+  --links-gap: var(--space-32);
+  gap: var(--links-gap);
 }
 
 .top-header-links a {
@@ -99,6 +137,23 @@
   margin: 0;
 }
 
+/* the nav links a step heavier than the header's medium */
+.top-header-links .nav-link {
+  font-family: var(--font-family-Bold);
+}
+
+/* on Work or Packages, the other link steps back; full again on hover */
+.top-header-links .nav-link.is-muted {
+  color: var(--text-color-muted);
+  transition: color 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .top-header-links .nav-link.is-muted:hover {
+    color: var(--text-color-dark);
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .top-header-links a.top-header-button:hover {
     opacity: var(--opacity-hover);
@@ -108,8 +163,8 @@
 .top-header-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.1rem;
+  gap: var(--gap-2);
+  padding: var(--gap-3) var(--space-16);
   font-size: var(--font-size-regular);
   --radius: 22px;
   border-radius: var(--corner);
@@ -138,11 +193,90 @@
   }
 }
 
+/* The free mockup button (and the rule before it), once the hero has
+   scrolled away. Its column opens from 0 to their width (and its share of
+   the gap from nothing), which slides Instagram along to the left. Nothing clips it:
+   the button hangs out past the right edge while its room is closed, and
+   slides in from there, blurred and faded, sharpening as it lands. */
+.top-header-cta {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  display: grid;
+  grid-template-columns: 0fr;
+  margin-left: calc(-1 * var(--end-gap));
+  transition:
+    grid-template-columns 0.6s var(--ease),
+    margin-left 0.6s var(--ease);
+}
+
+.top-header-cta.is-shown {
+  grid-template-columns: 1fr;
+  margin-left: 0;
+}
+
+/* closes to nothing (the button's padding can't), without clipping it */
+.top-header-cta-clip {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--end-gap);
+}
+
+.top-header-cta .top-header-button {
+  white-space: nowrap;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateX(32px);
+  /* leaving: a quick fade and blur, sliding back out to the right */
+  transition:
+    opacity 0.25s ease,
+    filter 0.3s ease,
+    transform 0.45s var(--ease);
+}
+
+/* the rule comes and goes with the button, so it never stands alone */
+.top-header-cta .top-header-rule {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.top-header-cta.is-shown .top-header-rule {
+  opacity: 0.1;
+  transition: opacity 0.45s ease 0.05s;
+}
+
+.top-header-cta.is-shown .top-header-button {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+  transition:
+    opacity 0.45s ease 0.05s,
+    filter 0.55s var(--ease) 0.05s,
+    transform 0.6s var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-header {
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .top-header-cta {
+    transition: none;
+  }
+
+  /* a plain fade, no slide or blur */
+  .top-header-cta .top-header-button,
+  .top-header-cta.is-shown .top-header-button {
+    filter: none;
+    transform: none;
+    transition: opacity 0.2s ease;
+  }
+}
+
 /* Mobile menu button - hidden by default */
 .mobile-menu-button {
   display: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: var(--space-8);
   transition: opacity 0.2s ease;
 }
 
@@ -169,7 +303,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: var(--space-32);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -188,8 +322,6 @@
   transition: opacity 0.2s ease;
 }
 
-
-
 .mobile-menu-overlay .nav-link p {
   margin: 0;
   color: var(--text-color-dark); 
@@ -200,7 +332,7 @@
   top: 2rem;
   right: 2rem;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: var(--space-8);
   color: var(--text-color-dark); 
   transition: opacity 0.2s ease;  
 }
@@ -216,32 +348,22 @@
   color: var(--text-color-dark); 
 }
 
-
-/* ===== LARGE SCREENS (1400px and below) ===== */
-@media (max-width: 1400px) {
-  .top-header-links {
-    gap: 1.35rem;
-  }
-}
-
-
 /* ===== MEDIUM-LARGE SCREENS (1100px and below) ===== */
 @media (max-width: 1100px) {
-  .top-header-links {
-    gap: 1.25rem;
-  }
-  
   .top-header-logo {
     font-size: 32px;
   }
 }
 
-
 /* ===== TABLET (900px and below) ===== */
 @media (max-width: 900px) {
   .top-header {
-    padding: 0 1.5rem;
+    padding: 0 var(--page-gutter);
     height: 80px;
+  }
+
+  .top-header.is-scrolled {
+    height: 64px;
   }
   
   .top-header-logo {
@@ -250,6 +372,35 @@
   
   .top-header-links {
     display: none;
+  }
+
+  /* the free mockup button stays, on its own, just left of the menu
+     button (Instagram and the rule are in the menu's own space) */
+  .top-header-end {
+    margin-left: auto;
+    margin-right: var(--gap-2);
+  }
+
+  .top-header-social,
+  .top-header-rule {
+    display: none;
+  }
+
+  .top-header-cta,
+  .top-header-cta.is-shown {
+    margin-left: 0;
+  }
+
+  .top-header-cta-clip {
+    gap: 0;
+  }
+
+  /* compact, to suit the shorter header */
+  .top-header-cta .top-header-button {
+    padding: var(--space-8) var(--gap-3);
+    font-size: var(--compact-size);
+    --radius: 18px;
+    border-radius: var(--corner);
   }
   
   .mobile-menu-button {
@@ -261,12 +412,15 @@
   }
 }
 
-
 /* ===== MOBILE (600px and below) ===== */
 @media (max-width: 600px) {
   .top-header {
-    padding: 0 1rem;
+    padding: 0 var(--page-gutter);
     height: 70px;
+  }
+
+  .top-header.is-scrolled {
+    height: 56px;
   }
   
   .top-header-logo {
@@ -282,7 +436,6 @@
     right: 1rem;
   }
 }
-
 
 /* ===== SMALL MOBILE (400px and below) ===== */
 @media (max-width: 400px) {
@@ -318,7 +471,6 @@
   height: var(--dot);
   margin-top: calc(var(--dot) / -2);
   border-radius: 50%;
-  corner-shape: round;
   background: #fe432a;
   opacity: 0;
   transform: translateY(0.5em) scale(0);

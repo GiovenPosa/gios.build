@@ -1,7 +1,8 @@
-import { useEffect, useRef, type CSSProperties } from 'react';
-import { GoArrowUpRight } from 'react-icons/go';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { GoArrowRight } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import { useBooking } from '../context/bookingContext';
+import { CtaStickers } from './ctaStickers';
 import './component-styles/closingCta.css';
 
 const reducedMotion = () =>
@@ -9,26 +10,25 @@ const reducedMotion = () =>
 
 const WORDS = ["Let's", 'build', 'yours'];
 
-// the next calendar month, so the line never reads as out of date
-const bookingMonth = () => {
-  const next = new Date();
-  next.setMonth(next.getMonth() + 1, 1);
-  return next.toLocaleString('en-GB', { month: 'long' });
-};
-
 /**
  * The home page's last word before the footer. The headline locks into place
  * as you scroll to it: its letters start spread wide and blurred and the
  * three words drift apart, then everything tightens into one poster line. The button underneath is magnetic: it leans
  * towards the cursor as you near it and springs back when you leave.
  *
+ * Once the headline has locked in, the stickers round it (ctaStickers.tsx)
+ * pop out of it to their places.
+ *
  * Scroll progress is written to --p (0 to 1) on the section; the CSS does the
- * rest, so React never re-renders while you scroll.
+ * rest, so React never re-renders while you scroll (only once, as the
+ * stickers start).
  */
 export function ClosingCta() {
   const { openBooking } = useBooking();
   const sectionRef = useRef<HTMLElement | null>(null);
   const magnetRef = useRef<HTMLSpanElement | null>(null);
+  // the stickers pop out once the headline has (nearly) locked in
+  const [stickersOut, setStickersOut] = useState(false);
 
   // headline lock-in, driven by scroll
   useEffect(() => {
@@ -36,6 +36,7 @@ export function ClosingCta() {
     if (!section) return;
     if (reducedMotion()) {
       section.style.setProperty('--p', '1');
+      setStickersOut(true);
       return;
     }
     let frameId = 0;
@@ -45,6 +46,7 @@ export function ClosingCta() {
       // from the section's top entering the screen to it reaching ~30% down
       const p = Math.min(1, Math.max(0, (vh - rect.top) / (vh * 0.7)));
       section.style.setProperty('--p', p.toFixed(4));
+      if (p > 0.85) setStickersOut(true);
     };
     const onScroll = () => {
       cancelAnimationFrame(frameId);
@@ -99,10 +101,7 @@ export function ClosingCta() {
   let letter = 0;
   return (
     <section className='cta' ref={sectionRef} aria-labelledby='cta-title'>
-      <p className='cta-status'>
-        <i aria-hidden />
-        Booking projects for {bookingMonth()}
-      </p>
+      <CtaStickers play={stickersOut} />
 
       <h2 className='cta-title' id='cta-title' aria-label="Let's build yours">
         {WORDS.map((word, w) => (
@@ -124,15 +123,13 @@ export function ClosingCta() {
         <span className='cta-magnet' ref={magnetRef}>
           <button type='button' className='hero-action-button hero-cta-pulse' onClick={() => openBooking('Closing CTA')}>
             <p>Get a free mockup</p>
-            <GoArrowUpRight aria-hidden />
+            <GoArrowRight aria-hidden />
           </button>
         </span>
         <Link to='/packages' className='hero-action-button secondary'>
           <p>See packages</p>
         </Link>
       </div>
-
-      <p className='cta-trust'>Every enquiry gets a personal reply within one working day.</p>
     </section>
   );
 }

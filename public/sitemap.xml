@@ -20,6 +20,12 @@
   </url>
 
   <url>
+    <loc>https://www.gios.build/ui</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
     <loc>https://www.gios.build/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>

@@ -1,0 +1,81 @@
+/* @giosbuild/button 0.4.0
+   Every value is a --ui-* token from the theme file. */
+
+.button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ui-gap-2);
+  box-sizing: border-box;
+  min-height: var(--ui-control-h);
+  margin: 0;
+  padding: 0 var(--ui-space-32);
+  border: var(--ui-border-width) solid var(--ui-button-border);
+  --radius: var(--ui-button-radius);
+  border-radius: var(--corner, var(--radius));
+  /* the corner's curve from the theme, so a site that squircles every box
+     (corner-shape: squircle on *) still gets a true pill when the theme says round */
+  corner-shape: var(--ui-button-corner);
+  background: var(--ui-button-bg);
+  box-shadow: var(--ui-button-shadow);
+  color: var(--ui-button-text);
+  font-family: var(--ui-font-strong);
+  font-weight: var(--ui-button-weight);
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: var(--ui-label-tracking, 0);
+  text-transform: var(--ui-label-case, none);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+@media (hover: hover) {
+  .button:hover:not(:disabled) {
+    background: var(--ui-button-hover-bg);
+  }
+}
+
+/* the press: a small shrink in saas, flat onto its shadow in bold */
+.button:active:not(:disabled) {
+  transform: var(--ui-button-press);
+  box-shadow: var(--ui-button-shadow-pressed);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--ui-ring);
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* trims the font's uneven space above and below the letters, so the label
+   sits in the true middle; browsers without text-box keep line-height: 1 */
+.label {
+  display: block;
+  text-box: trim-both cap alphabetic;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+
+  .button:active:not(:disabled) {
+    transform: none;
+  }
+}

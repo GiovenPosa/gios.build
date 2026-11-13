@@ -14,7 +14,7 @@ import {
   IoTimeOutline,
   IoMegaphoneOutline
 } from "react-icons/io5";
-import { GoArrowUpRight } from "react-icons/go";
+import { GoArrowRight, GoArrowUpRight } from "react-icons/go";
 import { Helmet } from 'react-helmet-async';
 import { useBooking } from '../context/bookingContext';
 import { Reveal } from '../components/reveal';
@@ -81,7 +81,7 @@ export function PackagesPage() {
               <div className='package-card-action'>
                 <span className='package-card-button' onClick={() => openBooking('Old packages page', { packageId: 'starter' })}>
                   <p>Choose Starter</p>
-                  <GoArrowUpRight/>
+                  <GoArrowRight/>
                 </span>
               </div>
             </Reveal>
@@ -117,7 +117,7 @@ export function PackagesPage() {
               <div className='package-card-action'>
                 <span className='package-card-button' onClick={() => openBooking('Old packages page', { packageId: 'redesign' })}>
                   <p>Choose Redesign</p>
-                  <GoArrowUpRight/>
+                  <GoArrowRight/>
                 </span>
               </div>
             </Reveal>
@@ -161,7 +161,7 @@ export function PackagesPage() {
               <div className='package-card-action'>
                 <span className='package-card-button' onClick={() => openBooking('Old packages page', { packageId: 'lead-system' })}>
                   <p>Choose Growth</p>
-                  <GoArrowUpRight/>
+                  <GoArrowRight/>
                 </span>
               </div>
             </Reveal>
@@ -174,7 +174,7 @@ export function PackagesPage() {
             <div className='package-card-action'>
               <Reveal as="span" className='package-card-button' delay={180} onClick={() => openBooking('Old packages page', { packageId: 'not-sure' })}>
                 <p>Not sure? Get a quote</p>
-                <GoArrowUpRight/>
+                <GoArrowRight/>
               </Reveal>
             </div>
           </div>

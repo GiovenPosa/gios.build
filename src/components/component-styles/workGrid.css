@@ -3,7 +3,7 @@
 .work-grid {
   display: flex;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: var(--gap-6);
 }
 
 .work-column {
@@ -11,7 +11,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--space-32);
 }
 
 .work-card {
@@ -84,10 +84,10 @@
 .work-caption {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
-  margin-top: 0.9rem;
-  padding: 0 0.25rem;
-  font-family: var(--font-family-Mono);
+  gap: var(--gap-4);
+  margin-top: var(--space-16);
+  padding: 0 var(--space-8);
+  font-family: var(--font-family-Medium);
   font-size: 14px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -117,38 +117,46 @@
 
 /* ---- the larger view ---- */
 
+/* the panel down the left, and the media centred in the room beside it */
 .work-viewer {
+  --panel-w: clamp(20rem, 26vw, 24rem);
   position: fixed;
   inset: 0;
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5rem 2rem 4rem;
+  padding: var(--space-64) var(--space-64) var(--space-64) calc(var(--panel-w) + var(--space-64));
   box-sizing: border-box;
   cursor: zoom-out;
 }
 
+/* the page, blurred and washed light behind it */
 .work-viewer-scrim {
   position: absolute;
   inset: 0;
-  background: rgba(10, 10, 10, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(244, 244, 245, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 /* as big as fits, at the media's own shape, so nothing is cropped */
 .work-viewer-frame {
   position: relative;
-  width: min(100%, 1400px, calc((100svh - 12rem) * var(--aspect)));
+  width: min(100%, 1400px, calc((100svh - 8rem) * var(--aspect)));
   will-change: transform;
 }
 
 .work-viewer-media {
   aspect-ratio: var(--aspect);
-  --radius: 24px;
+  --radius: 20px;
   border-radius: var(--corner);
   overflow: hidden;
+  background: var(--bg-surface-color);
+  box-shadow:
+    0 0 0 1px var(--border-color-hairline),
+    0 40px 80px -40px rgba(20, 25, 40, 0.35);
+  animation: work-fade 0.4s ease both;
 }
 
 .work-viewer-media video,
@@ -163,75 +171,182 @@
   -webkit-touch-callout: none;
 }
 
-.work-viewer-caption {
+/* ---- the panel ---- */
+
+.work-panel {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 1;
+  width: var(--panel-w);
+  overflow-y: auto;
+  padding: var(--space-16) var(--space-32) var(--space-64);
+  box-sizing: border-box;
+  background: var(--bg-light-color);
+  box-shadow: 1px 0 0 var(--border-color-hairline);
+  color: var(--text-color-dark);
+  cursor: auto;
+}
+
+.work-panel-bar {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1rem;
-  padding: 0 0.25rem;
-  font-family: var(--font-family-Mono);
-  font-size: 14px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: #fff;
+  align-items: center;
+  margin-inline: calc(-1 * var(--space-16));
 }
 
-.work-viewer-meta {
-  color: rgba(255, 255, 255, 0.55);
+.work-panel-steps {
+  display: flex;
+  gap: var(--gap-2);
 }
 
-/* a round close button, its cross drawn from two rounded bars */
-.work-viewer-close {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  width: 48px;
-  height: 48px;
+/* the round buttons: close, previous, next */
+.work-panel-button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   border: 0;
   border-radius: 50%;
-  corner-shape: round;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--btn-color-muted);
+  color: var(--text-color-dark);
+  font-size: 18px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.5s cubic-bezier(0.12, 1.15, 0.3, 1);
+  transition: opacity 0.2s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .work-viewer-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(90deg);
+  .work-panel-button:hover {
+    opacity: var(--opacity-hover);
   }
 }
 
-.work-viewer-close:focus-visible {
-  outline: 2px solid #fff;
+.work-panel-button:focus-visible {
+  outline: 2px solid var(--accent-color);
   outline-offset: 3px;
 }
 
-.work-viewer-close i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 18px;
-  height: 2.5px;
-  margin: -1.25px 0 0 -9px;
-  --radius: 2px;
-  border-radius: var(--corner);
-  background: #fff;
-  transform: rotate(45deg);
+.work-panel-body {
+  animation: work-fade 0.4s ease both;
 }
 
-.work-viewer-close i + i {
-  transform: rotate(-45deg);
+@keyframes work-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* kind, name, the line about it and when, centred */
+.work-panel-head {
+  margin-top: var(--space-32);
+  text-align: center;
+}
+
+.work-panel-kind,
+.work-panel-title {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--title-5-weight);
+  font-size: var(--title-5-size);
+  line-height: var(--title-5-leading);
+  letter-spacing: var(--title-5-tracking);
+}
+
+.work-panel-kind {
+  color: var(--text-color-secondary);
+}
+
+.work-panel-summary {
+  margin: var(--space-16) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  text-wrap: balance;
+}
+
+.work-panel-when {
+  margin: var(--space-16) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--compact-size);
+  line-height: var(--compact-leading);
+  color: var(--text-color-secondary);
+}
+
+/* the facts: a label on the left, its values stacked on the right, each
+   row ruled off */
+.work-facts {
+  margin: var(--space-32) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+}
+
+.work-fact {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-4);
+  padding: var(--gap-3) 0;
+  border-bottom: 1px solid var(--border-color-hairline);
+}
+
+.work-fact dt {
+  color: var(--text-color-secondary);
+}
+
+.work-fact dd {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--gap-1);
+  margin: 0;
+  text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-viewer-media,
+  .work-panel-body {
+    animation: none;
+  }
+}
+
+/* ---- tablets and phones: the media on top, the panel under it ---- */
+@media (max-width: 900px) {
+  .work-viewer {
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding: var(--space-64) var(--page-gutter) 0;
+  }
+
+  .work-viewer-frame {
+    width: 100%;
+    flex: none;
+  }
+
+  .work-panel {
+    /* after the media, though it comes first in the markup */
+    order: 1;
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin: var(--space-32) calc(-1 * var(--page-gutter)) 0;
+    overflow: visible;
+    padding-top: var(--space-16);
+    --radius: var(--radius-card);
+    border-radius: var(--corner) var(--corner) 0 0;
+    box-shadow: 0 -1px 0 var(--border-color-hairline);
+  }
 }
 
 /* two narrow columns on phones */
 @media (max-width: 600px) {
   .work-grid {
-    gap: 0.75rem;
+    gap: var(--gap-3);
   }
 
   .work-column {
-    gap: 1.25rem;
+    gap: var(--gap-5);
   }
 
   .work-surface {
@@ -242,8 +357,8 @@
   /* too narrow for title and meta side by side: stack them */
   .work-caption {
     flex-direction: column;
-    gap: 0.15rem;
-    margin-top: 0.6rem;
+    gap: var(--gap-1);
+    margin-top: var(--space-8);
     padding: 0 0.1rem;
     font-size: 11px;
   }
@@ -253,23 +368,8 @@
     text-overflow: ellipsis;
   }
 
-  .work-viewer {
-    padding: 4.5rem 1rem 3rem;
-  }
-
   .work-viewer-media {
     --radius: 16px;
     border-radius: var(--corner);
-  }
-
-  .work-viewer-caption {
-    font-size: 12px;
-  }
-
-  .work-viewer-close {
-    top: 1rem;
-    right: 1rem;
-    width: 44px;
-    height: 44px;
   }
 }

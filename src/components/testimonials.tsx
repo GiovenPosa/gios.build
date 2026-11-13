@@ -59,11 +59,19 @@ function sweepAt(position: number, quotes: number) {
  * ends. The text stays dark throughout. With reduced motion there is
  * no pinning or drift: the quotes stack over a still gradient.
  */
+/** how far `el` sits below the top of `ancestor`, through its offset parents */
+function offsetWithin(el: HTMLElement, ancestor: HTMLElement) {
+  let y = 0;
+  for (let node: Element | null = el; node && node !== ancestor; node = (node as HTMLElement).offsetParent) {
+    y += (node as HTMLElement).offsetTop;
+  }
+  return y;
+}
+
 export function Testimonials() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const frameRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const barRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const backdropRef = useRef<HTMLDivElement | null>(null);
   const [still] = useState(reducedMotion);
@@ -146,7 +154,14 @@ export function Testimonials() {
       }
 
       // the backdrop fades in and out with the section, so there is no edge
-      backdrop.style.opacity = String(enter);
+      show(enter);
+    };
+
+    // fully hidden at 0, so the browser stops compositing a screen-sized
+    // blended layer over the rest of the page
+    const show = (amount: number) => {
+      backdrop.style.opacity = String(amount);
+      backdrop.style.visibility = amount > 0 ? '' : 'hidden';
     };
 
     const loop = (time: number) => {
@@ -173,24 +188,11 @@ export function Testimonials() {
         enter = arriving * (1 - leaving);
         // set here, not only when drawing: the loop skips drawing at 0, which
         // would otherwise leave the last opacity stuck on screen
-        backdrop.style.opacity = String(enter);
+        show(enter);
         track.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
 
-        // one progress drives the quotes, the counter, the bar and the colour
+        // one progress drives the quotes and the colour
         position = progress * (panels.length - 1);
-        // one segment per quote, each tracking your progress through that
-        // quote: it starts filling as its quote arrives, is half full while
-        // the quote is centred, and completes as it leaves; all empty at the
-        // start of the section, all full at the end
-        const segments = barRef.current?.querySelectorAll<HTMLElement>('.tst-segment-fill') ?? [];
-        segments.forEach((segment, index) => {
-          const fill = Math.min(1, Math.max(0, progress * segments.length - index));
-          // Clip the fill to its length with a rounded inset rather than sliding
-          // it inside an overflow-hidden track: that leaves anti-aliasing specks
-          // in Chrome. An empty segment doesn't paint its fill at all.
-          segment.style.visibility = fill > 0.001 ? 'visible' : 'hidden';
-          segment.style.clipPath = `inset(0 ${((1 - fill) * 100).toFixed(3)}% 0 0 round 999px)`;
-        });
         panels.forEach((panel, index) => {
           const offset = index - position;
           // fully crisp across the middle stretch, fading only beyond it
@@ -219,6 +221,19 @@ export function Testimonials() {
         distance = Math.max(0, panels[panels.length - 1].offsetLeft - panels[0].offsetLeft);
         section.style.height = `${distance * SCROLL_RATIO + frame.offsetHeight}px`;
       }
+      // The frame is a full screen with the quotes centred in it, so its top
+      // and bottom are empty. Pull the section in by exactly that much, so the
+      // space between the sections either side and the quotes is the page's
+      // usual section gap, not that plus half a screen. Measured from inside
+      // the frame: offsets, not rectangles, as the panels carry per-frame
+      // transforms; and never through the frame's own offset, which counts
+      // how far it's pinned down, so it changes with scroll.
+      const lastCite = panels[panels.length - 1].querySelector('figcaption') ?? panels[panels.length - 1];
+      const padTop = parseFloat(getComputedStyle(section).paddingTop) || 0;
+      const lead = padTop + offsetWithin(panels[0], frame);
+      const trail = frame.offsetHeight - (offsetWithin(lastCite, frame) + lastCite.offsetHeight);
+      section.style.marginTop = `${-lead}px`;
+      section.style.marginBottom = `${-Math.max(0, trail)}px`;
       update();
     };
 
@@ -262,6 +277,7 @@ export function Testimonials() {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', remeasure);
       section.style.height = '';
+      section.style.marginTop = section.style.marginBottom = '';
     };
   }, [still]);
 
@@ -285,19 +301,11 @@ export function Testimonials() {
                   <span className='tst-mark' aria-hidden>”</span>
                 </blockquote>
                 <figcaption className='tst-cite'>
-                  {item.name}<i>·</i>{item.business}
+                  {item.name}
                   {item.result && <em>{item.result}</em>}
-                  <span className='tst-rel'>{item.relationship}</span>
+                  <span className='tst-role'>{item.business}</span>
                 </figcaption>
               </figure>
-            ))}
-          </div>
-
-          <div className='tst-progress' ref={barRef} aria-hidden>
-            {testimonialsData.map((_, index) => (
-              <span key={index} className='tst-segment'>
-                <span className='tst-segment-fill' />
-              </span>
             ))}
           </div>
         </div>

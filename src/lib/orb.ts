@@ -1,7 +1,6 @@
 // The red orb's look, shared by everything that draws it: the ring behind the
-// hero (components/heroOrb.tsx) and the stroke down "How we'll work"
-// (components/processSteps.tsx). One set of colours, one rim profile, one
-// comet, so the two are the same effect bent into a circle or laid straight.
+// hero, the 404 and the /ui page (components/heroOrb.tsx). One set of
+// colours, one rim profile, one comet.
 //
 // Shapes are written in "rim angle": distance along the rim divided by the
 // ring's radius, so a straight line ripples and colours exactly like the
@@ -19,12 +18,6 @@ const WEIGHTS = [1.0, 0.35, 0.55];
 
 /** The ring's radius in shader units (the hero's "size 0.48"). */
 export const ORB_RADIUS = 0.48;
-
-/**
- * The shader's unit in CSS px at this screen width: the hero ring's
- * diameter is just under one unit (heroOrb.css sets the same clamp).
- */
-export const orbUnit = () => Math.min(860, Math.max(340, window.innerWidth * 0.53));
 
 // the site's fast-then-soft-stop
 export const easeOut = (x: number) => 1 - Math.pow(1 - x, 4);

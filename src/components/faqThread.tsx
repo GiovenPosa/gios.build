@@ -36,8 +36,19 @@ const typingTime = (text: string) => Math.min(1300, 500 + text.length * 5);
  * underneath as suggestion pills. Tapping one flies the pill up into the chat
  * where it becomes the sent bubble, then Gio types and answers. When every question has been asked he
  * signs off and points at the composer, which opens the booking form.
+ *
+ * The /ui page passes its own questions, sign-off and composer action.
  */
-export function FaqThread() {
+interface FaqThreadProps {
+  items?: FaqItem[];
+  signOff?: string[];
+  /** the composer's placeholder */
+  composerLabel?: string;
+  /** what the composer does; opens the booking form by default */
+  onCompose?: () => void;
+}
+
+export function FaqThread({ items = faqData, signOff = SIGN_OFF, composerLabel = 'Ask me anything…', onCompose }: FaqThreadProps = {}) {
   const { openBooking } = useBooking();
   const { ref: inViewRef, isVisible } = useInViewOnce<HTMLDivElement>(0.35);
   const windowRef = useRef<HTMLDivElement | null>(null);
@@ -144,19 +155,19 @@ export function FaqThread() {
     setBusy(true);
     track('Ask FAQ', { question: item.question });
     const from = pill.getBoundingClientRect();
-    const remaining = faqData.length - asked.length - 1;
+    const remaining = items.length - asked.length - 1;
     setAsked((list) => [...list, item.question]);
     const id = push('out', item.question, !reducedMotion());
     flight.current = { id, from };
     later(() => {
       reply([item.answer], () => {
         if (remaining > 0) setBusy(false);
-        else later(() => reply(SIGN_OFF, () => setDone(true)), 700);
+        else later(() => reply(signOff, () => setDone(true)), 700);
       });
     }, reducedMotion() ? 0 : 750);
   };
 
-  const remaining = faqData.filter((item) => !asked.includes(item.question));
+  const remaining = items.filter((item) => !asked.includes(item.question));
   // like iMessage, "Read" sits under the visitor's latest message
   const lastSent = [...messages].reverse().find((m) => m.side === 'out');
 
@@ -214,8 +225,8 @@ export function FaqThread() {
         ))}
       </div>
 
-      <button type='button' className={`faq-composer${done ? ' is-ready' : ''}`} onClick={() => openBooking('FAQ composer')}>
-        <span className='faq-composer-field'>Ask me anything…</span>
+      <button type='button' className={`faq-composer${done ? ' is-ready' : ''}`} onClick={onCompose ?? (() => openBooking('FAQ composer'))}>
+        <span className='faq-composer-field'>{composerLabel}</span>
         <span className='faq-composer-send' aria-hidden>
           <svg viewBox='0 0 24 24' fill='none'><path d='M12 19V5m0 0-6 6m6-6 6 6' stroke='currentColor' strokeWidth='2.6' strokeLinecap='round' strokeLinejoin='round' /></svg>
         </span>

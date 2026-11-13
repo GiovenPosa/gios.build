@@ -1,0 +1,108 @@
+/* The tools as two wheels, one either side of the words (see toolsWheel.tsx).
+   Each tile is placed from its slot's numbers: `--along` the wheel's travel
+   and `--across` towards the words, both in tile widths, then scaled,
+   blurred and faded the further round the back it is. */
+.tools-wheel {
+  --tile: 112px;
+  /* which way "towards the words" is: right for the left wheel */
+  --inward: 1;
+  position: relative;
+  width: calc(var(--tile) * 1.9);
+  /* exactly the tiles you can see, so the section's edges are theirs: the
+     back ones sit 1.16 tiles out and are 0.7 of a tile tall (SLOTS in
+     toolsWheel.tsx), so 1.16 * 2 + 0.7 = 3.02 tiles. The hidden ones round
+     the back hang past it, faded out */
+  height: calc(var(--tile) * 3.02);
+}
+
+.tools-wheel.is-right {
+  --inward: -1;
+}
+
+.tools-wheel-tile {
+  --ease: cubic-bezier(0.7, 0, 0.2, 1);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--tile);
+  height: var(--tile);
+  margin-top: calc(var(--tile) / -2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  --radius: calc(var(--tile) * 0.24);
+  border-radius: var(--corner);
+  /* an app icon: the brand's colour (--app-bg, from the tool's data) under
+     a faint sheen, the edge just visible on a white tile */
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(0, 0, 0, 0.08) 100%),
+    var(--app-bg, var(--bg-light-color));
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 14px 30px -16px rgba(0, 0, 0, 0.32),
+    0 4px 10px -6px rgba(0, 0, 0, 0.12);
+  transform:
+    translate(calc(var(--across) * var(--tile) * var(--inward)), calc(var(--along) * var(--tile)))
+    scale(var(--scale));
+  filter: blur(var(--blur));
+  opacity: var(--opacity);
+  transition:
+    transform 0.9s var(--ease),
+    filter 0.9s var(--ease),
+    opacity 0.9s var(--ease);
+  will-change: transform, filter;
+}
+
+.tools-wheel.is-right .tools-wheel-tile {
+  left: auto;
+  right: 0;
+}
+
+/* the same share of the tile as the hero headline's app stickers */
+.tools-wheel-tile .tool-icon-svg,
+.tools-wheel-tile .tool-icon-img {
+  width: 62%;
+  height: 62%;
+}
+
+/* ===== TABLET AND PHONES: the wheels lie on their side, one above the
+   words and one below, so the words keep the full width. The top wheel
+   turns to the right, the bottom one to the left. ===== */
+@media (max-width: 900px) {
+  .tools-wheel {
+    --tile: 84px;
+    width: 100%;
+    height: calc(var(--tile) * 1.9);
+  }
+
+  .tools-wheel-tile,
+  .tools-wheel.is-right .tools-wheel-tile {
+    top: 0;
+    bottom: auto;
+    left: 50%;
+    right: auto;
+    margin: 0 0 0 calc(var(--tile) / -2);
+    transform:
+      translate(calc(var(--along) * var(--tile)), calc(var(--across) * var(--tile) * var(--inward)))
+      scale(var(--scale));
+  }
+
+  /* the bottom wheel's front sits at its foot, tucking up towards the words */
+  .tools-wheel.is-right .tools-wheel-tile {
+    top: auto;
+    bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .tools-wheel {
+    --tile: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tools-wheel-tile {
+    transition: none;
+  }
+}

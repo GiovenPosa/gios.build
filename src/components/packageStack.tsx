@@ -4,19 +4,13 @@ import { packagesData } from '../data/packages';
 import { useBooking } from '../context/bookingContext';
 import { useScrollFocus } from '../hooks/useScrollFocus';
 import { Reveal } from './reveal';
-import { NewSiteArt } from './serviceArt/newSiteArt';
-import { RedesignArt } from './serviceArt/redesignArt';
-import { BookingArt } from './serviceArt/bookingArt';
 import './component-styles/packageStack.css';
-
-const ART = { site: NewSiteArt, redesign: RedesignArt, booking: BookingArt };
 
 /**
  * The packages as a price list of poster-sized prices, one per row between
  * hairlines. One row is always the active one (the middle, until another is
  * hovered or tapped; on touch screens, whichever row is passing the middle of
- * the screen as you scroll): its price comes forward, a slot opens beside it playing
- * that package's graphic, and its notes darken. Each row also carries a
+ * the screen as you scroll): its price comes forward and its notes darken. Each row also carries a
  * small ladder of bars, one per tier, because each package includes
  * everything in the one before it.
  */
@@ -32,7 +26,6 @@ export function PackageStack() {
     <section className='pk' aria-label='Packages'>
       <div className='pk-list' ref={listRef}>
         {packagesData.map((pkg, index) => {
-          const Art = ART[pkg.art];
           const isActive = active === index;
           const below = packagesData[index - 1];
 
@@ -62,9 +55,6 @@ export function PackageStack() {
                   <span className='price-sign'>£</span>
                   {pkg.from.toLocaleString('en-GB')}
                   {!pkg.to && <span className='price-plus'>+</span>}
-                </span>
-                <span className='pk-slot' style={{ backgroundColor: pkg.slot }} aria-hidden>
-                  <Art active={isActive} />
                 </span>
               </div>
 

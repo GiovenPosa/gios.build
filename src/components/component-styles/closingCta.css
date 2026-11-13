@@ -1,6 +1,8 @@
 /* --p (0 to 1) is set from scroll by closingCta.tsx; --q eases it so the
    headline settles softly as it locks in. */
 .cta {
+  /* the stickers (ctaStickers.css) are placed against it */
+  position: relative;
   --p: 0;
   --q: calc(1 - (1 - var(--p)) * (1 - var(--p)) * (1 - var(--p)));
   display: flex;
@@ -8,58 +10,21 @@
   align-items: center;
   text-align: center;
   /* padding, not margin, so it can't collapse into the FAQ's margin */
-  padding-top: var(--section-gap-medium);
-  margin-bottom: var(--section-gap-medium);
+  padding-top: var(--section-space);
+  padding-bottom: var(--section-space);
   color: var(--text-color-dark);
-}
-
-.cta-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin: 0 0 2.25rem;
-  font-family: var(--font-family-Mono);
-  font-size: 14px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  opacity: calc(var(--q) * 1.4 - 0.2);
-}
-
-.cta-status i {
-  position: relative;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  corner-shape: round;
-  background: #22c55e;
-}
-
-/* a soft ring breathing out of the dot: "live" */
-.cta-status i::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  corner-shape: round;
-  background: #22c55e;
-  animation: cta-ping 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-@keyframes cta-ping {
-  0% { transform: scale(1); opacity: 0.55; }
-  80%, 100% { transform: scale(3.2); opacity: 0; }
 }
 
 /* The headline. Spread wide, blurred and pulled apart at --p 0; one tight
    poster line at --p 1. */
 .cta-title {
   margin: 0;
-  font-family: var(--font-family-Bold);
-  font-weight: normal;
-  font-size: clamp(3.2rem, 11vw, 12rem);
-  line-height: 0.9;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: clamp(2.2rem, 7vw, 7.7rem);
+  line-height: var(--headline-leading);
   white-space: nowrap;
-  letter-spacing: calc(-0.05em + (1 - var(--q)) * 0.32em);
+  letter-spacing: calc(var(--headline-tracking) + (1 - var(--q)) * 0.32em);
 }
 
 .cta-word {
@@ -80,12 +45,13 @@
 }
 
 .cta-sub {
-  max-width: 38rem;
-  margin: 2.5rem auto 0;
   font-family: var(--font-family-Regular);
-  font-size: var(--font-size-large);
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  max-width: 38rem;
+  margin: var(--space-16) auto 0;
   text-wrap: balance;
   opacity: clamp(0, calc((var(--p) - 0.45) * 2.5), 1);
   transform: translateY(calc((1 - clamp(0, calc((var(--p) - 0.45) * 2.5), 1)) * 16px));
@@ -95,8 +61,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.75rem;
-  margin-top: 2.5rem;
+  gap: var(--gap-3);
+  margin-top: var(--space-64);
   opacity: clamp(0, calc((var(--p) - 0.6) * 3), 1);
   transform: translateY(calc((1 - clamp(0, calc((var(--p) - 0.6) * 3), 1)) * 16px));
 }
@@ -114,43 +80,18 @@
   font-family: var(--font-family-Medium);
 }
 
-/* a friendly note, so sentence case rather than the mono labels */
-.cta-trust {
-  margin: 1.75rem 0 0;
-  font-family: var(--font-family-Regular);
-  font-size: var(--font-size-regular);
-  letter-spacing: -0.01em;
-  color: var(--text-color-muted);
-  opacity: clamp(0, calc((var(--p) - 0.7) * 3.3), 1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cta-status i::after {
-    animation: none;
-  }
-}
-
 @media (max-width: 600px) {
+  /* the stickers float in the top of the section, close above the headline
+     on a phone: this keeps them clear of whatever comes before */
   .cta {
-    padding-top: 6rem;
-    margin-bottom: 5rem;
-  }
-
-  .cta-status {
-    font-size: 12px;
-    margin-bottom: 1.5rem;
+    margin-top: var(--space-128);
   }
 
   .cta-title {
-    font-size: clamp(2.2rem, 10.5vw, 4rem);
+    font-size: clamp(1.6rem, 7.2vw, 2.7rem);
   }
 
   .cta-sub {
-    font-size: var(--font-size-medium);
-    margin-top: 1.75rem;
-  }
-
-  .cta-trust {
-    font-size: 14px;
+    margin-top: var(--space-16);
   }
 }
