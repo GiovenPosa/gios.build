@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { GoArrowRight, GoCheck, GoCopy } from 'react-icons/go';
 // the real Gio UI themes, installed with `npx shadcn add @giosbuild/theme-saas @giosbuild/theme-bold`
@@ -9,7 +9,6 @@ import '../components/uiKit/themes.css';
 import './page-styles/uiPage.css';
 import { PageMeta } from '../components/pageMeta';
 import { Reveal } from '../components/reveal';
-import { HeroOrb } from '../components/heroOrb';
 import { FaqThread } from '../components/faqThread';
 import { Button } from '../components/ui/button';
 import { Field, TextInput } from '../components/ui/field';
@@ -17,6 +16,7 @@ import { ComponentPreview, DemoForm, HowItWorks, MiniForm } from '../components/
 import { INSTALL_COMMAND, REGISTRY_LINE, UI_COMPONENTS, UI_FAQ, UI_ORIGINS, UI_THEMES, type ThemeId } from '../data/uiKit';
 import { EMAIL_PATTERN } from '../data/enquiry';
 import { track } from '../lib/analytics';
+import { useInViewOnce } from '../hooks/useInViewOnce';
 
 // gios.build/ui: the landing page for Gio UI, the component library, written
 // for developers. A live, themeable form in the hero, how copy-in works, the
@@ -73,7 +73,6 @@ export function UiPage() {
             </div>
 
             <Reveal className='ui-hero-demo' delay={120}>
-              <HeroOrb play delay={400} />
               <ThemePills value={theme} onChange={pickTheme} />
               <DemoForm theme={theme} />
             </Reveal>
@@ -91,7 +90,10 @@ export function UiPage() {
             <HowItWorks />
           </section>
 
-          {/* 3. The components, each one working */}
+          {/* 3. Install, in two steps */}
+          <InstallSteps />
+
+          {/* 4. The components, each one working */}
           <section className='ui-section' id='components' aria-labelledby='ui-components-title'>
             <Reveal as='h2' className='ui-section-title' id='ui-components-title'>
               <span>Every one</span> <span>works.</span>
@@ -121,7 +123,7 @@ export function UiPage() {
             </div>
           </section>
 
-          {/* 4. One form in both themes */}
+          {/* 5. One form in both themes */}
           <section className='ui-section' aria-labelledby='ui-themes-title'>
             <Reveal as='h2' className='ui-section-title' id='ui-themes-title'>
               <span>One form.</span> <span>Two looks.</span>
@@ -210,37 +212,160 @@ function ThemePills({ value, onChange }: { value: ThemeId; onChange: (theme: The
   );
 }
 
-function InstallCommand() {
+/** A copy button: copies `text`, then says "Copied" for a moment */
+function CopyButton({ text, label, event }: { text: string; label: string; event: string }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef(0);
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(INSTALL_COMMAND);
+      await navigator.clipboard.writeText(text);
     } catch {
-      return; // clipboard blocked: the command is still there to select
+      return; // clipboard blocked: the text is still there to select
     }
-    track('Copy install command');
+    track(event);
     setCopied(true);
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => setCopied(false), 1800);
   };
 
   return (
+    <button type='button' className={`ui-copy${copied ? ' is-copied' : ''}`} onClick={copy} aria-label={copied ? 'Copied' : label}>
+      {copied ? <GoCheck aria-hidden /> : <GoCopy aria-hidden />}
+      {/* both words in the same spot, only one shown, so the button is always
+          as wide as "Copied" and nothing beside it moves when it changes */}
+      <span className='ui-copy-label'>
+        <span aria-hidden={copied}>Copy</span>
+        <span aria-hidden={!copied}>Copied</span>
+      </span>
+    </button>
+  );
+}
+
+/** The install command in a pill, with its copy button */
+function CommandPill({ command = INSTALL_COMMAND }: { command?: string }) {
+  return (
+    <div className='ui-command'>
+      <code>
+        <span className='ui-command-prompt' aria-hidden>$</span> {command}
+      </code>
+      <CopyButton text={command} label='Copy the install command' event='Copy install command' />
+    </div>
+  );
+}
+
+/** The hero's command, and a way down to the two steps for a first install */
+function InstallCommand() {
+  return (
     <div className='ui-install'>
-      <div className='ui-command'>
-        <code>
-          <span className='ui-command-prompt' aria-hidden>$</span> {INSTALL_COMMAND}
-        </code>
-        <button type='button' className={`ui-copy${copied ? ' is-copied' : ''}`} onClick={copy} aria-label={copied ? 'Copied' : 'Copy the install command'}>
-          {copied ? <GoCheck aria-hidden /> : <GoCopy aria-hidden />}
-          <span>{copied ? 'Copied' : 'Copy'}</span>
-        </button>
-      </div>
+      <CommandPill />
       <p className='ui-install-note'>
-        First add <code>{REGISTRY_LINE}</code> to the <code>registries</code> in your <code>components.json</code>.
+        New project? <a href='#install'>Set up in two steps</a>
       </p>
     </div>
+  );
+}
+
+const INIT_COMMAND = 'npx shadcn init';
+
+// what the install command copies in, one card a piece: the theme and the
+// dropdown asked for, and the field and popover the dropdown is built on,
+// which come with it (ui.gios.build's registry.json)
+const ADDED: { name: string; files: string[]; via?: string }[] = [
+  { name: 'Theme: SaaS', files: ['theme-saas.css'] },
+  { name: 'Dropdown', files: ['dropdown.tsx', 'dropdown.module.css'] },
+  { name: 'Field', files: ['field.tsx', 'field.module.css'], via: 'dropdown' },
+  { name: 'Popover', files: ['popover.tsx', 'popover.module.css'], via: 'dropdown' },
+];
+
+/**
+ * Installing, for the first time, as two steps, each under its badge: tell the
+ * project where Gio UI lives (one line in components.json, shown in the file
+ * with the line to add picked out), then add what you need (the command, and
+ * the files it brings, ticking in once the step is on screen).
+ */
+function InstallSteps() {
+  const { ref, isVisible } = useInViewOnce<HTMLOListElement>(0.3);
+  return (
+    <section className='ui-section ui-steps-section' id='install' aria-labelledby='ui-install-title'>
+      <Reveal as='h2' className='ui-section-title' id='ui-install-title'>
+        <span>Two steps.</span> <span>Then it’s yours.</span>
+      </Reveal>
+      <Reveal as='p' className='ui-section-sub' delay={60}>
+        The first time, tell your project where Gio UI lives. After that, it’s one command for anything you need.
+      </Reveal>
+
+      <ol className={`ui-install-steps${isVisible ? ' is-playing' : ''}`} ref={ref}>
+        <Reveal as='li' className='ui-install-step'>
+          <p className='ui-step-badge'>Step 1</p>
+          <h3 className='ui-install-step-title'>Tell your project where Gio UI lives</h3>
+          <p className='ui-install-step-text'>
+            Add one line to the <code>registries</code> in your <code>components.json</code>, so <code>@giosbuild</code> means
+            ui.gios.build.
+          </p>
+
+          <div className='ui-callout'>
+            <p>
+              No <code>components.json</code> yet? Run <code>{INIT_COMMAND}</code> first, and it makes one.
+            </p>
+            <CopyButton text={INIT_COMMAND} label='Copy the init command' event='Copy init command' />
+          </div>
+
+          <div className='ui-file'>
+            <div className='ui-file-bar'>
+              <span className='ui-file-name'>components.json</span>
+              <CopyButton text={REGISTRY_LINE} label='Copy the registry line' event='Copy registry line' />
+            </div>
+            <pre className='ui-file-code' aria-label='components.json, with the registry line added'>
+              <span className='ui-file-line is-faint'>{'{'}</span>
+              <span className='ui-file-line is-faint'>{'  "style": "new-york",'}</span>
+              <span className='ui-file-line is-faint'>{'  …'}</span>
+              <span className='ui-file-line'>{'  "registries": {'}</span>
+              <span className='ui-file-line is-added'>
+                <span className='ui-file-plus' aria-hidden>+</span>
+                {'    '}
+                {REGISTRY_LINE}
+              </span>
+              <span className='ui-file-line'>{'  }'}</span>
+              <span className='ui-file-line is-faint'>{'}'}</span>
+            </pre>
+          </div>
+        </Reveal>
+
+        <Reveal as='li' className='ui-install-step' delay={80}>
+          <p className='ui-step-badge'>Step 2</p>
+          <h3 className='ui-install-step-title'>Add what you need</h3>
+          <p className='ui-install-step-text'>
+            Name the pieces and they’re copied in as plain files, with anything they’re built on. Here, a theme and the
+            dropdown.
+          </p>
+
+          <CommandPill />
+
+          <ul className='ui-added' aria-label='Added to your project, in components/ui'>
+            {ADDED.map((piece, i) => (
+              <li key={piece.name} className='ui-added-card' style={{ '--i': i } as CSSProperties}>
+                <div className='ui-added-head'>
+                  <span className='ui-added-check'>
+                    <GoCheck aria-hidden />
+                  </span>
+                  <p className='ui-added-name'>{piece.name}</p>
+                  {piece.via && <span className='ui-added-via'>With {piece.via}</span>}
+                </div>
+                <ul className='ui-added-files'>
+                  {piece.files.map((file) => (
+                    <li key={file}>
+                      <span aria-hidden>components/ui/</span>
+                      {file}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </ol>
+    </section>
   );
 }
 

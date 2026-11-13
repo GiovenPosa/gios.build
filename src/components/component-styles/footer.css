@@ -97,6 +97,10 @@
   font-size: var(--font-size-medium);
   color: var(--text-color-light);
   text-decoration: none;
+  /* one line, from the left: a button otherwise centres and wraps its words
+     (Safari does), which broke "Get a mockup" in a phone's narrow column */
+  white-space: nowrap;
+  text-align: left;
   cursor: pointer;
   transition: opacity 0.2s ease;
 }

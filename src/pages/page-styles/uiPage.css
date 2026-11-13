@@ -110,6 +110,20 @@
   color: #fff;
 }
 
+.ui-copy-label {
+  display: inline-grid;
+  justify-items: center;
+}
+
+.ui-copy-label > span {
+  grid-area: 1 / 1;
+}
+
+.ui-copy:not(.is-copied) .ui-copy-label > span:last-child,
+.ui-copy.is-copied .ui-copy-label > span:first-child {
+  visibility: hidden;
+}
+
 .ui-copy svg {
   width: 0.95rem;
   height: 0.95rem;
@@ -124,11 +138,10 @@
   color: var(--text-color-muted);
 }
 
-.ui-install-note code {
-  font-family: var(--font-family-Medium);
-  font-size: 0.8rem;
+.ui-install-note a {
   color: var(--text-color-dark);
-  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .ui-hero-actions {
@@ -152,10 +165,6 @@
   align-items: center;
   gap: var(--gap-5);
   min-width: 0;
-}
-
-.ui-hero-demo .hero-orb {
-  --orb-unit: clamp(300px, 36vw, 600px);
 }
 
 .ui-hero-demo .ui-demo-card {
@@ -513,7 +522,232 @@
   padding-top: var(--space-256);
 }
 
-/* ---- 3. Component grid ---- */
+/* ---- 3. Install, in two steps (InstallSteps in uiPage.tsx) ---- */
+
+.ui-install-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-128);
+  width: 100%;
+  max-width: 46rem;
+  margin: var(--space-64) 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+/* each step: its badge, then the rest under it, all on one left edge */
+.ui-step-badge {
+  display: inline-block;
+  margin: 0 0 var(--space-16);
+  padding: calc(var(--gap-1) + 2px) calc(var(--gap-2) + 2px);
+  border: 1px solid var(--text-color-dark);
+  --radius: 8px;
+  border-radius: var(--corner);
+  font-family: var(--font-family-Bold);
+  font-size: var(--font-size-small);
+  line-height: 1;
+}
+
+.ui-install-step-title {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-3-size);
+  line-height: var(--title-3-leading);
+  letter-spacing: var(--title-3-tracking);
+}
+
+.ui-install-step-text {
+  margin: var(--space-8) 0 0;
+  max-width: 36rem;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+}
+
+.ui-install-step code,
+.ui-callout code {
+  font-family: var(--font-family-Medium);
+  font-size: 0.9em;
+  color: var(--text-color-dark);
+}
+
+.ui-install-step > .ui-command {
+  margin-top: var(--space-32);
+}
+
+/* for a new project: a soft grey notice row with its copy button */
+.ui-callout {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-4);
+  margin-top: var(--space-32);
+  padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
+  --radius: 20px;
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+.ui-callout p {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-family-Regular);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+/* the file, as an editor would show it, the line to add picked out */
+.ui-file {
+  margin-top: var(--space-16);
+  overflow: hidden;
+  --radius: 24px;
+  border-radius: var(--corner);
+  background: #161618;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.ui-file-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-4);
+  padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ui-file-name {
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ui-file-code {
+  /* one column as wide as the longest line (or the window), so a line's
+     highlight runs the full width even when the code scrolls sideways */
+  display: grid;
+  grid-template-columns: minmax(100%, max-content);
+  margin: 0;
+  padding: var(--space-16) 0;
+  overflow-x: auto;
+  font-family: var(--font-family-Medium);
+  font-size: 0.85rem;
+  line-height: 1.75;
+  white-space: pre;
+}
+
+.ui-file-line {
+  padding: 0 var(--space-16) 0 var(--space-32);
+}
+
+.ui-file-line.is-faint {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.ui-file-line.is-added {
+  position: relative;
+  background: rgba(74, 222, 128, 0.12);
+  color: #fff;
+}
+
+.ui-file-plus {
+  position: absolute;
+  left: var(--space-16);
+  color: #4ade80;
+}
+
+/* what lands in the project: a card a piece, two across, each popping in
+   in turn once the step is on screen */
+.ui-added {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-3);
+  margin: var(--space-16) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ui-added-card {
+  padding: var(--space-16);
+  border: 1px solid var(--border-color-hairline);
+  --radius: 20px;
+  border-radius: var(--corner);
+  background: var(--bg-light-color);
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+  transition:
+    opacity 0.4s ease,
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(0.4s + var(--i) * 0.15s);
+}
+
+.ui-install-steps.is-playing .ui-added-card {
+  opacity: 1;
+  transform: none;
+}
+
+.ui-added-head {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-2);
+}
+
+.ui-added-check {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: #fff;
+}
+
+.ui-added-check svg {
+  width: 12px;
+  height: 12px;
+}
+
+.ui-added-name {
+  margin: 0;
+  font-family: var(--font-family-Medium);
+  font-size: var(--body-size);
+  line-height: 1.3;
+  color: var(--text-color-dark);
+}
+
+/* came along because the dropdown is built on it */
+.ui-added-via {
+  margin-left: auto;
+  padding: var(--gap-1) var(--gap-2);
+  --radius: 999px;
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+  font-family: var(--font-family-Medium);
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: var(--text-color-secondary);
+  white-space: nowrap;
+}
+
+.ui-added-files {
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-Medium);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-color-dark);
+}
+
+/* the folder, quieter than the file's own name */
+.ui-added-files span {
+  color: var(--text-color-muted);
+}
+
+/* ---- 4. Component grid ---- */
 
 .ui-grid {
   display: grid;
@@ -941,6 +1175,7 @@
   }
 
   .ui-term-files li,
+  .ui-added-card,
   .ui-term-chip,
   .ui-term-button,
   .ui-demo-card,
@@ -993,6 +1228,23 @@
 }
 
 @media (max-width: 600px) {
+  .ui-install-steps {
+    gap: var(--space-64);
+  }
+
+  .ui-added {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* the notice stacks: the words, then its copy button */
+  .ui-callout {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-3);
+    padding: var(--space-16);
+  }
+
+
   .ui-page {
     padding: 0 var(--page-gutter);
   }
