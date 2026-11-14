@@ -58,9 +58,10 @@
   color: var(--text-color-secondary);
 }
 
-/* ---- shared text ---- */
+/* ---- shared text: the article's own parts, not the FAQ thread, which
+   keeps the home page's headline and chat styles ---- */
 
-.guide-page h2 {
+:is(.guide-answer, .guide-section, .guide-sources) h2 {
   margin: 0;
   font-family: var(--font-family-Headline);
   font-weight: var(--headline-weight);
@@ -69,10 +70,7 @@
   letter-spacing: var(--title-3-tracking);
 }
 
-.guide-page p,
-.guide-page li,
-.guide-page td,
-.guide-page th {
+:is(.guide-head, .guide-answer, .guide-toc, .guide-section, .guide-sources) :is(p, li, td, th) {
   font-family: var(--font-family-Regular);
   font-size: var(--body-size);
   line-height: var(--body-leading);
@@ -82,7 +80,7 @@
 }
 
 /* the buttons keep their own colours */
-.guide-page .hero-action-button p {
+.guide-section .hero-action-button p {
   color: inherit;
   font-family: inherit;
   letter-spacing: normal;
@@ -92,7 +90,7 @@
   color: var(--text-color-dark);
 }
 
-.guide-page strong {
+:is(.guide-answer, .guide-section) strong {
   font-family: var(--font-family-Medium);
   font-weight: normal;
   color: var(--text-color-dark);
