@@ -6,9 +6,10 @@
   /* Body text is Jakarta, everywhere: the four cuts above. Headlines are
      Switzer (below) and the logo Sonder; nothing else. */
   --font-Sonder-Regular: "SonderRegular", sans-serif;
-  /* every headline: Switzer at 652, falling back to Jakarta Bold */
+  /* every headline: Switzer at 600, falling back to Jakarta Bold (600
+     rather than Mobbin's 652, since Switzer runs heavier than its Saans) */
   --font-family-Headline: "Switzer", "JakartaBold", sans-serif;
-  --headline-weight: 652;
+  --headline-weight: 600;
 
   --font-size-small: 12px;
   --font-size-regular: 16px;
@@ -38,7 +39,8 @@
   /* the brand red: dots, live bars, focus rings */
   --accent-color: #fe432a;
 
-  --text-color-dark: #000;
+  /* near-black, as Mobbin's: pure black reads heavier on white */
+  --text-color-dark: #141414;
   --text-color-muted: rgba(0, 0, 0, 0.6);
   --text-color-light: #fff;
 
@@ -47,8 +49,7 @@
 
   /* Headline type, after Mobbin's scale (mobbin.com/mcp): sizes step at
      breakpoints rather than scaling smoothly (the steps are in the media
-     queries just below this rule). Weight stays Bold: there's no SemiBold
-     file for Mobbin's 652. */
+     queries just below this rule). The weight is --headline-weight. */
 
   /* every page's hero headline: 40px, 56px from 769px wide, 80px from 1200px */
   --hero-headline-size: 40px;
