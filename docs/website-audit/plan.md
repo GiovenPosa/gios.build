@@ -1,6 +1,6 @@
 # Website Audit: implementation plan
 
-**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** Phase 1 built (14 Nov 2026), waiting on Turnstile and the migration before going live
+**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** Phase 1 built (14 Nov 2026); Turnstile set up and the migration run; waiting to be pushed and tested live
 
 Five phases. Each one ships something that works on its own, so the feature
 can stop at any phase and still be useful. The section numbers (§) refer to

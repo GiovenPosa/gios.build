@@ -85,7 +85,8 @@ export function PrivacyPage() {
                 (Anthropic's Claude). Only your website and what it shows publicly go to them, never your email or phone number.
               </p>
               <p>
-                I keep audit requests for 12 months, then delete them. To have yours deleted sooner, email{' '}
+                The audit form is checked for spam by Cloudflare Turnstile, which looks at your browser, not who you are,
+                and sets no tracking cookies. I keep audit requests for 12 months, then delete them. To have yours deleted sooner, email{' '}
                 <a href='mailto:contact@gios.build'>contact@gios.build</a>.
               </p>
             </section>

@@ -10,9 +10,11 @@ import type { FaqItem } from './faq';
 export const AUDIT_PATH = '/website-audit';
 
 /** Cloudflare Turnstile's site key (public; its secret is the Worker's
- *  TURNSTILE_SECRET). Empty until the Turnstile site is set up: the form then
- *  goes without the check, and the Worker skips it too. */
-export const TURNSTILE_SITE_KEY = '';
+ *  TURNSTILE_SECRET, set 14 Nov 2026). The widget "gios.build website audit"
+ *  allows www.gios.build and gios.build only, so on localhost it doesn't load
+ *  and the dev server's stand-in skips the check. Empty it and the form goes
+ *  without the check (the Worker then must lose its secret too). */
+export const TURNSTILE_SITE_KEY = '0x4AAAAAAGBB467xO8l_Gsuy';
 
 /** the tick box's words, stored with each request as the consent given */
 export const AUDIT_CONSENT = 'Happy for gios.build to contact me about my audit.';
