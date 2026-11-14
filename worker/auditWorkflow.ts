@@ -95,7 +95,13 @@ export class AuditWorkflow extends WorkflowEntrypoint<AuditWorkflowEnv, AuditPar
     } else {
       try {
         profile = await step.do('find the Google profile', { retries: { limit: 1, delay: '10 seconds' }, timeout: '1 minute' }, () =>
-          findProfile(env.GOOGLE_API_KEY!, audit.domain, query, { business: site!.businessData, phone: site!.phoneOnSite })
+          findProfile(
+            env.GOOGLE_API_KEY!,
+            // a listing may link to where the site redirects (wagamama.co.uk → wagamama.com)
+            [...new Set([audit.domain, new URL(site!.finalUrl ?? audit.url).hostname.replace(/^www\./, '')])],
+            query,
+            { business: site!.businessData, phone: site!.phoneOnSite }
+          )
         );
         if (!profile.found) profileNote = 'No Google Business Profile linking to this website was found.';
       } catch (error) {

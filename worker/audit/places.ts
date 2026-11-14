@@ -47,7 +47,8 @@ const hostOf = (url: string | undefined) => {
  */
 export async function findProfile(
   key: string,
-  domain: string,
+  /** the site's domains: the one asked for, and where it redirects to */
+  domains: string[],
   query: string,
   site: { business: BusinessData | null; phone: string | null }
 ): Promise<ProfileFacts> {
@@ -63,7 +64,7 @@ export async function findProfile(
   });
   if (!response.ok) throw new Error(`Places ${response.status}`);
   const { places = [] } = (await response.json()) as { places?: Place[] };
-  const place = places.find((p) => hostOf(p.websiteUri) === domain);
+  const place = places.find((p) => domains.includes(hostOf(p.websiteUri) ?? ''));
   if (!place) {
     return {
       found: false, name: null, address: null, phone: null, rating: null, reviews: null,

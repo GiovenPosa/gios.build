@@ -251,12 +251,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-32);
+  gap: var(--gap-3);
   margin-top: var(--space-32);
 }
 
-/* the light button on the dark card (the site's buttons colour their
-   label themselves, so it's set on the label too) */
+/* the mockup: white on the dark card ("light" gives its hover shimmer the
+   colour that shows on white; the colours are set here, as the site's
+   buttons colour their label themselves) */
 .report-help-button,
 .report-help-button p,
 .report-help-button svg {
@@ -264,7 +265,20 @@
   color: var(--text-color-dark);
 }
 
+/* WhatsApp, the quieter of the two: an outline on the dark card (the
+   site's buttons colour their label themselves, so it's set on it too) */
+.report-help-whatsapp,
+.report-help-whatsapp p {
+  background: transparent;
+  color: var(--text-color-light);
+}
+
+.report-help-whatsapp {
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.35);
+}
+
 .report-help-link {
+  margin-left: var(--space-16);
   font-family: var(--font-family-Medium);
   color: var(--text-color-light);
 }

@@ -9,6 +9,7 @@ import { useBooking } from '../context/bookingContext';
 import { track } from '../lib/analytics';
 import { packagesData, priceRange } from '../data/packages';
 import type { AuditReport } from '../data/auditReport';
+import { WhatsAppLink } from '../components/whatsappLink';
 
 // An audit's private report (docs/website-audit/spec.md §10), at
 // /report/<id>: the verdict, three scorecards, what's costing them
@@ -194,10 +195,19 @@ export function ReportPage() {
             {report.recommendation.alsoConsider && <p className='report-help-also'>{report.recommendation.alsoConsider}</p>}
             <p className='report-help-closing'>{report.closing}</p>
             <div className='report-help-actions'>
-              <button type='button' className='hero-action-button report-help-button' onClick={mockup}>
+              <button type='button' className='hero-action-button light report-help-button' onClick={mockup}>
                 <p>Get my free mockup</p>
                 <GoArrowRight aria-hidden />
               </button>
+              {/* or straight to a chat about it, the audit named in the first message */}
+              <WhatsAppLink
+                className='hero-action-button report-help-whatsapp'
+                from='Audit report'
+                message={`Hi Gio, I've just read my website audit for ${data.domain} and I'd like to chat about it.`}
+                revealNumber
+              >
+                <p>WhatsApp me</p>
+              </WhatsAppLink>
               <Link to='/work' className='report-help-link'>
                 See recent work
               </Link>
