@@ -225,6 +225,19 @@ export function FaqThread({ items = faqData, signOff = SIGN_OFF, composerLabel =
         ))}
       </div>
 
+      {/* every question with its answer, in the page from the start: the
+          chat only writes an answer in once it's asked, so without this
+          search engines (and the FAQ's structured data, data/schema.ts) would
+          find questions with no answers */}
+      <dl className='visually-hidden'>
+        {items.map((item) => (
+          <div key={item.question}>
+            <dt>{item.question}</dt>
+            <dd>{item.answer}</dd>
+          </div>
+        ))}
+      </dl>
+
       <button type='button' className={`faq-composer${done ? ' is-ready' : ''}`} onClick={onCompose ?? (() => openBooking('FAQ composer'))}>
         <span className='faq-composer-field'>{composerLabel}</span>
         <span className='faq-composer-send' aria-hidden>

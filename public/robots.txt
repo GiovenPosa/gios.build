@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+# the enquiry form's endpoint and the visit counter: not pages
+Disallow: /api/
+Disallow: /stats/
 
 Sitemap: https://www.gios.build/sitemap.xml

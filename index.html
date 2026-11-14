@@ -1,132 +1,50 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
-    <title>gios.build | Websites for Small Businesses | Gio Posa, Bath</title>
-    <meta data-rh="true" name="description" content="I'm Gio, a web designer and software engineer in Bath. I build new websites and redesign old ones for small businesses across the UK, with a free homepage mockup before you commit.">
-    <meta data-rh="true" name="keywords" content="web designer bath, web developer bath, small business website, website redesign, web design uk, gios.build">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Design in Bath &amp; Bristol for Small Businesses | gios.build</title>
+    <meta data-rh="true" name="description" content="Websites for small businesses in Bath, Bristol, Somerset, Wiltshire and across the UK. Built to be found on Google, from £600, with a free homepage mockup.">
+    <meta data-rh="true" name="keywords" content="web designer bath, web design bath, web designer bristol, web design bristol, small business website, website redesign, web design uk, gios.build">
     <meta name="author" content="Gio Posa">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <!-- where the business is: Bath, in Bath and North East Somerset -->
+    <meta name="geo.region" content="GB-BAS">
+    <meta name="geo.placename" content="Bath">
     <!-- the tags marked data-rh are each page's own: the build writes every
-         page's into its HTML (vite.config.ts, from src/data/seo.ts), and the
-         app swaps them as you move between pages (components/pageMeta.tsx) -->
+         page's into its HTML, along with its structured data (vite.config.ts,
+         from src/data/seo.ts and src/data/schema.ts), and the app swaps them
+         as you move between pages (components/pageMeta.tsx) -->
     <!-- page canonical -->
 
     <!-- Social preview (Open Graph for sharing) -->
-    <meta data-rh="true" property="og:title" content="gios.build | Websites for Small Businesses">
-    <meta data-rh="true" property="og:description" content="New websites and redesigns for small businesses, from £600. See a free mockup of your new homepage before you commit.">
-    <meta data-rh="true" property="og:url" content="https://www.gios.build">
+    <meta property="og:site_name" content="gios.build">
+    <meta property="og:locale" content="en_GB">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://www.gios.build/og-image.png">
+    <meta data-rh="true" property="og:title" content="gios.build | Websites for Small Businesses">
+    <meta data-rh="true" property="og:description" content="Most websites blend in. Yours won't. New websites and redesigns from £600, with a free homepage mockup first.">
+    <meta data-rh="true" property="og:url" content="https://www.gios.build/">
+    <meta data-rh="true" property="og:image" content="https://www.gios.build/og/home.png">
     <meta property="og:image:width" content="2400">
     <meta property="og:image:height" content="1260">
-    <meta property="og:image:alt" content="gios.build: Most websites blend in. Yours won't. Websites for small businesses, with a free homepage mockup first.">
+    <meta data-rh="true" property="og:image:alt" content="gios.build: Most websites blend in. Yours won't. Websites for small businesses in Bath, Bristol and across the UK, from £600.">
 
-    <!-- Twitter card -->
+    <!-- Twitter / X card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta data-rh="true" name="twitter:title" content="gios.build | Websites for Small Businesses">
-    <meta data-rh="true" name="twitter:description" content="New websites and redesigns for small businesses, from £600, by Gio Posa in Bath.">
-    <meta name="twitter:image" content="https://www.gios.build/og-image.png">
+    <meta data-rh="true" name="twitter:description" content="Most websites blend in. Yours won't. New websites and redesigns from £600, with a free homepage mockup first.">
+    <meta data-rh="true" name="twitter:image" content="https://www.gios.build/og/home.png">
+    <meta data-rh="true" name="twitter:image:alt" content="gios.build: Most websites blend in. Yours won't. Websites for small businesses in Bath, Bristol and across the UK, from £600.">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- icons: Google's results use a square one, a multiple of 48px -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#ffffff">
 
-    <link rel="icon" href="/gb.png" type="image/png" />
-    <link rel="shortcut icon" href="/gb.png" type="image/png" />
-    <link rel="icon" type="image/svg+xml" href="/gb2.svg" />
-
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "gios.build",
-        "url": "https://www.gios.build",
-        "logo": "https://www.gios.build/gb.png",
-        "image": "https://www.gios.build/og-image.png",
-        "email": "contact@gios.build",
-        "description": "Website design and development for small businesses in Bath and across the UK: new websites, redesigns, enquiry and booking forms, getting found on Google, hosting and care. Every project starts with a free homepage mockup.",
-        "priceRange": "From £600",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Bath",
-          "addressRegion": "Somerset",
-          "addressCountry": "GB"
-        },
-        "areaServed": [
-          {
-            "@type": "City",
-            "name": "Bath"
-          },
-          {
-            "@type": "Country",
-            "name": "United Kingdom"
-          }
-        ],
-        "sameAs": [
-          "https://www.instagram.com/gios.build",
-          "https://www.linkedin.com/in/gio-posa-200541240"
-        ],
-        "knowsAbout": [
-          "Web design",
-          "Website redesign",
-          "Web development",
-          "Small business websites",
-          "Search engine optimisation"
-        ],
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Website packages",
-          "itemListElement": [
-            {
-              "@type": "Offer",
-              "name": "Starter Website",
-              "description": "For new businesses that need to look professional online.",
-              "priceSpecification": {
-                "@type": "PriceSpecification",
-                "minPrice": 600,
-                "priceCurrency": "GBP"
-              }
-            },
-            {
-              "@type": "Offer",
-              "name": "Website Redesign",
-              "description": "For sites that look dated or don't bring in enquiries.",
-              "priceSpecification": {
-                "@type": "PriceSpecification",
-                "minPrice": 900,
-                "priceCurrency": "GBP"
-              }
-            },
-            {
-              "@type": "Offer",
-              "name": "Growth Website",
-              "description": "For businesses ready to make their website a source of leads.",
-              "priceSpecification": {
-                "@type": "PriceSpecification",
-                "minPrice": 1800,
-                "priceCurrency": "GBP"
-              }
-            }
-          ]
-        },
-        "founder": {
-          "@type": "Person",
-          "name": "Gio Posa",
-          "jobTitle": "Web Designer & Software Engineer",
-          "alumniOf": "University of Bristol",
-          "sameAs": [
-            "https://github.com/GiovenPosa",
-            "https://www.linkedin.com/in/gio-posa-200541240"
-          ]
-        }
-      }
-    </script>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "gios.build",
-        "url": "https://www.gios.build"
-      }
-    </script>
+    <!-- structured data -->
   </head>
   <body>
     <div id="root"></div>

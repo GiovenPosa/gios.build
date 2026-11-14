@@ -2,11 +2,18 @@
 // pages set these in the browser (components/pageMeta.tsx), and the build
 // writes them into a copy of index.html for each page (vite.config.ts), so
 // link previews (LinkedIn, WhatsApp, iMessage) and search engines see the
-// right ones without running the app.
+// right ones without running the app. The build also writes the sitemap from
+// this list, and each page's structured data (data/schema.ts).
+//
+// Titles stay under about 60 characters and descriptions under about 160,
+// or Google cuts them off. Bath and Bristol lead (where most searches for a
+// web designer nearby will come from), Somerset and Wiltshire follow, and
+// "across the UK" keeps the door open everywhere else.
 //
 // Plain data only: vite.config.ts imports this file too.
 
 export const SITE_URL = 'https://www.gios.build';
+export const SITE_NAME = 'gios.build';
 
 export interface PageSeo {
   /** the browser tab and search result title */
@@ -17,34 +24,52 @@ export interface PageSeo {
   /** shorter versions for link previews; default to the above */
   shareTitle?: string;
   shareDescription?: string;
+  /** the link-preview image, in public/og (2400 × 1260) */
+  image: string;
+  /** what the preview image shows, for screen readers */
+  imageAlt: string;
+  /** the page's name in the breadcrumb trail search results show */
+  crumb: string;
 }
+
+export const DEFAULT_IMAGE = '/og/home.png';
 
 export const PAGES = {
   '/': {
-    title: 'gios.build | Websites for Small Businesses in Bath & Across the UK | Gio Posa',
+    title: 'Web Design in Bath & Bristol for Small Businesses | gios.build',
     description:
-      "I'm Gio, a web designer and software engineer in Bath. I build new websites and redesign old ones for small businesses across the UK, from £600, built to be found on Google, with a free homepage mockup before you commit.",
-    keywords: 'web designer bath, web developer bath, small business website, website redesign, web design uk, gios.build',
+      'Websites for small businesses in Bath, Bristol, Somerset, Wiltshire and across the UK. Built to be found on Google, from £600, with a free homepage mockup.',
+    keywords:
+      'web designer bath, web design bath, web designer bristol, web design bristol, web designer trowbridge, web design somerset, web design wiltshire, small business website, website redesign, local seo, web design uk, gios.build',
     shareTitle: 'gios.build | Websites for Small Businesses',
-    shareDescription: 'New websites and redesigns for small businesses, from £600. See a free mockup of your new homepage before you commit.',
+    shareDescription: "Most websites blend in. Yours won't. New websites and redesigns from £600, with a free homepage mockup first.",
+    image: '/og/home.png',
+    imageAlt: "gios.build: Most websites blend in. Yours won't. Websites for small businesses in Bath, Bristol and across the UK, from £600.",
+    crumb: 'Home',
   },
   '/work': {
-    title: 'Work | gios.build | Websites & Software Built by Gio Posa',
+    title: 'Website Design Portfolio | Web Designer in Bath | gios.build',
     description:
-      'Selected projects by Gio Posa: Van-Spec and a lead tracker for Vanaways, Staffly, CheckedIn, Orbital Intelligence, and an AI travel app built during an IBM internship.',
+      'Recent websites by Gio Posa, a web designer in Bath: Prime Stock Central, Ossa Pilates and Kape Coffee. Fast, mobile-first sites made to bring in work.',
     keywords:
-      'web design portfolio, ui ux portfolio, software engineering portfolio, digital product design, frontend development work, case studies, gios.build projects',
+      'web design portfolio, website examples, small business websites, web designer bath, web designer bristol, next.js websites, gios.build work',
     shareTitle: 'Work | gios.build',
-    shareDescription: 'Websites and software by Gio Posa: Van-Spec for Vanaways, Staffly, CheckedIn, Orbital Intelligence and more.',
+    shareDescription: 'Recent websites by Gio Posa: Prime Stock Central, Ossa Pilates and Kape Coffee.',
+    image: '/og/work.jpg',
+    imageAlt: 'Recent websites by gios.build: Prime Stock Central, Ossa Pilates and Kape Coffee.',
+    crumb: 'Work',
   },
   '/packages': {
-    title: 'Website Packages & Pricing for Small Businesses | gios.build',
+    title: 'Website Prices for Small Businesses | From £600 | gios.build',
     description:
-      'Clear website pricing for small businesses: starter sites from £600, redesigns from £900 and growth websites with local SEO from £1,800. SEO foundations and a free homepage mockup with every project.',
+      'Clear website prices: Starter from £600, Redesign from £900, and Growth with local SEO from £1,800. SEO foundations and a free homepage mockup with every site.',
     keywords:
-      'web design packages, website pricing uk, small business website, website redesign, lead generation website, web design services, landing page design, gios.build',
-    shareTitle: 'Packages & Pricing | gios.build',
-    shareDescription: 'Starter sites from £600, redesigns from £900, growth websites from £1,800. SEO foundations and a free homepage mockup with every project.',
+      'website prices uk, how much does a website cost, small business website cost, web design packages, website redesign cost, local seo, web design bath prices, gios.build',
+    shareTitle: 'Packages & Prices | gios.build',
+    shareDescription: 'Starter from £600, Redesign from £900, Growth from £1,800. SEO foundations and a free homepage mockup with every site.',
+    image: '/og/packages.png',
+    imageAlt: 'gios.build website packages: Starter from £600, Redesign from £900, Growth from £1,800.',
+    crumb: 'Packages',
   },
   '/ui': {
     title: 'Gio UI | A React Component Library You Own | gios.build',
@@ -53,11 +78,17 @@ export const PAGES = {
     keywords: 'react component library, copy-in components, shadcn registry, css modules components, react ui kit, design system, gios.build',
     shareTitle: 'Gio UI | Copy it in. Make it yours.',
     shareDescription: 'A React component library you copy into your project, theme with CSS variables and hand over as plain code.',
+    image: '/og/ui.png',
+    imageAlt: 'Gio UI: a React component library you copy into your project and make your own.',
+    crumb: 'Gio UI',
   },
   '/privacy': {
     title: 'Privacy | gios.build',
     description:
       "How gios.build uses the details you send through the enquiry form: what's collected, why, where it's kept, for how long, and your rights.",
+    image: DEFAULT_IMAGE,
+    imageAlt: "gios.build: Most websites blend in. Yours won't.",
+    crumb: 'Privacy',
   },
 } satisfies Record<string, PageSeo>;
 

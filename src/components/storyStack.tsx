@@ -23,6 +23,15 @@ const SINGLES: Record<string, { type: 'video' | 'image'; src: string; webm?: str
   'gios.build': { type: 'image', src: GioPortrait },
 };
 
+// what each photo shows, for image search (the slot is hidden from screen
+// readers, as the chapter's words say the same)
+const ALT: Record<string, string> = {
+  [BristolDome]: 'The domed ceiling of a lecture hall at the University of Bristol, where Gio Posa studied',
+  [BristolLecture]: 'A full lecture theatre at the University of Bristol',
+  [BristolLaptop]: 'Code on a laptop in a University of Bristol computer lab',
+  [GioPortrait]: 'Gio Posa, web designer in Bath and founder of gios.build',
+};
+
 // real photos for a chapter's stack, back to front; chapters without any
 // keep the placeholder tones
 const PHOTOS: Record<string, { back: string; middle: string; front: string }> = {
@@ -142,7 +151,7 @@ export function StoryStack() {
                     {SINGLES[step.stop].type === 'video' ? (
                       <LoopVideo lazy src={SINGLES[step.stop].src} webm={SINGLES[step.stop].webm} poster={SINGLES[step.stop].poster} />
                     ) : (
-                      <img src={SINGLES[step.stop].src} alt='' loading='lazy' decoding='async' draggable={false} />
+                      <img src={SINGLES[step.stop].src} alt={ALT[SINGLES[step.stop].src] ?? ''} loading='lazy' decoding='async' draggable={false} />
                     )}
                   </span>
                 </div>
@@ -154,7 +163,7 @@ export function StoryStack() {
                     return (
                       <span key={layer} className={`story-photo is-${layer}${photo ? ' has-photo' : ''}`}>
                         {photo
-                          ? <img src={photo} alt='' loading='lazy' decoding='async' draggable={false} />
+                          ? <img src={photo} alt={ALT[photo] ?? ''} loading='lazy' decoding='async' draggable={false} />
                           : layer === 'front' && <em>{index === last ? 'Photo of Gio' : 'Photo'}</em>}
                       </span>
                     );

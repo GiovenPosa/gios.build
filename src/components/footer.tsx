@@ -118,7 +118,7 @@ export function Footer() {
         </div>
 
         <div className='footer-bottom footer-animate-item' style={getItemStyle(4)}>
-          <p className='footer-copy'>© {new Date().getFullYear()} gios.build. Bath, UK.</p>
+          <p className='footer-copy'>© {new Date().getFullYear()} gios.build. Web design in Bath, for Bristol, Somerset, Wiltshire and across the UK.</p>
           <div className='footer-bottom-end'>
             <Link to='/privacy' className='footer-small-link'>Privacy</Link>
             <span className='footer-rule' aria-hidden />

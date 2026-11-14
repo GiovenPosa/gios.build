@@ -22,6 +22,10 @@ export const faqData: FaqItem[] = [
     answer: "Every site is built to be found: clear page titles, fast pages, your business details in a form Google understands, and Search Console set up so Google knows you exist. Growth sites go further with local SEO, so you show up when people nearby search for what you do: your Google Business Profile, a page for each service or area, and a plan for reviews."
   },
   {
+    question: 'Do you only work with businesses in Bath?',
+    answer: "No. I'm based in Bath and happy to meet in person around Bath, Bristol, Trowbridge and the rest of Somerset and Wiltshire. Anywhere else in the UK, we can do everything over a video call, and the free mockup works just the same."
+  },
+  {
     question: 'Can you handle hosting and my domain?',
     answer: 'Yes. Hosting and domain setup can be included. The cost depends on what your site needs, and I\'ll include it in your quote.'
   },

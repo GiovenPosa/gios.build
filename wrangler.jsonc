@@ -1,5 +1,6 @@
 // Cloudflare Worker that serves the site: the built files in dist/, with the
-// small script in worker/ in front of /stats (the Umami pass-through) and
+// small script in worker/ in front of them. It redirects other addresses to
+// https://www.gios.build, and answers /stats (the Umami pass-through) and
 // /api (the enquiry form's endpoint).
 //
 // The enquiry endpoint also needs the Supabase secret key, kept out of this
@@ -14,10 +15,12 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    // any path without a file gets index.html with a 200; the router shows
-    // the page, or the not-found page
+    // any path without a file gets index.html; the router shows the page, or
+    // the not-found page (the Worker gives that one a 404 status)
     "not_found_handling": "single-page-application",
-    "run_worker_first": ["/stats/*", "/api/*"]
+    // every request goes through the Worker first, for the redirect to
+    // https://www.gios.build and the 404s (worker/index.ts)
+    "run_worker_first": true
   },
   "vars": {
     "SUPABASE_URL": "https://tbewrjkilpnifzzygqhv.supabase.co"

@@ -13,7 +13,7 @@ export function WorkPage() {
 
       <div className='work-page'>
         <div className='work-page-container'>
-          <h1 className='visually-hidden'>Work by Gio Posa, web designer and developer in Bath</h1>
+          <h1 className='visually-hidden'>Recent websites by Gio Posa, a web designer in Bath</h1>
           <WorkGrid items={workData} />
           <ClosingCta />
         </div>

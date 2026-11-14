@@ -175,7 +175,8 @@ export function SearchShowcase() {
         <div className='showcase-track'>
           {row.map((card, index) => (
             <div key={`${card.title}-${index}`} className='showcase-card' style={{ '--ratio': card.ratio } as CSSProperties}>
-              <img className='showcase-shot' src={card.src} alt='' loading='lazy' decoding='async' />
+              {/* described for image search; the row itself is hidden from screen readers */}
+              <img className='showcase-shot' src={card.src} alt={`${card.title} website${card.ratio === MOBILE_RATIO ? ' on a phone' : ''}, by gios.build`} loading='lazy' decoding='async' />
               {card.icon ? (
                 <img className='showcase-mark' src={card.icon} alt='' loading='lazy' decoding='async' />
               ) : (

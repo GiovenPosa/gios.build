@@ -142,7 +142,15 @@ function SiteReels() {
   );
 }
 
-const phone = (src: string, className = '') => <img className={`svcs-phone ${className}`} src={src} alt='' loading='lazy' decoding='async' />;
+// each described for image search (the pictures are hidden from screen readers)
+const phone = (src: string, alt: string, className = '') => <img className={`svcs-phone ${className}`} src={src} alt={alt} loading='lazy' decoding='async' />;
+
+// the ways in, for Leads & Bookings: book a first class, ask for a quote, order now
+const LEADS: [string, string][] = [
+  [OssaNew, 'Booking a first class on the Ossa Pilates website, by gios.build'],
+  [PrimeStockQuote, 'Quote request form on the Prime Stock Central website, by gios.build'],
+  [KapeHero, 'Kape Coffee website on a phone, by gios.build'],
+];
 
 // Each service's picture, from the sites already built (in the order of
 // data/services.ts): a desktop page, phones from the mobile sites, and the
@@ -151,7 +159,7 @@ const visuals: { kind: string; content: ReactNode }[] = [
   // New Websites: the sites' reels in turn, running off the card's edge
   { kind: 'site', content: <SiteReels /> },
   // Redesigns: one phone
-  { kind: 'phone', content: phone(OssaHero) },
+  { kind: 'phone', content: phone(OssaHero, 'Ossa Pilates website on a phone, by gios.build') },
   // Leads & Bookings: three phones, each a way in (book a first class, ask
   // for a quote, order now), sliding right to left on an endless loop: the
   // track holds them twice and moves by one set, so the join never shows
@@ -159,14 +167,14 @@ const visuals: { kind: string; content: ReactNode }[] = [
     kind: 'phones',
     content: (
       <div className='svcs-phones-track'>
-        {[OssaNew, PrimeStockQuote, KapeHero, OssaNew, PrimeStockQuote, KapeHero].map((src, index) => (
-          <img key={index} className='svcs-phone' src={src} alt='' loading='lazy' decoding='async' />
+        {[...LEADS, ...LEADS].map(([src, alt], index) => (
+          <img key={index} className='svcs-phone' src={src} alt={alt} loading='lazy' decoding='async' />
         ))}
       </div>
     ),
   },
   // Getting Found: the Google rating
-  { kind: 'phone', content: phone(OssaReviews) },
+  { kind: 'phone', content: phone(OssaReviews, 'Google reviews on the Ossa Pilates website, by gios.build') },
   // Hosting & Care: the tools that keep it running, as a fan of app icons
   {
     kind: 'icons',

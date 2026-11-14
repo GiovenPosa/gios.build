@@ -21,6 +21,9 @@ import KappePoster from '../assets/project-videos/cards/KappeAnimate.webp';
 import PrimeStockIcon from '../assets/project-images/favicons/primestock.webp';
 import OssaIcon from '../assets/project-images/favicons/ossa.webp';
 import KappeIcon from '../assets/project-images/favicons/kape.webp';
+import { workAbout, type WorkAbout } from './workAbout';
+
+export type { WorkAbout };
 
 export interface WorkMedia {
   type: 'video' | 'image';
@@ -49,19 +52,8 @@ export interface WorkItem {
   dark?: boolean;
   /** The project's favicon, shown as its app icon (a square image). */
   icon?: string;
-  /** What the larger view's side panel says about it. */
+  /** What the larger view's side panel says about it (data/workAbout.ts). */
   about?: WorkAbout;
-}
-
-export interface WorkAbout {
-  /** what kind of work, above the name, e.g. "Websites" */
-  kind: string;
-  /** a sentence or two on the business and the site */
-  summary: string;
-  /** when it was built, e.g. "Nov 2026" */
-  when?: string;
-  /** the facts, as label and values, each value on its own line */
-  facts: { label: string; values: string[] }[];
 }
 
 // The one list of projects, for the home grid and the Work page.
@@ -69,18 +61,7 @@ export const workData: WorkItem[] = [
   {
     title: 'Prime Stock Central',
     meta: 'Website',
-    about: {
-      kind: 'Websites',
-      summary: 'Prime Stock Central installs, stocks and looks after smart, cashless vending machines for workplaces in and around Bath.',
-      when: 'Nov 2026',
-      facts: [
-        { label: 'Category', values: ['Vending'] },
-        { label: 'Style', values: ['Bold colour', 'Dark', '3D', 'Scroll animation'] },
-        { label: 'Type', values: ['Local business'] },
-        { label: 'Framework', values: ['Next.js', 'React'] },
-        { label: 'Library', values: ['three.js'] },
-      ],
-    },
+    about: workAbout['Prime Stock Central'],
     icon: PrimeStockIcon,
     dark: true,
     ratio: '16 / 10',
@@ -91,18 +72,7 @@ export const workData: WorkItem[] = [
   {
     title: 'Ossa Pilates',
     meta: 'Website',
-    about: {
-      kind: 'Websites',
-      summary: 'Ossa is a boutique Pilates and yoga studio: six reformers, small classes, and seven ways to move.',
-      when: 'Oct 2026',
-      facts: [
-        { label: 'Category', values: ['Fitness'] },
-        { label: 'Style', values: ['Editorial', 'Large type', 'Warm', 'Image sequence'] },
-        { label: 'Type', values: ['Boutique studio'] },
-        { label: 'Framework', values: ['Next.js', 'React'] },
-        { label: 'Library', values: ['Paper Shaders'] },
-      ],
-    },
+    about: workAbout['Ossa Pilates'],
     icon: OssaIcon,
     ratio: '16 / 10',
     aspect: '16 / 10',
@@ -112,17 +82,7 @@ export const workData: WorkItem[] = [
   {
     title: 'Kape Coffee',
     meta: 'Website',
-    about: {
-      kind: 'Websites',
-      summary: 'Kape is a Filipino coffee shop pouring bold barako and ube lattes, with merienda in the afternoons and a welcome like home.',
-      when: 'Oct 2026',
-      facts: [
-        { label: 'Category', values: ['Café'] },
-        { label: 'Style', values: ['Playful', 'Illustrated', 'Textured', 'Scroll story'] },
-        { label: 'Type', values: ['Coffee shop'] },
-        { label: 'Framework', values: ['Next.js', 'React'] },
-      ],
-    },
+    about: workAbout['Kape Coffee'],
     icon: KappeIcon,
     ratio: '16 / 10',
     aspect: '16 / 10',

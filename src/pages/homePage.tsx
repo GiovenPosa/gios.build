@@ -236,7 +236,7 @@ export function HomePage() {
                 <span className='hero-word is-left' style={{ '--d': '420ms' } as CSSProperties}>Yours</span>{' '}
                 <span className='hero-word is-right' style={{ '--d': '510ms' } as CSSProperties}><HeroIcon faces={HERO_ICONS[1]} turn={1} play={heroSettled} />{' '}won't<span className='hero-stop'>.</span></span>
               </span>
-              <span className='visually-hidden'> Small business web design in Bath, UK.</span>
+              <span className='visually-hidden'> Web design for small businesses in Bath, Bristol and across the UK.</span>
             </h1>
             <Reveal as="p" className='hero-sub' delay={heroBuild === 'done' ? 160 : 1000}>
               Built around your customers: what they're looking for, and what makes them pick you. See your free homepage mockup before you spend a penny.

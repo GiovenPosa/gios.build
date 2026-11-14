@@ -1,5 +1,7 @@
-// Runs in front of /stats and /api only (see wrangler.jsonc); everything else
-// is served straight from the built site.
+// Runs in front of every request (see wrangler.jsonc): it sends other
+// addresses for the site to https://www.gios.build, answers /stats and /api,
+// and serves everything else from the built site, with a 404 status for
+// paths that aren't pages.
 //
 // Umami's tracker and its page views and events go through this site's own
 // /stats path rather than Umami's domain, so ad blockers that block
@@ -50,9 +52,46 @@ async function send(request: Request): Promise<Response> {
   });
 }
 
+// The one address Google should know the site by. gios.build, and plain
+// http, both answer with a permanent redirect to it, so search engines never
+// see two copies of a page.
+const HOST = 'www.gios.build';
+
+// The app's real pages (src/App.tsx). Any other path still gets the app,
+// which shows its not-found page, but with a 404 status, so search engines
+// don't index it as a page of its own.
+const PAGES = new Set(['/', '/work', '/packages', '/ui', '/privacy']);
+
+// Old pages folded into the home page: moved for good.
+const MOVED: Record<string, string> = {
+  '/about': '/#story',
+  '/contact': '/#contact',
+};
+
+async function site(request: Request, env: Env, url: URL): Promise<Response> {
+  const moved = MOVED[url.pathname];
+  if (moved) return Response.redirect(`https://${HOST}${moved}`, 301);
+  const response = await env.ASSETS.fetch(request);
+  // a path with no file comes back as the app's index.html with a 200
+  const isPage = (response.headers.get('Content-Type') ?? '').startsWith('text/html');
+  if (response.status === 200 && isPage && !PAGES.has(url.pathname)) {
+    return new Response(response.body, { status: 404, headers: response.headers });
+  }
+  return response;
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const { pathname } = new URL(request.url);
+    const url = new URL(request.url);
+    // local runs (wrangler dev) are on localhost: left as they are
+    const live = url.hostname.endsWith('gios.build');
+    if (live && (url.hostname !== HOST || url.protocol !== 'https:')) {
+      url.hostname = HOST;
+      url.protocol = 'https:';
+      url.port = '';
+      return Response.redirect(url.toString(), 301);
+    }
+    const { pathname } = url;
     if (pathname === '/stats/s.js' && request.method === 'GET') return tracker(request);
     if (pathname === '/stats/api/send' && request.method === 'POST') return send(request);
     if (pathname.startsWith('/api/')) {
@@ -62,6 +101,6 @@ export default {
         new Response('Not found', { status: 404 })
       );
     }
-    return env.ASSETS.fetch(request);
+    return site(request, env, url);
   },
 };
