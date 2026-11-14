@@ -1,6 +1,6 @@
 # Website Audit: implementation plan
 
-**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** Phase 1 built (14 Nov 2026); Turnstile set up and the migration run; waiting to be pushed and tested live
+**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** Phase 1 live and tested (14 Nov 2026): a request from the live page reached the lead app's inbox with its phone number, note and `/website-audit` tag. Phase 2 next.
 
 Five phases. Each one ships something that works on its own, so the feature
 can stop at any phase and still be useful. The section numbers (§) refer to
