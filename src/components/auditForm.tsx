@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { GoArrowRight } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import { AUDIT_CONSENT, AUDIT_PATH, AUDIT_TURNAROUND, TURNSTILE_SITE_KEY } from '../data/audit';
@@ -16,6 +16,11 @@ declare global {
     turnstile?: TurnstileApi;
   }
 }
+// Turnstile only works on the hostnames its widget allows (gios.build), so
+// on a local run the check is off; the dev server's stand-in doesn't ask for it
+const TURNSTILE_ON =
+  !!TURNSTILE_SITE_KEY && typeof window !== 'undefined' && !['localhost', '127.0.0.1'].includes(window.location.hostname);
+
 let turnstileScript: Promise<TurnstileApi> | null = null;
 const loadTurnstile = () =>
   (turnstileScript ??= new Promise((resolve, reject) => {
@@ -32,7 +37,7 @@ function useTurnstile(onToken: (token: string | null) => void) {
   const ref = useRef<HTMLDivElement>(null);
   const widget = useRef<string | null>(null);
   useEffect(() => {
-    if (!TURNSTILE_SITE_KEY || !ref.current) return;
+    if (!TURNSTILE_ON || !ref.current) return;
     let cancelled = false;
     loadTurnstile()
       .then((turnstile) => {
@@ -57,6 +62,9 @@ function useTurnstile(onToken: (token: string | null) => void) {
   return { ref, reset };
 }
 
+// the burst's dots, in the hero stickers' colours
+const BURST = ['#fe432a', '#0a7cff', '#22c55e', '#f7e07a', '#c9b8f5', '#7cc4e4', '#fe432a', '#22c55e'];
+
 /**
  * The free audit's request form: website, email, phone, an optional line on
  * what they want more of, and the consent tick. Sends to /api/audit
@@ -74,12 +82,34 @@ export function AuditForm() {
   const [error, setError] = useState<string | null>(null);
   const [sentTo, setSentTo] = useState<string | null>(null);
   const turnstile = useTurnstile(setToken);
+  // the form's height as it's sent, so the thank-you card can shrink from it
+  const formRef = useRef<HTMLFormElement>(null);
+  const sentRef = useRef<HTMLDivElement>(null);
+  const fromHeight = useRef(0);
+
+  // Sent: the card eases from the form's height to its own, and comes into
+  // view if the form was scrolled partly off screen (on a phone, say)
+  useLayoutEffect(() => {
+    const card = sentRef.current;
+    if (!sentTo || !card) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && fromHeight.current) {
+      card.animate([{ height: `${fromHeight.current}px` }, { height: `${card.offsetHeight}px` }], {
+        duration: 520,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      });
+    }
+    const box = card.getBoundingClientRect();
+    if (box.top < 80 || box.bottom > window.innerHeight) {
+      card.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+    }
+  }, [sentTo]);
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     if (sending) return;
     setError(null);
-    if (TURNSTILE_SITE_KEY && !token) {
+    if (TURNSTILE_ON && !token) {
       setError('One moment: the “I’m human” check is still loading.');
       return;
     }
@@ -102,6 +132,7 @@ export function AuditForm() {
       const result = (await response.json().catch(() => ({}))) as { ok?: boolean; error?: string };
       if (!response.ok || !result.ok) throw new Error(result.error || 'Something went wrong. Please try again.');
       track('Audit requested');
+      fromHeight.current = formRef.current?.offsetHeight ?? 0;
       setSentTo(email.trim());
     } catch (problem) {
       setError(problem instanceof Error ? problem.message : 'Something went wrong. Please try again.');
@@ -114,9 +145,16 @@ export function AuditForm() {
 
   if (sentTo) {
     return (
-      <div className='audit-form is-sent' role='status'>
-        <span className='audit-sent-tick' aria-hidden>
-          <svg viewBox='0 0 24 24'><path d='M6.5 12.5l3.6 3.6 7.4-8' fill='none' stroke='currentColor' strokeWidth='2.8' strokeLinecap='round' strokeLinejoin='round' /></svg>
+      <div className='audit-form is-sent' role='status' ref={sentRef}>
+        {/* the tick pops in and draws itself, with a burst of the stickers'
+            colours around it (auditForm.css) */}
+        <span className='audit-sent-mark' aria-hidden>
+          {BURST.map((colour, index) => (
+            <i key={index} style={{ '--a': `${index * (360 / BURST.length)}deg`, '--c': colour } as CSSProperties} />
+          ))}
+          <span className='audit-sent-tick'>
+            <svg viewBox='0 0 24 24'><path d='M6.5 12.5l3.6 3.6 7.4-8' pathLength={1} fill='none' stroke='currentColor' strokeWidth='2.8' strokeLinecap='round' strokeLinejoin='round' /></svg>
+          </span>
         </span>
         <h3>Your audit is on its way.</h3>
         <p>
@@ -128,7 +166,7 @@ export function AuditForm() {
   }
 
   return (
-    <form className='audit-form' onSubmit={submit} noValidate>
+    <form className='audit-form' onSubmit={submit} noValidate ref={formRef}>
       <div className='form-group'>
         <label htmlFor='audit-website'>
           Your website<span className='required-asterisk'>*</span>

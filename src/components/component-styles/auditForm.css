@@ -107,27 +107,77 @@
   cursor: default;
 }
 
-/* ---- sent ---- */
+/* ---- sent: the tick pops in and draws itself, a burst of colour, then
+   the words rise in (components/auditForm.tsx eases the card's height) ---- */
 
 .audit-form.is-sent {
   align-items: center;
   text-align: center;
   padding-block: var(--space-64);
+  overflow: hidden;
+}
+
+.audit-sent-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
 }
 
 .audit-sent-tick {
   display: grid;
   place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   background: #22c55e;
   color: #fff;
+  animation: audit-tick-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
 }
 
 .audit-sent-tick svg {
   width: 60%;
   height: 60%;
+}
+
+/* the check mark draws from its short end to its long one */
+.audit-sent-tick path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: audit-tick-draw 0.4s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+}
+
+/* a ring that breathes out once behind the tick */
+.audit-sent-mark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  opacity: 0;
+  animation: audit-tick-ring 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s;
+}
+
+/* the burst: dots flying out from the middle at even angles, fading */
+.audit-sent-mark i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--c);
+  opacity: 0;
+  animation: audit-burst 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.45s;
+}
+
+.audit-sent-mark i:nth-child(even) {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  --reach: 2.6rem;
 }
 
 .audit-form.is-sent h3 {
@@ -136,6 +186,7 @@
   font-weight: var(--headline-weight);
   font-size: var(--title-3-size);
   line-height: var(--title-3-leading);
+  animation: audit-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
 }
 
 .audit-form.is-sent p {
@@ -145,10 +196,51 @@
   font-size: var(--body-size);
   line-height: var(--body-leading);
   color: var(--text-color-secondary);
+  animation: audit-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.68s both;
 }
 
 .audit-form.is-sent a {
   color: inherit;
+}
+
+@keyframes audit-tick-pop {
+  from { transform: scale(0) rotate(-30deg); }
+  to { transform: none; }
+}
+
+@keyframes audit-tick-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes audit-tick-ring {
+  from { transform: scale(1); opacity: 0.35; }
+  to { transform: scale(2.1); opacity: 0; }
+}
+
+@keyframes audit-burst {
+  0% { transform: rotate(var(--a)) translateY(0) scale(0.4); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: rotate(var(--a)) translateY(calc(var(--reach, 3.4rem) * -1)) scale(1); opacity: 0; }
+}
+
+@keyframes audit-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audit-sent-tick,
+  .audit-sent-tick path,
+  .audit-form.is-sent h3,
+  .audit-form.is-sent p {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .audit-sent-mark::before,
+  .audit-sent-mark i {
+    display: none;
+  }
 }
 
 @media (max-width: 600px) {
