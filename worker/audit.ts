@@ -248,8 +248,8 @@ async function devFacts(req: Request, env: AuditEnv) {
 
 /**
  * GET /api/audit/report/:reportId: a report for its private page. Only once
- * Claude has written it (ready or held for review, or sent): Gio previews it
- * at the same address before sending. Its evidence comes back as the facts'
+ * Claude has written it (ready or held for review, or sent): Gio checks it
+ * at the same address before sending it (the page looks the same either way). Its evidence comes back as the facts'
  * own labels and values, so the page shows the real numbers beside the
  * words. Views are counted once it's been sent, so Gio's previews don't.
  */

@@ -19,17 +19,6 @@
   color: inherit;
 }
 
-.report-preview {
-  display: inline-block;
-  margin: 0 0 var(--space-32);
-  padding: 4px 12px 5px;
-  border-radius: 999px;
-  background: rgba(245, 158, 11, 0.16);
-  color: #9a5b00;
-  font-family: var(--font-family-Medium);
-  font-size: var(--font-size-small);
-}
-
 /* ---- the top: who, the verdict, the scores, and their home page ---- */
 
 .report-head {

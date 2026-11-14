@@ -100,8 +100,6 @@ export function ReportPage() {
 
       <div className='area-page'>
         <div className='area-page-container report-page'>
-          {data.preview && <p className='report-preview'>Preview: not sent yet</p>}
-
           <header className='report-head'>
             <div className='report-head-copy'>
               <p className='audit-sample-kicker'>
