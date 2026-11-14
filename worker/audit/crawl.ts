@@ -342,8 +342,10 @@ async function readHome(start: string): Promise<PageRead> {
 
 export async function readSite(start: string): Promise<SiteFacts> {
   const startUrl = new URL(start);
-  const host = startUrl.hostname.replace(/^www\./, '');
   const home = await readHome(start);
+  // the site is wherever the home page ended up: wagamama.co.uk sends
+  // visitors on to wagamama.com, whose pages are the ones to read
+  const host = new URL(home.url).hostname.replace(/^www\./, '');
   // robots.txt from wherever the home page really is
   const origin = new URL(home.url).origin;
   const robots = await readRobots(origin);
