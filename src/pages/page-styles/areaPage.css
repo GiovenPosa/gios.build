@@ -93,6 +93,33 @@
   line-height: var(--body-leading);
 }
 
+/* ---- the line pointing to the free audit (components/auditNudge.tsx) ---- */
+
+.audit-nudge {
+  margin: var(--space-32) 0 0;
+  text-align: center;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  color: var(--text-color-secondary);
+}
+
+.audit-nudge a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-2);
+  font-family: var(--font-family-Medium);
+  color: var(--text-color-dark);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .audit-nudge a:hover {
+    opacity: var(--opacity-hover);
+  }
+}
+
 /* ---- packages: a centred headline above the price list ---- */
 
 .area-packages-head {

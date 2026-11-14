@@ -23,12 +23,18 @@
     "run_worker_first": true
   },
   "vars": {
-    "SUPABASE_URL": "https://tbewrjkilpnifzzygqhv.supabase.co"
+    "SUPABASE_URL": "https://tbewrjkilpnifzzygqhv.supabase.co",
+    // website audits a day across the site before new ones are held
+    // (worker/audit.ts). The audit's Turnstile secret is a secret:
+    // `npx wrangler secret put TURNSTILE_SECRET`
+    "AUDIT_DAILY_CAP": "50"
   },
   // enquiry form requests per visitor IP: generous for a person going back
   // and forth between steps, tight for a script
   "ratelimits": [
-    { "name": "ENQUIRY_LIMIT", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }
+    { "name": "ENQUIRY_LIMIT", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } },
+    // the audit form: a couple of tries a minute (worker/audit.ts adds three a day)
+    { "name": "AUDIT_LIMIT", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
   ],
   "observability": { "enabled": true }
 }

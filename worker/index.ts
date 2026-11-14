@@ -7,14 +7,16 @@
 // /stats path rather than Umami's domain, so ad blockers that block
 // analytics domains leave them alone (see src/lib/analytics.ts).
 //
-// /api/enquiry is the enquiry form's endpoint (worker/enquiry.ts), and
-// /api/waitlist the Gio UI waitlist on /ui (worker/waitlist.ts).
+// /api/enquiry is the enquiry form's endpoint (worker/enquiry.ts),
+// /api/waitlist the Gio UI waitlist on /ui (worker/waitlist.ts), and
+// /api/audit the free website audit's form (worker/audit.ts).
 
 import { enquiry, type EnquiryEnv } from './enquiry';
 import { waitlist } from './waitlist';
+import { audit, type AuditEnv } from './audit';
 import { PAGES as SEO_PAGES } from '../src/data/seo';
 
-interface Env extends EnquiryEnv {
+interface Env extends EnquiryEnv, AuditEnv {
   ASSETS: { fetch: (request: Request) => Promise<Response> };
 }
 
@@ -99,6 +101,7 @@ export default {
     if (pathname.startsWith('/api/')) {
       return (
         (await waitlist(request, env, pathname)) ??
+        (await audit(request, env, pathname)) ??
         (await enquiry(request, env, pathname)) ??
         new Response('Not found', { status: 404 })
       );

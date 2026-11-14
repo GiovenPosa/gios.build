@@ -126,7 +126,7 @@ async function saveDraft(env: EnquiryEnv, id: string, fields: Fields) {
  *  filled in, or a new one. Every enquiry belongs to a contact (the lead app
  *  shows them on its Contacts page). Contacts are matched by email, which the
  *  database compares case-insensitively. */
-async function contactFor(env: EnquiryEnv, details: { name: string; email: string; phone: string | null; industry: string | null }) {
+export async function contactFor(env: Pick<EnquiryEnv, 'SUPABASE_URL' | 'SUPABASE_SECRET_KEY'>, details: { name: string; email: string; phone: string | null; industry: string | null }) {
   const find = async () =>
     (await db(env, `contacts?email=eq.${encodeURIComponent(details.email)}&select=id,name,phone_numbers,industry&limit=1`))[0];
 

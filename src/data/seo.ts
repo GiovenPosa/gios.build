@@ -84,6 +84,19 @@ const STATIC_PAGES = {
     imageAlt: 'Gio UI: a React component library you copy into your project and make your own.',
     crumb: 'Gio UI',
   },
+  // the free website audit (docs/website-audit/spec.md)
+  '/website-audit': {
+    title: 'Free Website Audit for Small Businesses | gios.build',
+    description:
+      'What’s costing you customers? Your site’s speed, Google and local search, checked and explained in plain English. Free for UK small businesses.',
+    keywords:
+      'free website audit, website audit uk, website check, seo audit small business, why is my website not on google, website speed test, local seo audit, gios.build',
+    shareTitle: 'Free website audit | gios.build',
+    shareDescription: 'Is your website costing you customers? A free audit of its speed, Google and local search, in plain English.',
+    image: '/og/audit.png',
+    imageAlt: 'gios.build: Is your website costing you customers? A free website audit.',
+    crumb: 'Free website audit',
+  },
   // the area pages (data/areas.ts)
   '/web-design-bath': {
     title: 'Web Designer in Bath, Somerset | gios.build',

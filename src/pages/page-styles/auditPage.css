@@ -1,0 +1,213 @@
+/* The free website audit page (pages/auditPage.tsx): its own sections; the
+   layout, spacing and the checks' cards come from areaPage.css. */
+
+/* ---- the sample report: a preview of what a report looks like ---- */
+
+.audit-sample {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-64);
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+.audit-sample-kicker,
+.audit-sample-label {
+  margin: 0;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-small);
+  color: var(--text-color-secondary);
+}
+
+.audit-sample-verdict {
+  margin: var(--gap-3) 0 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-2-size);
+  line-height: var(--title-2-leading);
+  letter-spacing: var(--title-2-tracking);
+  text-wrap: balance;
+}
+
+.audit-sample-scores {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap-3);
+  margin: var(--space-32) 0 var(--space-32);
+  padding: 0;
+  list-style: none;
+}
+
+.audit-sample-scores li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-2);
+  padding: var(--space-16);
+  --radius: 16px;
+  border-radius: var(--corner);
+  background: var(--bg-light-color);
+}
+
+.audit-sample-area {
+  font-family: var(--font-family-Medium);
+  font-size: var(--body-size);
+}
+
+.audit-sample-detail {
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-small);
+  line-height: 1.4;
+  color: var(--text-color-secondary);
+}
+
+/* a rating, as a small coloured pill */
+.audit-rating {
+  padding: 2px var(--gap-3) 3px;
+  border-radius: 999px;
+  font-family: var(--font-family-Medium);
+  font-size: 13px;
+}
+
+.audit-rating.is-poor {
+  background: rgba(254, 67, 42, 0.14);
+  color: #c23218;
+}
+
+.audit-rating.is-needs-work {
+  background: rgba(245, 158, 11, 0.16);
+  color: #9a5b00;
+}
+
+.audit-rating.is-good {
+  background: rgba(34, 197, 94, 0.16);
+  color: #13803f;
+}
+
+.audit-sample-problems {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-3);
+  margin: var(--gap-3) 0 var(--space-32);
+  padding: 0;
+  list-style: none;
+}
+
+.audit-sample-problems li {
+  padding: var(--space-16) var(--space-16) var(--space-32);
+  --radius: 16px;
+  border-radius: var(--corner);
+  background: var(--bg-light-color);
+}
+
+.audit-sample-problems h3 {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-3-size);
+  line-height: var(--title-3-leading);
+}
+
+.audit-sample-problems p,
+.audit-sample-note p:not(.audit-sample-label) {
+  margin: var(--gap-2) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  color: var(--text-color-secondary);
+}
+
+.audit-sample-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-3);
+}
+
+.audit-sample-note {
+  padding: var(--space-16);
+  --radius: 16px;
+  border-radius: var(--corner);
+  background: var(--bg-light-color);
+}
+
+/* the offer, in the site's dark */
+.audit-sample-note.is-dark {
+  background: var(--bg-dark-color);
+}
+
+.audit-sample-note.is-dark .audit-sample-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.audit-sample-note.is-dark p:not(.audit-sample-label) {
+  color: var(--text-color-light);
+}
+
+/* ---- the request: the steps beside the form ---- */
+
+.audit-request {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: var(--space-64);
+  align-items: start;
+  scroll-margin-top: var(--space-128);
+}
+
+.audit-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  margin: var(--space-32) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.audit-steps li {
+  display: grid;
+  /* a fixed column, so every step's words start in the same place */
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: var(--space-16);
+  align-items: baseline;
+}
+
+.audit-steps span {
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-small);
+  color: var(--text-color-muted);
+}
+
+.audit-steps p {
+  margin: 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+}
+
+#audit-sample {
+  scroll-margin-top: var(--space-128);
+}
+
+/* ===== TABLET AND PHONES ===== */
+@media (max-width: 900px) {
+  .audit-sample {
+    padding: var(--space-32);
+  }
+
+  .audit-sample-scores,
+  .audit-sample-problems,
+  .audit-sample-row,
+  .audit-request {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .audit-request {
+    gap: var(--space-32);
+  }
+}
+
+@media (max-width: 600px) {
+  .audit-sample {
+    padding: var(--space-32) var(--space-16) var(--space-16);
+  }
+}

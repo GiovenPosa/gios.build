@@ -88,6 +88,7 @@ const pageHeads = () => ({
       '/work': [`${SITE_URL}/og/work.jpg`, ...Object.values(workStills).map(asset)],
       '/packages': [`${SITE_URL}/og/packages.png`],
       '/ui': [`${SITE_URL}/og/ui.png`],
+      '/website-audit': [`${SITE_URL}/og/audit.png`],
       '/web-design-bath': [`${SITE_URL}/og/bath.png`],
       '/web-design-bristol': [`${SITE_URL}/og/bristol.png`],
       '/web-design-trowbridge': [`${SITE_URL}/og/trowbridge.png`],
@@ -111,7 +112,7 @@ const pageHeads = () => ({
 })
 
 /**
- * Local stand-in for the enquiry form's endpoint. On the live site /api/enquiry
+ * Local stand-in for the enquiry form's endpoint (and the free audit's). On the live site /api/enquiry
  * is the Cloudflare Worker (worker/enquiry.ts), which `vite` and `vite preview`
  * don't run, so locally every step failed with a 404. This answers the same
  * three calls the same way, so the form can be clicked through end to end,
@@ -123,7 +124,33 @@ const localEnquiry = () => {
   type Req = import('http').IncomingMessage
   type Res = import('http').ServerResponse
   const handle = (req: Req, res: Res, next: Next) => {
-    const match = req.url?.split('?')[0].match(/^\/api\/enquiry(?:\/([^/]+))?(\/send)?$/)
+    const path = req.url?.split('?')[0]
+    // the free audit's form (worker/audit.ts): answers as the Worker would, saves nothing
+    if (path === '/api/audit') {
+      let raw = ''
+      req.on('data', (chunk) => (raw += chunk))
+      req.on('end', () => {
+        res.setHeader('Content-Type', 'application/json')
+        let body: Record<string, unknown> = {}
+        try {
+          body = JSON.parse(raw || '{}')
+        } catch {
+          // falls through to the checks below
+        }
+        const fail = (error: string) => {
+          res.statusCode = 400
+          res.end(JSON.stringify({ error }))
+        }
+        if (!String(body.website ?? '').includes('.')) return fail('Please enter your website.')
+        if (!String(body.email ?? '').includes('@')) return fail('Please enter a valid email.')
+        if (String(body.phone ?? '').replace(/\D/g, '').length < 7) return fail('Please enter a phone number.')
+        if (body.consent !== true) return fail('Please tick the box so the report can be sent to you.')
+        console.log('[local audit] request (not saved):', body.website, body.email)
+        res.end(JSON.stringify({ ok: true }))
+      })
+      return
+    }
+    const match = path?.match(/^\/api\/enquiry(?:\/([^/]+))?(\/send)?$/)
     if (!match) return next()
     const [, id, isSend] = match
     let raw = ''

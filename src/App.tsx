@@ -12,6 +12,7 @@ import { ScrollToTop } from './components/scrollToTop'
 const PricingPage = lazy(() => import('./pages/pricingPage').then((m) => ({ default: m.PricingPage })))
 const PrivacyPage = lazy(() => import('./pages/privacyPage').then((m) => ({ default: m.PrivacyPage })))
 const UiPage = lazy(() => import('./pages/uiPage').then((m) => ({ default: m.UiPage })))
+const AuditPage = lazy(() => import('./pages/auditPage').then((m) => ({ default: m.AuditPage })))
 const IndustryPage = lazy(() => import('./pages/industryPage').then((m) => ({ default: m.IndustryPage })))
 const AreaPage = lazy(() => import('./pages/areaPage').then((m) => ({ default: m.AreaPage })))
 const NotFoundPage = lazy(() => import('./pages/notFoundPage').then((m) => ({ default: m.NotFoundPage })))
@@ -43,6 +44,8 @@ function App() {
               <Route path="/packages" element={<PricingPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/ui" element={<UiPage />} />
+              {/* the free website audit (docs/website-audit/spec.md) */}
+              <Route path="/website-audit" element={<AuditPage />} />
               {/* a page per town (data/areas.ts) */}
               {AREAS.map((area) => (
                 <Route key={area.path} path={area.path} element={<AreaPage area={area} />} />

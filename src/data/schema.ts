@@ -15,6 +15,7 @@ import { servicesData } from './services';
 import { workAbout, workBySlug, workPages, workStills, type WorkTitle } from './workAbout';
 import { areaByPath, type Area } from './areas';
 import { industryByPath, type Industry } from './industries';
+import { AUDIT_FAQ, AUDIT_PATH } from './audit';
 
 /** a built asset's full address from its source file name (e.g.
  *  "gio-portrait.webp"), once Vite has given it its hashed name */
@@ -322,6 +323,23 @@ function industryService(industry: Industry) {
   };
 }
 
+/** the free website audit, offered at no cost */
+function auditService() {
+  const url = `${SITE_URL}${AUDIT_PATH}`;
+  return {
+    '@type': 'Service',
+    '@id': `${url}#service`,
+    name: 'Free website audit',
+    serviceType: 'Website audit',
+    description:
+      'A free audit of a small business website: its speed on phones and computers, how Google reads it, and how it shows up in local search, explained in plain English with what to fix first.',
+    url,
+    provider: { '@id': BUSINESS },
+    areaServed: AREAS,
+    offers: { '@type': 'Offer', price: 0, priceCurrency: 'GBP' },
+  };
+}
+
 /** everything for one page, as a single JSON-LD graph */
 export function pageSchema(path: PagePath, asset: AssetUrl) {
   const graph: Record<string, unknown>[] = [...site(asset)];
@@ -331,6 +349,9 @@ export function pageSchema(path: PagePath, asset: AssetUrl) {
       break;
     case '/work':
       graph.push(...webPage('/work', 'CollectionPage', { mainEntity: { '@id': `${SITE_URL}/work#projects` } }), workList(asset));
+      break;
+    case AUDIT_PATH:
+      graph.push(...webPage(AUDIT_PATH, 'WebPage', { mainEntity: { '@id': `${SITE_URL}${AUDIT_PATH}#service` } }), auditService(), faqPage(AUDIT_FAQ, `${SITE_URL}${AUDIT_PATH}`));
       break;
     case '/packages':
       graph.push(...webPage('/packages', 'WebPage', { mainEntity: { '@id': `${SITE_URL}/packages#packages` } }), packageCatalog());

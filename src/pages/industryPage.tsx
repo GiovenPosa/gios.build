@@ -12,6 +12,7 @@ import { PackageStack } from '../components/packageStack';
 import { ProcessSteps } from '../components/processSteps';
 import { FaqThread } from '../components/faqThread';
 import { ClosingCta } from '../components/closingCta';
+import { AuditNudge } from '../components/auditNudge';
 import { workData } from '../data/work';
 import { workPath } from '../data/workAbout';
 import type { Industry } from '../data/industries';
@@ -139,6 +140,7 @@ export function IndustryPage({ industry }: { industry: Industry }) {
                   );
                 })}
               </ul>
+              <AuditNudge />
             </section>
 
             <section className='area-packages' aria-labelledby='area-packages-title'>

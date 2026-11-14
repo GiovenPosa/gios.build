@@ -245,8 +245,9 @@
   }
 }
 
-/* ===== NARROW TABLETS AND PHONES (700px and below): two columns ===== */
-@media (max-width: 700px) {
+/* ===== NARROW TABLETS AND PHONES (800px and below): two columns, since
+   four no longer fit side by side ===== */
+@media (max-width: 800px) {
   .footer-columns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-content: stretch;

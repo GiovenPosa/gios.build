@@ -1,0 +1,162 @@
+/* The free audit's request form (components/auditForm.tsx): the enquiry
+   form's fields (.form-group, bookingForm.css) on a light card. */
+.audit-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding: var(--space-32);
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  background: var(--bg-light-color);
+  box-shadow:
+    0 0 0 1px var(--border-color-hairline),
+    0 30px 60px -40px rgba(20, 25, 40, 0.35);
+  text-align: left;
+}
+
+.audit-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-16);
+}
+
+.audit-optional {
+  margin-left: var(--gap-2);
+  font-family: var(--font-family-Regular);
+  color: var(--text-color-muted);
+}
+
+/* the bots' field: off screen, never shown */
+.audit-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.audit-consent {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--gap-3);
+  align-items: start;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-small);
+  line-height: 1.5;
+  color: var(--text-color-secondary);
+  cursor: pointer;
+}
+
+/* drawn here, so it's plainly empty until ticked on every browser */
+.audit-consent input {
+  appearance: none;
+  -webkit-appearance: none;
+  display: grid;
+  place-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  border: 1.5px solid var(--text-color-muted);
+  border-radius: 6px;
+  background: var(--bg-light-color);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.audit-consent input::after {
+  content: '';
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid var(--text-color-light);
+  border-bottom: 2px solid var(--text-color-light);
+  transform: rotate(-45deg) translate(1px, -1px);
+  opacity: 0;
+}
+
+.audit-consent input:checked {
+  border-color: var(--bg-dark-color);
+  background: var(--bg-dark-color);
+}
+
+.audit-consent input:checked::after {
+  opacity: 1;
+}
+
+.audit-consent input:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+.audit-consent a {
+  color: inherit;
+}
+
+/* the "I'm human" check takes no room unless Cloudflare asks for a click */
+.audit-turnstile:empty {
+  display: none;
+}
+
+.audit-submit {
+  justify-content: center;
+  width: 100%;
+  margin-top: var(--space-8);
+}
+
+.audit-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ---- sent ---- */
+
+.audit-form.is-sent {
+  align-items: center;
+  text-align: center;
+  padding-block: var(--space-64);
+}
+
+.audit-sent-tick {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: #22c55e;
+  color: #fff;
+}
+
+.audit-sent-tick svg {
+  width: 60%;
+  height: 60%;
+}
+
+.audit-form.is-sent h3 {
+  margin: var(--space-16) 0 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-3-size);
+  line-height: var(--title-3-leading);
+}
+
+.audit-form.is-sent p {
+  max-width: 26rem;
+  margin: var(--gap-3) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  color: var(--text-color-secondary);
+}
+
+.audit-form.is-sent a {
+  color: inherit;
+}
+
+@media (max-width: 600px) {
+  .audit-form {
+    padding: var(--space-32) var(--space-16) var(--space-16);
+  }
+
+  .audit-form-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

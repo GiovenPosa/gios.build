@@ -11,6 +11,7 @@ import { PackageStack } from '../components/packageStack';
 import { ProcessSteps } from '../components/processSteps';
 import { FaqThread } from '../components/faqThread';
 import { ClosingCta } from '../components/closingCta';
+import { AuditNudge } from '../components/auditNudge';
 import { workData } from '../data/work';
 import type { Area } from '../data/areas';
 import type { PagePath } from '../data/seo';
@@ -71,6 +72,7 @@ export function AreaPage({ area }: { area: Area }) {
               <Reveal as='p' className='area-findings-foot' delay={120}>
                 {area.findings.foot}
               </Reveal>
+              <AuditNudge />
             </section>
 
             <section className='area-work' aria-label='Recent websites'>

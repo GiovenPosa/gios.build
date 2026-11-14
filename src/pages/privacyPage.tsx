@@ -6,7 +6,7 @@ import { isOptedOut, setOptedOut } from '../lib/analytics';
 import { Reveal } from '../components/reveal';
 
 // When this was last changed; update it with the text.
-const UPDATED = '10 November 2026';
+const UPDATED = '14 November 2026';
 
 // The ICO registration number, once the data protection fee is paid
 // (ico.org.uk/fee). The line under "Who I am" shows only once it's set.
@@ -73,6 +73,24 @@ export function PrivacyPage() {
             </section>
 
             <section>
+              <h2>Website audits</h2>
+              <p>
+                If you ask for a <Link to='/website-audit'>free website audit</Link>, you send me your website address, your
+                email and phone number, and anything you add about what you want more of, along with your tick saying I can
+                contact you about it. I use them to send you the report and to follow up about it, by email or a call.
+              </p>
+              <p>
+                To put the report together, your website is checked the way any visitor or search engine would see it, with
+                tools such as Google's PageSpeed Insights, and the findings may be written up with the help of an AI service
+                (Anthropic's Claude). Only your website and what it shows publicly go to them, never your email or phone number.
+              </p>
+              <p>
+                I keep audit requests for 12 months, then delete them. To have yours deleted sooner, email{' '}
+                <a href='mailto:contact@gios.build'>contact@gios.build</a>.
+              </p>
+            </section>
+
+            <section>
               <h2>Counting visits</h2>
               <p>
                 To see how the site is doing, I count visits with Umami, a privacy-friendly analytics service. It tells me totals:
@@ -103,7 +121,8 @@ export function PrivacyPage() {
             <section>
               <h2>Why I use your details</h2>
               <p>
-                To reply to your enquiry, design your free homepage mockup and send you a quote. If we then work together, I use
+                To reply to your enquiry, design your free homepage mockup and send you a quote, or to send you the website
+                audit you asked for and follow it up. If we then work together, I use
                 them to plan, build and look after your website. That's me taking steps you've asked for before we agree a project,
                 and replying to the enquiries people send me. For the waitlist, it's because you asked me to tell you when
                 the library launches.
@@ -114,7 +133,7 @@ export function PrivacyPage() {
             <section>
               <h2>Where they're kept</h2>
               <p>
-                Form enquiries and waitlist emails are stored with Supabase, a database service. The site is hosted by Cloudflare, and visits are
+                Form enquiries, audit requests and waitlist emails are stored with Supabase, a database service. The site is hosted by Cloudflare, and visits are
                 counted by Umami. All three handle your details only on my behalf. Some of them store data outside the UK; where
                 they do, they use the safeguards UK law requires.
               </p>

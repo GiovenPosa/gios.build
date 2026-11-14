@@ -328,7 +328,7 @@ A report goes to **review** (never straight out) when any of these fail:
 | Guard | Setting |
 |---|---|
 | Cloudflare Turnstile on the form | required, verified in the Worker |
-| Per visitor IP | 3 audits a day (Cloudflare rate limiter) |
+| Per visitor IP | 5 a minute (Cloudflare rate limiter), and 3 audits a day (counted in `audits` by hashed IP) |
 | Per website | one audit per 30 days; a repeat request re-sends the existing link |
 | Daily cap, across the site | 50 by default (`AUDIT_DAILY_CAP`); after that, requests are saved as "held" for Gio |
 | Blocked targets | IP addresses, localhost, private ranges, non-standard ports, gios.build itself |

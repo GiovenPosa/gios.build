@@ -15,6 +15,7 @@ const PAGES: { to: string; label: string; tag?: string }[] = [
   { to: '/work', label: 'Work' },
   { to: '/packages', label: 'Packages' },
   { to: '/ui', label: 'UI Library', tag: 'New' },
+  { to: '/website-audit', label: 'Website audit', tag: 'Free' },
 ];
 
 const WORDMARK = 'gios.build';

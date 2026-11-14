@@ -1,6 +1,6 @@
 # Website Audit: implementation plan
 
-**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** not started
+**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** Phase 1 built (14 Nov 2026), waiting on Turnstile and the migration before going live
 
 Five phases. Each one ships something that works on its own, so the feature
 can stop at any phase and still be useful. The section numbers (§) refer to
@@ -53,6 +53,24 @@ is built.
 | 1.6 | Links to it: footer, the area and industry pages ("Already have a website? Get a free audit"), the outreach playbook | `footer.tsx`, `areaPage.tsx`, `industryPage.tsx` |
 | 1.7 | Privacy page: the audits section (spec §11) | `src/pages/privacyPage.tsx` |
 | 1.8 | Local dev stand-in for `/api/audit`, like `localEnquiry()` | `vite.config.ts` |
+
+**As built (14 Nov 2026):**
+- 1.2 wasn't needed. `booking_inquiries` already has `source_page`, so audit
+  requests go in as they are: the domain as the name, `source_page`
+  `/website-audit`, and the request in the message. The `audits.inquiry_id`
+  column links back to it, and the lead app is unchanged.
+- **Daily limits:** the per-minute limit is the `AUDIT_LIMIT` binding (5 a
+  minute; the binding only counts per 10 or 60 seconds). The three-a-day limit
+  counts `audits` rows by `ip_hash`.
+- **Turnstile** stays off until both keys are in:
+  - the site key in `TURNSTILE_SITE_KEY` (`src/data/audit.ts`);
+  - the secret as the Worker's `TURNSTILE_SECRET`.
+
+  Set both together: with only the secret set, every request fails.
+- **Turnaround copy:** "within one working day" (`AUDIT_TURNAROUND`), since
+  the audits are done by hand until Phase 4.
+- **Footer:** the two-column breakpoint moved from 700px to 800px to fit the
+  new "Website audit · Free" link.
 
 **Done when:**
 - A test request from the live page appears in the lead app's inbox and
