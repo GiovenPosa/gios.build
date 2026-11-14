@@ -2,8 +2,11 @@
 // (New). Off until Places billing is on in Google Cloud (AUDIT_PLACES=true).
 // The search uses the business's own name and town, and a listing only
 // counts when its website is the audited site, so another business's profile
-// is never mistaken for theirs. The field mask asks for basic fields only,
-// keeping each lookup in the cheapest tier.
+// is never mistaken for theirs. The field mask asks only for what the audit
+// uses; the rating, review count, phone and website put each lookup in
+// Google's top Places price tier, which (Nov 2026) includes about 1,000 free
+// lookups a month. The audits' daily cap and Google's own daily quota keep
+// it inside that.
 
 import type { BusinessData, ProfileFacts } from './facts';
 

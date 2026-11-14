@@ -136,8 +136,19 @@ the manual audits much faster.
   `src/app/components/auditSummary.tsx`). It shows the status, the phone
   screenshot, speed, Google and local facts, the profile and the gaps, and
   checks again every 10 seconds while gathering.
-- **Wrangler** is now a dev dependency (4.86.0), so `npx wrangler` stops
-  downloading it each time.
+- **Wrangler** is now a dev dependency, pinned to 4.162.0, so `npx
+  wrangler` stops downloading it each time. Version 4.86.0 was tried first,
+  but its runtime is older than the project's compatibility date
+  (2026-10-01). Wrangler 4.162 needs **Node 22**: `.nvmrc` says so, and
+  on this Mac Node 22 is at `/usr/local/bin/node` (Node 20 comes first on
+  the default PATH).
+- **Contact form** is three-way: `yes` (a `<form>`, or a known form tool
+  built in), `no`, or `unknown` (none found on Wix, Squarespace, GoDaddy or
+  Weebly, which add forms with JavaScript). The contact page's address is
+  recorded too, so the report never claims a form is missing when it can't
+  tell.
+- **Places pricing corrected:** the fields used put each lookup in Google's
+  top Places tier, which includes about 1,000 free lookups a month.
 
 **Done when:**
 - The NW Auto Wash facts show the same results as the hand-made audit:

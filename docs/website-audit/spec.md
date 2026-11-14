@@ -138,7 +138,11 @@ Run once for `mobile` and once for `desktop`. Kept:
 - Kept: name, address, phone, rating, review count, primary category.
 - Compared with what the site says. A name or address that doesn't match is
   a finding, as it was for NW Auto Wash.
-- A field mask keeps each lookup in the cheapest tier.
+- A field mask asks only for what's used. The rating, review count, phone
+  and website fields put each lookup in Google's top Places price tier,
+  which includes about 1,000 free lookups a month (Nov 2026; check Google's
+  pricing). The daily cap, plus a 100-a-day quota set in Google Cloud, keep
+  it inside that.
 
 ### 5.4 The facts JSON (shape, abridged)
 ```json
@@ -395,7 +399,7 @@ and the lead app reads and edits as the signed-in user.
 |---|---|---|
 | Claude (Sonnet, ~20–40k tokens in, ~2–3k out) | a few pence | depends on volume; capped |
 | PageSpeed Insights | free | free |
-| Places API (one Text Search, basic fields) | free within Google's monthly allowance | likely £0 |
+| Places API (one Text Search, top tier for rating and reviews) | free for the first ~1,000 a month, then ~$35 per 1,000 | likely £0 |
 | Resend | free | free up to 3,000 emails |
 | Cloudflare Workflows | — | may need the Workers paid plan (~$5) |
 | Supabase | — | existing plan |

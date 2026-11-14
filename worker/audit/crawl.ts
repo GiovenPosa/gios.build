@@ -30,6 +30,11 @@ const BOOKING = [
   'square.site', 'squareup', 'setmore', 'simplybook', 'acuityscheduling', 'deliveroo', 'just-eat', 'ubereats',
   'checkatrade', 'bark.com', 'mybuilder', 'ratedpeople',
 ];
+// form tools built into a page (in an iframe or a script)
+const FORM_EMBEDS = /docs\.google\.com\/forms|forms\.gle|typeform\.com|jotform|tally\.so|hsforms|hubspot\.com\/forms|formspree\.io|calendly\.com|cognitoforms|wufoo/i;
+// builders that add their forms with JavaScript, after the HTML arrives
+const JS_FORM_PLATFORMS = ['Wix', 'Squarespace', 'GoDaddy', 'Weebly'];
+
 const SOCIAL = ['instagram.com', 'facebook.com', 'tiktok.com', 'linkedin.com', 'x.com', 'twitter.com', 'youtube.com'];
 
 const PLATFORMS: [string, RegExp][] = [
@@ -403,6 +408,19 @@ export async function readSite(start: string): Promise<SiteFacts> {
   const phoneText = allText.match(/(?:\+44\s?7\d{3}|07\d{3})\s?\d{3}\s?\d{3}|(?:\+44\s?|0)1\d{2,4}\s?\d{3,4}\s?\d{3,4}/);
   const platform = PLATFORMS.find(([, pattern]) => pattern.test(home.raw))?.[0] ?? null;
 
+  // a contact form: a real <form>, or a known form tool built in; when
+  // there's neither on a builder that adds forms with JavaScript, it can't
+  // be told from the HTML
+  const formSeen = pages.some((page) => page.form || FORM_EMBEDS.test(page.raw));
+  const contactForm: SiteFacts['contactForm'] = formSeen ? 'yes' : platform && JS_FORM_PLATFORMS.includes(platform) ? 'unknown' : 'no';
+  const contactLink = [...new Set(pages.flatMap((page) => page.links))].find((href) => /contact|get-in-touch|enquir/i.test(href));
+  let contactPage: string | null = null;
+  try {
+    contactPage = contactLink ? new URL(contactLink, home.url).toString() : null;
+  } catch {
+    contactPage = null;
+  }
+
   const otherHost = startUrl.hostname.startsWith('www.') ? host : `www.${host}`;
   const [httpRedirects, otherHostRedirects] = await Promise.all([
     redirects(`http://${startUrl.hostname}/`),
@@ -423,7 +441,8 @@ export async function readSite(start: string): Promise<SiteFacts> {
     places,
     phoneOnSite: pages.find((page) => page.tel)?.tel ?? phoneText?.[0] ?? null,
     emailOnSite: pages.some((page) => page.mailto),
-    contactForm: pages.some((page) => page.form),
+    contactForm,
+    contactPage,
     bookingLinks: linkMatches(BOOKING),
     socialLinks: linkMatches(SOCIAL),
     businessData,

@@ -71,7 +71,11 @@ export interface SiteFacts {
   places: Record<string, number>;
   phoneOnSite: string | null;
   emailOnSite: boolean;
-  contactForm: boolean;
+  /** "unknown" when the site's builder adds forms with JavaScript (Wix,
+   *  Squarespace, GoDaddy), which reading the HTML can't see */
+  contactForm: 'yes' | 'no' | 'unknown';
+  /** the site's contact page, if it links to one */
+  contactPage: string | null;
   /** booking or ordering apps the site links to */
   bookingLinks: string[];
   socialLinks: string[];
