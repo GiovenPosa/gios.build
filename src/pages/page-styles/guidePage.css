@@ -285,6 +285,7 @@
 .guide-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--gap-3);
   margin-top: var(--gap-2);
   font-family: var(--font-family-Medium);
