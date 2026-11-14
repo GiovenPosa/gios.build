@@ -4,10 +4,10 @@
   --font-family-Regular: "JakartaRegular", sans-serif;
   --font-family-Light: "JakartaLight", sans-serif;
   /* Body text is Jakarta, everywhere: the four cuts above. Headlines are
-     Inter (below) and the logo Sonder; nothing else. */
+     Switzer (below) and the logo Sonder; nothing else. */
   --font-Sonder-Regular: "SonderRegular", sans-serif;
-  /* every headline: Inter at Mobbin's 652, falling back to Jakarta Bold */
-  --font-family-Headline: "Inter", "JakartaBold", sans-serif;
+  /* every headline: Switzer at 652, falling back to Jakarta Bold */
+  --font-family-Headline: "Switzer", "JakartaBold", sans-serif;
   --headline-weight: 652;
 
   --font-size-small: 12px;
@@ -390,12 +390,12 @@
   font-display: swap;
 }
 
-/* Inter, the headline face (Rasmus Andersson, SIL Open Font License, see
-   Inter-OFL.txt). One variable file with weight and optical size axes: at
-   headline sizes the browser picks its tighter display cut by itself. */
+/* Switzer, the headline face (Indian Type Foundry, ITF Free Font License,
+   see Switzer-FFL.txt; self-hosting on our own site is allowed). One
+   variable file, weights 100 to 900. */
 @font-face {
-  font-family: "Inter";
-  src: url("/src/assets/fonts/InterVariable.woff2") format("woff2");
+  font-family: "Switzer";
+  src: url("/src/assets/fonts/Switzer-Variable.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
