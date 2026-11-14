@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { faqData, type FaqItem } from '../data/faq';
 import { useInViewOnce } from '../hooks/useInViewOnce';
-import { useBooking } from '../context/bookingContext';
+import { openWhatsApp } from '../lib/whatsapp';
 import { track } from '../lib/analytics';
 import GioAvatar from '../assets/story/gio-avatar.webp';
 import './component-styles/faqThread.css';
@@ -44,12 +44,12 @@ interface FaqThreadProps {
   signOff?: string[];
   /** the composer's placeholder */
   composerLabel?: string;
-  /** what the composer does; opens the booking form by default */
+  /** what the composer does; by default it opens a WhatsApp chat with me,
+   *  since someone typing a question wants an answer, not a project form */
   onCompose?: () => void;
 }
 
 export function FaqThread({ items = faqData, signOff = SIGN_OFF, composerLabel = 'Ask me anything…', onCompose }: FaqThreadProps = {}) {
-  const { openBooking } = useBooking();
   const { ref: inViewRef, isVisible } = useInViewOnce<HTMLDivElement>(0.35);
   const windowRef = useRef<HTMLDivElement | null>(null);
   const nextId = useRef(0);
@@ -238,7 +238,7 @@ export function FaqThread({ items = faqData, signOff = SIGN_OFF, composerLabel =
         ))}
       </dl>
 
-      <button type='button' className={`faq-composer${done ? ' is-ready' : ''}`} onClick={onCompose ?? (() => openBooking('FAQ composer'))}>
+      <button type='button' className={`faq-composer${done ? ' is-ready' : ''}`} onClick={onCompose ?? (() => openWhatsApp('FAQ composer', 'Hi Gio, I have a question: '))}>
         <span className='faq-composer-field'>{composerLabel}</span>
         <span className='faq-composer-send' aria-hidden>
           <svg viewBox='0 0 24 24' fill='none'><path d='M12 19V5m0 0-6 6m6-6 6 6' stroke='currentColor' strokeWidth='2.6' strokeLinecap='round' strokeLinejoin='round' /></svg>

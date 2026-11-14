@@ -4,6 +4,7 @@ import { packagesData, formatPrice, priceRange } from '../data/packages';
 import { useBooking } from '../context/bookingContext';
 import { track } from '../lib/analytics';
 import { Reveal } from './reveal';
+import { WhatsAppLink } from './whatsappLink';
 import './component-styles/quoteBuilder.css';
 
 // Each answer is something one of the packages includes; the build needs
@@ -159,12 +160,15 @@ export function QuoteBuilder() {
     .toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
     .toUpperCase();
 
+  // the build as picked, for the form's message and the WhatsApp one
+  const lines = picked.map((choice) => choice.label).join(', ');
+  const summary = `${pkg.name} (${priceRange(pkg)})${lines ? `. ${lines}` : ''}.`;
+
   const book = () => {
-    const lines = picked.map((choice) => choice.label).join(', ');
     track('Ask about this build', { package: pkg.id });
     openBooking('Quote builder', {
       packageId: pkg.id,
-      message: `From the quote builder: ${pkg.name} (${priceRange(pkg)}). ${lines}.`,
+      message: `From the quote builder: ${summary}`,
     });
   };
 
@@ -255,6 +259,15 @@ export function QuoteBuilder() {
               <p>Ask about this build</p>
               <GoArrowRight />
             </button>
+            <WhatsAppLink
+              className='hero-action-button light qb-book qb-whatsapp'
+              from='Quote builder'
+              revealNumber
+              message={`Hi Gio, I'd like to ask about this build from your quote builder: ${summary}`}
+            >
+              <p>WhatsApp me about this build</p>
+              <GoArrowRight aria-hidden />
+            </WhatsAppLink>
             <p className='qb-fine'>A quick discovery call within 24 hours, then your free homepage mockup.</p>
           </div>
         </Reveal>

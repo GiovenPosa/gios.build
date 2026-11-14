@@ -7,6 +7,7 @@ import { GoArrowRight } from "react-icons/go";
 import { SiInstagram } from 'react-icons/si';
 import { track } from '../lib/analytics';
 import { useBooking } from '../context/bookingContext';
+import { WhatsAppLink } from './whatsappLink';
 
 export function TopHeader() {
   const { pathname } = useLocation();
@@ -194,6 +195,11 @@ export function TopHeader() {
           {dot}
           <p>PACKAGES</p>
         </Link>
+        {/* on phones WhatsApp is one tap away, so it closes the menu */}
+        <WhatsAppLink className='hero-action-button mobile-menu-whatsapp' from='Menu' onClick={closeMenu}>
+          <p>WhatsApp me</p>
+          <GoArrowRight aria-hidden />
+        </WhatsAppLink>
       </nav>
     </>
   )

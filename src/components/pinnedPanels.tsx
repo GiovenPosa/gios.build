@@ -32,6 +32,7 @@ export function PinnedPanels({
   headline,
   panels,
   foot,
+  action,
 }: {
   /** for the headline, which names the section */
   id: string;
@@ -39,6 +40,8 @@ export function PinnedPanels({
   headline: [string, string];
   panels: PinnedPanel[];
   foot: ReactNode;
+  /** a button under the closing line */
+  action?: ReactNode;
 }) {
   const [active, setActive] = useState(0);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -91,6 +94,13 @@ export function PinnedPanels({
         <Reveal as='p' className='pinned-foot' delay={120}>
           {foot}
         </Reveal>
+
+        {/* an optional button under the closing line; it stays on short screens */}
+        {action && (
+          <Reveal className='pinned-foot-action' delay={160}>
+            {action}
+          </Reveal>
+        )}
       </div>
 
       <div className='pinned-panels'>

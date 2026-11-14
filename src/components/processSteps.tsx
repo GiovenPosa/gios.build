@@ -1,4 +1,6 @@
+import { GoArrowRight } from 'react-icons/go';
 import { processData } from '../data/process';
+import { WhatsAppLink } from './whatsappLink';
 import { PinnedPanels, type PinnedPanel } from './pinnedPanels';
 import { DiscoverArt } from './serviceArt/discoverArt';
 import { DeliverArt } from './serviceArt/deliverArt';
@@ -40,6 +42,12 @@ export function ProcessSteps() {
       headline={['Four steps.', 'No surprises.']}
       panels={panels}
       foot='From first conversation to launch, you always know what happens next.'
+      action={
+        <WhatsAppLink className='hero-action-button' from='Four steps' revealNumber>
+          <p>WhatsApp me</p>
+          <GoArrowRight aria-hidden />
+        </WhatsAppLink>
+      }
     />
   );
 }
