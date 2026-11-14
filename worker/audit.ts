@@ -19,8 +19,12 @@
 import { AUDIT_CONSENT, AUDIT_PATH } from '../src/data/audit';
 import { EMAIL_PATTERN } from '../src/data/enquiry';
 import { contactFor, db } from './enquiry';
+import { readSite } from './audit/crawl';
+import { pageSpeed } from './audit/pagespeed';
+import { assemble, reason, type GatherEnv } from './audit/gather';
+import type { AuditParams } from './auditWorkflow';
 
-export interface AuditEnv {
+export interface AuditEnv extends GatherEnv {
   SUPABASE_URL: string;
   SUPABASE_SECRET_KEY: string;
   /** Cloudflare's rate limiter, per visitor IP, per minute (wrangler.jsonc) */
@@ -29,6 +33,10 @@ export interface AuditEnv {
   TURNSTILE_SECRET?: string;
   /** audits a day across the site before new ones are held (wrangler.jsonc) */
   AUDIT_DAILY_CAP?: string;
+  /** the background run that gathers each audit's facts (worker/auditWorkflow.ts) */
+  AUDIT_WORKFLOW?: { create: (options: { id?: string; params: AuditParams }) => Promise<unknown> };
+  /** "true" in .dev.vars only: turns on GET /api/audit/facts for testing */
+  AUDIT_DEV?: string;
 }
 
 type Fields = Record<string, unknown>;
@@ -173,9 +181,8 @@ async function request(req: Request, env: AuditEnv, body: Fields, ip: string) {
 
   if (!repeat) {
     const sourcePage = text(body.source_page, 200, 'Page');
-    await db(env, 'audits', {
+    const [saved] = await db(env, 'audits', {
       method: 'POST',
-      headers: { Prefer: 'return=minimal' },
       body: JSON.stringify({
         url,
         domain,
@@ -191,13 +198,60 @@ async function request(req: Request, env: AuditEnv, body: Fields, ip: string) {
         inquiry_id: inquiry?.id ?? null,
       }),
     });
+    // gather its facts in the background (held ones wait for Gio). The
+    // request is saved either way, so a Workflow that won't start is logged,
+    // not shown to the visitor.
+    if (!held && saved?.id && env.AUDIT_WORKFLOW) {
+      try {
+        await env.AUDIT_WORKFLOW.create({ id: String(saved.id), params: { auditId: String(saved.id) } });
+      } catch (error) {
+        console.error('audit workflow', error);
+      }
+    }
   }
 
   return json({ ok: true });
 }
 
+/**
+ * Local testing only (AUDIT_DEV=true in .dev.vars): gathers a site's facts
+ * straight away, as the Workflow would, without saving anything.
+ *   GET /api/audit/facts?url=example.co.uk
+ */
+async function devFacts(req: Request, env: AuditEnv) {
+  const target = new URL(req.url).searchParams.get('url');
+  const { url, domain } = websiteFrom(target);
+  const attempt = async <T>(run: () => Promise<T>) => {
+    try {
+      return { value: await run(), error: null };
+    } catch (error) {
+      return { value: null, error: reason(error) };
+    }
+  };
+  const [site, mobile, desktop] = await Promise.all([
+    attempt(() => readSite(url)),
+    attempt(() => pageSpeed(url, 'mobile', env.GOOGLE_API_KEY)),
+    attempt(() => pageSpeed(url, 'desktop', env.GOOGLE_API_KEY)),
+  ]);
+  const facts = assemble({
+    url, domain, wantsMoreOf: null,
+    site: site.value, siteError: site.error,
+    mobile: mobile.value, mobileError: mobile.error,
+    desktop: desktop.value ? { run: desktop.value.run } : null, desktopError: desktop.error,
+    profile: null, profileNote: 'The Google Business Profile isn’t checked in local tests.',
+  });
+  return json({ ...facts, screenshot: facts.screenshot ? `${facts.screenshot.slice(0, 40)}…` : null });
+}
+
 /** Handles /api/audit; returns null for any other path. */
 export async function audit(req: Request, env: AuditEnv, pathname: string): Promise<Response | null> {
+  if (pathname === '/api/audit/facts' && env.AUDIT_DEV === 'true' && req.method === 'GET') {
+    try {
+      return await devFacts(req, env);
+    } catch (error) {
+      return fail(400, reason(error));
+    }
+  }
   if (pathname !== '/api/audit') return null;
   if (req.method !== 'POST') return fail(405, 'Not allowed.');
 

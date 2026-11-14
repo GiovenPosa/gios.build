@@ -1,6 +1,6 @@
 # Website Audit: implementation plan
 
-**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** Phase 1 live and tested (14 Nov 2026): a request from the live page reached the lead app's inbox with its phone number, note and `/website-audit` tag. Phase 2 next.
+**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** Phase 1 live (14 Nov 2026). Phase 2 built and tested locally (14 Nov 2026), waiting to be pushed: the Workflow's first live run is its real test.
 
 Five phases. Each one ships something that works on its own, so the feature
 can stop at any phase and still be useful. The section numbers (§) refer to
@@ -97,6 +97,47 @@ the manual audits much faster.
 | 2.5 | Put the facts together and save them with each status change | `worker/audit/facts.ts` |
 | 2.6 | Lead app: an "Audit" panel on the lead, showing the scores, the key facts and the status | lead app `src/app/(dashboard)/lead/…` |
 | 2.7 | Test runs on NW Auto Wash and Elite Auto Care, compared with the hand-made audits | — |
+
+**As built (14 Nov 2026):**
+- **Files:**
+  - `worker/auditWorkflow.ts`, the Workflow;
+  - in `worker/audit/`: `crawl.ts` (reads the site), `pagespeed.ts`,
+    `places.ts`, `gather.ts` (combines the parts) and `facts.ts` (the
+    facts' shape);
+  - `worker/cloudflare.d.ts`, the runtime types the Worker's own type check
+    needs.
+- **Gaps, not failures:** any part that fails after its retries becomes a
+  "gap" in the facts. Only a site that can't be read at all fails the audit.
+  When the facts are saved, the status becomes `review`.
+- **Places is built but off** (`AUDIT_PLACES`), until billing is on.
+- **Local testing:** `GET /api/audit/facts?url=…` gathers a site's facts
+  straight away without saving anything. It only answers when `.dev.vars`
+  has `AUDIT_DEV=true` (local runs only; the live site doesn't have it).
+- **Tested on real sites:**
+  - **NW Auto Wash:** reads 10 pages and finds the same problems as the hand
+    audit: Wix; titles like "NW PPF 1"; nearby towns barely named (Trowbridge
+    only in the footer address).
+  - **Bath Comedy Festival:** 10 pages, its Square booking link and phone
+    number; 13 KB of facts.
+  - **Thermae Bath Spa:** its bare domain breaks Cloudflare's fetch, so the
+    reader now falls back between `www.` and the bare address.
+- **Fixes found along the way:**
+  - robots.txt wildcard rules: Wix's `/*?lightbox=` was read as "block
+    everything";
+  - HTML codes (`&amp;`, `&nbsp;`) in titles and headings;
+  - street names ("Frome Road") counted as the town.
+- **Elite Auto Care can't be a baseline any more:** its site now shows only
+  "Temporarily closed".
+- **PageSpeed** wasn't tested with the key locally: the Worker's
+  `GOOGLE_API_KEY` is a secret, and the keyless quota was used up. The first
+  live audit tests it.
+- **Lead app:** a "Website audit" section on enquiries from
+  `/website-audit` (`gios-lead-app`: `src/lib/audits.ts` and
+  `src/app/components/auditSummary.tsx`). It shows the status, the phone
+  screenshot, speed, Google and local facts, the profile and the gaps, and
+  checks again every 10 seconds while gathering.
+- **Wrangler** is now a dev dependency (4.86.0), so `npx wrangler` stops
+  downloading it each time.
 
 **Done when:**
 - The NW Auto Wash facts show the same results as the hand-made audit:

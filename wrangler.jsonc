@@ -36,5 +36,11 @@
     // the audit form: a couple of tries a minute (worker/audit.ts adds three a day)
     { "name": "AUDIT_LIMIT", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
   ],
+  // the website audit's background run: gathers each request's facts
+  // (worker/auditWorkflow.ts). Its Google key is a secret:
+  // `npx wrangler secret put GOOGLE_API_KEY`
+  "workflows": [
+    { "name": "gios-build-audit", "binding": "AUDIT_WORKFLOW", "class_name": "AuditWorkflow" }
+  ],
   "observability": { "enabled": true }
 }

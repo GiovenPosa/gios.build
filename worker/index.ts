@@ -14,6 +14,9 @@
 import { enquiry, type EnquiryEnv } from './enquiry';
 import { waitlist } from './waitlist';
 import { audit, type AuditEnv } from './audit';
+
+// the audit's background run; exported so Cloudflare can find it (wrangler.jsonc)
+export { AuditWorkflow } from './auditWorkflow';
 import { PAGES as SEO_PAGES } from '../src/data/seo';
 
 interface Env extends EnquiryEnv, AuditEnv {
