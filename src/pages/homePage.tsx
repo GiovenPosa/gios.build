@@ -21,6 +21,7 @@ import { ClosingCta } from '../components/closingCta';
 import { ResultsLenses } from '../components/resultsLenses';
 import { WorkGrid } from '../components/workGrid';
 import { workData } from '../data/work';
+import { TAGLINE } from '../data/seo';
 import { PageHero, type HeroLine } from '../components/pageHero';
 
 // the headline: a sticker sits at the start of each line's second half
@@ -46,7 +47,7 @@ export function HomePage() {
             className='home-page-hero-section'
             lines={HERO_LINES}
             hidden='Web design for small businesses in Bath, Bristol and across the UK.'
-            sub="Built around your customers: what they're looking for, and what makes them pick you. See your free homepage mockup before you spend a penny."
+            sub={`${TAGLINE} See your free homepage mockup before you spend a penny.`}
             onSettled={settle}
             actions={
               <>

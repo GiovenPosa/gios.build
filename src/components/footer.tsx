@@ -8,6 +8,7 @@ import { WhatsAppLink } from './whatsappLink';
 import { servicesData } from '../data/services';
 import { AREAS } from '../data/areas';
 import { INDUSTRIES } from '../data/industries';
+import { TAGLINE } from '../data/seo';
 import './component-styles/footer.css';
 
 // `tag` adds a small pill beside the link
@@ -74,9 +75,9 @@ export function Footer() {
     <footer className='footer' id='contact' ref={footerRef}>
       <div className='footer-container'>
         <div className='footer-top'>
-          <Link to='/' className='footer-logo footer-animate-item' style={getItemStyle(0)} aria-label='gios.build, home'>
-            gios.build
-          </Link>
+          <p className='footer-tagline footer-animate-item' style={getItemStyle(0)}>
+            {TAGLINE}
+          </p>
 
           <nav className='footer-columns' aria-label='Footer'>
             <div className='footer-column footer-animate-item' style={getItemStyle(1)}>

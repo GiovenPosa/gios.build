@@ -17,6 +17,9 @@ import { workAbout, workPages, type WorkTitle } from './workAbout';
 export const SITE_URL = 'https://www.gios.build';
 export const SITE_NAME = 'gios.build';
 
+/** the line the site is built on: the home page's hero and the footer */
+export const TAGLINE = 'Built around your customers: what they’re looking for, and what makes them pick you.';
+
 export interface PageSeo {
   /** the browser tab and search result title */
   title: string;
