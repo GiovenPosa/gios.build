@@ -29,6 +29,9 @@ export interface AuditWorkflowEnv extends GatherEnv, WriteEnv {
 
 export interface AuditParams {
   auditId: string;
+  /** gather and write again, whatever its status (an admin re-run:
+   *  `npx wrangler workflows trigger gios-build-audit '{"auditId":"…","rerun":true}'`) */
+  rerun?: boolean;
 }
 
 const PAGESPEED = {
@@ -47,10 +50,10 @@ export class AuditWorkflow extends WorkflowEntrypoint<AuditWorkflowEnv, AuditPar
       const [row] = await db(env, `audits?id=eq.${auditId}&select=id,url,domain,wants_more_of,status`);
       return row ? { url: String(row.url), domain: String(row.domain), wantsMoreOf: (row.wants_more_of as string | null) ?? null, status: String(row.status) } : null;
     });
-    if (!audit || audit.status !== 'queued') return;
+    if (!audit || (audit.status !== 'queued' && !event.payload.rerun)) return;
 
     await step.do('mark as gathering', async () => {
-      await setStatus({ status: 'gathering' });
+      await setStatus({ status: 'gathering', fail_reason: null });
     });
 
     // the site first: without it there's nothing to audit
