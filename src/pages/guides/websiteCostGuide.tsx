@@ -253,14 +253,6 @@ export function WebsiteCostGuide() {
           </div>
         </section>
 
-        <section className='home-faq-block guide-faq'>
-          <h2 className='home-faq-headline'>
-            <span>Still wondering?</span> <span>Just ask.</span>
-          </h2>
-          <p className='home-faq-subtext'>The questions people ask most about website prices.</p>
-          <FaqThread items={GUIDE.faq} />
-        </section>
-
         <section className='guide-sources' aria-labelledby='sources'>
           <h2 id='sources'>Sources</h2>
           <p>
@@ -276,6 +268,14 @@ export function WebsiteCostGuide() {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section className='home-faq-block guide-faq'>
+          <h2 className='home-faq-headline'>
+            <span>Still wondering?</span> <span>Just ask.</span>
+          </h2>
+          <p className='home-faq-subtext'>The questions people ask most about website prices.</p>
+          <FaqThread items={GUIDE.faq} />
         </section>
       </article>
     </>
