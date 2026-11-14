@@ -112,7 +112,7 @@ function Step({ index }: { index: number }) {
  */
 export function ResultsDashboard() {
   return (
-    <section className='dash' data-header-dark aria-labelledby='dash-title'>
+    <section className='dash' id='dashboard' data-header-dark aria-labelledby='dash-title'>
       <Reveal as='h2' className='dash-title' id='dash-title'>
         <span>Your own dashboard.</span> <span>Live, any time.</span>
       </Reveal>

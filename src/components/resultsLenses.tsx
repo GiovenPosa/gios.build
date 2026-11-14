@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { resultLenses, trackingPoints, type ResultLens, type TrackingIcon } from '../data/results';
+import { Link } from 'react-router-dom';
+import { resultLenses, serviceDetails, type ResultLens, type ServiceDetail, type ServiceIcon } from '../data/results';
 import type { IconType } from 'react-icons';
-import { GoCalendar, GoChevronLeft, GoChevronRight, GoFilter, GoGraph, GoHistory, GoInbox, GoZap } from 'react-icons/go';
+import { GoArrowRight, GoChevronLeft, GoChevronRight, GoCode, GoDeviceMobile, GoPencil, GoServer } from 'react-icons/go';
+import { MdOutlineAccessibilityNew } from 'react-icons/md';
+import { SiShopify } from 'react-icons/si';
+import { useBooking } from '../context/bookingContext';
 import { Reveal } from './reveal';
 import { ResultsDashboard } from './resultsDashboard';
 import { BuiltRightIcon, GrowthIcon, TapIcon } from './resultsIcons';
@@ -12,14 +16,36 @@ const ART = { technical: BuiltRightIcon, experience: TapIcon, business: GrowthIc
 const STAGGER_MS = 350;
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const POINT_ICON: Record<TrackingIcon, IconType> = {
-  dashboard: GoGraph,
-  speed: GoZap,
-  review: GoCalendar,
-  before: GoHistory,
-  enquiry: GoInbox,
-  dropoff: GoFilter,
+const SERVICE_ICON: Record<ServiceIcon, IconType> = {
+  code: GoCode,
+  design: GoDeviceMobile,
+  shopify: SiShopify,
+  accessibility: MdOutlineAccessibilityNew,
+  hosting: GoServer,
+  cms: GoPencil,
 };
+
+/** a service card's link: to a page, or the enquiry form with a message
+ *  already started */
+function ServiceAction({ action, title }: { action: ServiceDetail['action']; title: string }) {
+  const { openBooking } = useBooking();
+  if (action.kind === 'link') {
+    return (
+      <Link to={action.to} className='results-service-link'>
+        {action.label} <GoArrowRight aria-hidden />
+      </Link>
+    );
+  }
+  return (
+    <button
+      type='button'
+      className='results-service-link'
+      onClick={() => openBooking(`Service: ${title}`, { packageId: 'not-sure', message: action.message })}
+    >
+      {action.label} <GoArrowRight aria-hidden />
+    </button>
+  );
+}
 
 /** true while the element is well on screen, after `delay` ms */
 function usePlaying(delay: number) {
@@ -140,23 +166,28 @@ export function TrackedFromDayOne() {
 }
 
 /**
- * What gets tracked, one point to a card, then the client dashboard.
+ * How every site is built, and the specialist work on top (custom code, UI /
+ * UX, Shopify, accessibility, hosting, CMS), one card each with why it
+ * matters and where to go next; then the client dashboard.
  */
 export function ResultsLenses() {
   return (
     <section className='results-block'>
-      {/* what gets tracked, one point to a card, after Mobbin's prompt cards */}
       <div className='results-ladder'>
         <Reveal as="h2" className='results-ladder-title'>
-          <span>On every package.</span> <span>Bigger builds go deeper.</span>
+          <span>Built properly,</span> <span>down to the code.</span>
         </Reveal>
         <div className='results-points'>
-          {trackingPoints.map((point, i) => {
-            const Icon = POINT_ICON[point.icon];
+          {serviceDetails.map((service, i) => {
+            const Icon = SERVICE_ICON[service.icon];
             return (
-              <Reveal key={point.text} as="article" className='results-point' delay={i * 60}>
-                <p className='results-point-text'>{point.text}</p>
-                <Icon className='results-point-icon' aria-hidden />
+              <Reveal key={service.title} as="article" className='results-point' delay={(i % 3) * 60}>
+                <div>
+                  <Icon className='results-point-icon' aria-hidden />
+                  <h3 className='results-service-title'>{service.title}</h3>
+                  <p className='results-service-text'>{service.text}</p>
+                </div>
+                <ServiceAction action={service.action} title={service.title} />
               </Reveal>
             );
           })}

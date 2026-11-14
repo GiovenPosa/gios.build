@@ -140,8 +140,9 @@
   display: block;
 }
 
-/* six points, one to a card, after Mobbin's prompt cards: white, a
-   hairline edge, the words at the top and a quiet icon at the foot */
+/* how it's built and the specialist work, one to a card: white, a hairline
+   edge; an icon, the title and why it matters at the top, and where to go
+   next at the foot */
 .results-points {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -165,21 +166,60 @@
   color: var(--text-color-dark);
 }
 
-.results-point-text {
-  font-family: var(--font-family-Regular);
-  font-size: var(--feature-title-size);
-  line-height: var(--feature-title-leading);
-  letter-spacing: var(--feature-title-tracking);
-  margin: 0;
-  max-width: 32ch;
-  text-wrap: pretty;
-}
-
 .results-point-icon {
+  display: block;
   width: 22px;
   height: 22px;
   flex: none;
   color: var(--text-color-secondary);
+}
+
+.results-service-title {
+  margin: var(--space-32) 0 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-3-size);
+  line-height: var(--title-3-leading);
+}
+
+.results-service-text {
+  margin: var(--gap-3) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  text-wrap: pretty;
+}
+
+/* where to go next: a link with an arrow that steps forward on hover */
+.results-service-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-2);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-family-Medium);
+  font-size: var(--body-size);
+  color: var(--text-color-dark);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.results-service-link svg {
+  transition: transform 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .results-service-link:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+#dashboard {
+  scroll-margin-top: var(--space-64);
 }
 
 /* ===== TABLET ===== */
@@ -273,8 +313,8 @@
   }
 
   .results-point {
-    min-height: 12rem;
-    padding: var(--space-16) var(--gap-5) var(--gap-5);
+    min-height: 0;
+    padding: var(--space-32) var(--gap-5) var(--gap-5);
   }
 }
 
@@ -293,11 +333,6 @@
   }
 
   .results-point {
-    min-height: 9.5rem;
-  }
-
-  .results-point-text {
-    font-size: var(--body-size);
-    line-height: var(--body-leading);
+    padding: var(--space-32) var(--space-16) var(--space-16);
   }
 }
