@@ -40,6 +40,8 @@ function useTurnstile(onToken: (token: string | null) => void) {
         widget.current = turnstile.render(ref.current, {
           sitekey: TURNSTILE_SITE_KEY,
           appearance: 'interaction-only',
+          // the light form's colours, whatever the visitor's system is set to
+          theme: 'light',
           callback: (token: string) => onToken(token),
           'expired-callback': () => onToken(null),
           'error-callback': () => onToken(null),
