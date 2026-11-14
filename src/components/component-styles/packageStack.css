@@ -110,7 +110,8 @@
 /* prices stay black (red on a price reads as a sale or a warning); the
    active one stands out because the others step back */
 .pk-amount {
-  color: rgba(0, 0, 0, 0.18);
+  /* dimmed, but still readable: 3.4:1 on white, enough for text this big */
+  color: rgba(0, 0, 0, 0.45);
   transition: color 0.35s ease;
 }
 
@@ -135,7 +136,8 @@
   line-height: 1.5;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.3);
+  /* dimmed, but readable: 4.7:1 on white */
+  color: rgba(0, 0, 0, 0.55);
 }
 
 .pk-notes li {
