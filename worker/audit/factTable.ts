@@ -86,7 +86,8 @@ export function factTable(facts: AuditFacts): FactRow[] {
   const profile = facts.profile;
   if (profile?.found) {
     rows.push(
-      { key: 'profile.name', label: 'Business name on its Google profile', value: profile.name ?? 'none' },
+      { key: 'profile.locations', label: 'Google listings linking to this site (more than one means several branches)', value: profile.locations },
+      { key: 'profile.name', label: profile.locations > 1 ? 'Name of one branch on Google' : 'Business name on its Google profile', value: profile.name ?? 'none' },
       { key: 'profile.rating', label: 'Google rating, out of 5', value: profile.rating ?? 'none' },
       { key: 'profile.reviews', label: 'Number of Google reviews', value: profile.reviews ?? 0 },
       { key: 'profile.category', label: 'Category on its Google profile', value: profile.category ?? 'none' },

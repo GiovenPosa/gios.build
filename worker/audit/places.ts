@@ -64,10 +64,11 @@ export async function findProfile(
   });
   if (!response.ok) throw new Error(`Places ${response.status}`);
   const { places = [] } = (await response.json()) as { places?: Place[] };
-  const place = places.find((p) => domains.includes(hostOf(p.websiteUri) ?? ''));
+  const theirs = places.filter((p) => domains.includes(hostOf(p.websiteUri) ?? ''));
+  const place = theirs[0];
   if (!place) {
     return {
-      found: false, name: null, address: null, phone: null, rating: null, reviews: null,
+      found: false, locations: 0, name: null, address: null, phone: null, rating: null, reviews: null,
       category: null, website: null, nameMatches: null, addressMatches: null, phoneMatches: null,
     };
   }
@@ -79,8 +80,11 @@ export async function findProfile(
   // the postcode is the surest sign two addresses are the same place
   const postcode = (text: string | null | undefined) => text?.toUpperCase().match(/[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}/)?.[0]?.replace(/\s/g, '') ?? null;
 
+  // a chain: one branch's details don't speak for the whole business
+  const chain = theirs.length > 1;
   return {
     found: true,
+    locations: theirs.length,
     name,
     address: place.formattedAddress ?? null,
     phone: place.nationalPhoneNumber ?? null,
@@ -88,11 +92,11 @@ export async function findProfile(
     reviews: place.userRatingCount ?? null,
     category: place.primaryTypeDisplayName?.text ?? null,
     website: place.websiteUri ?? null,
-    nameMatches: siteName && name ? squash(siteName) === squash(name) : null,
+    nameMatches: !chain && siteName && name ? squash(siteName) === squash(name) : null,
     addressMatches:
-      siteAddress && place.formattedAddress
+      !chain && siteAddress && place.formattedAddress
         ? postcode(siteAddress) !== null && postcode(siteAddress) === postcode(place.formattedAddress)
         : null,
-    phoneMatches: sitePhone && place.nationalPhoneNumber ? digits(sitePhone) === digits(place.nationalPhoneNumber) : null,
+    phoneMatches: !chain && sitePhone && place.nationalPhoneNumber ? digits(sitePhone) === digits(place.nationalPhoneNumber) : null,
   };
 }

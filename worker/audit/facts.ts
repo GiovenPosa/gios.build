@@ -86,6 +86,9 @@ export interface SiteFacts {
 
 export interface ProfileFacts {
   found: boolean;
+  /** more than one listing links to the site (a chain): the one shown is
+   *  just one branch, so it isn't compared with the site */
+  locations: number;
   name: string | null;
   address: string | null;
   phone: string | null;
