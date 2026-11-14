@@ -217,6 +217,8 @@
 .guide-table th,
 .guide-table td {
   padding: var(--gap-3) var(--gap-4);
+  /* the Medium cut is the weight: no faux bold on top */
+  font-weight: normal;
   text-align: left;
   vertical-align: top;
   font-size: var(--compact-size);
