@@ -50,11 +50,14 @@ export function WebsiteCostGuide() {
 
       <article className='guide-page'>
         <header className='guide-head'>
-          <p className='guide-kicker'>Guide</p>
+          <span className='tag-outline'>Guide</span>
           <h1 className='guide-title'>{GUIDE.headline}</h1>
           <p className='guide-dek'>{GUIDE.description}</p>
           <p className='guide-byline'>
-            By Gio Posa · Updated <time dateTime={GUIDE.updated}>{dateOf(GUIDE.updated)}</time> · {GUIDE.minutes} min read
+            <span>
+              By Gio Posa · Updated <time dateTime={GUIDE.updated}>{dateOf(GUIDE.updated)}</time>
+            </span>
+            <span className='tag-pill'>{GUIDE.minutes} min read</span>
           </p>
         </header>
 

@@ -24,18 +24,6 @@
   text-align: center;
 }
 
-.guide-head .guide-kicker {
-  margin: 0;
-  padding: var(--gap-1) var(--gap-3);
-  --radius: 999px;
-  border-radius: var(--corner);
-  background: var(--btn-color-muted);
-  font-family: var(--font-family-Medium);
-  font-size: var(--compact-size);
-  line-height: var(--compact-leading);
-  color: var(--text-color-dark);
-}
-
 .guide-title {
   margin: 0;
   font-family: var(--font-family-Headline);
@@ -56,9 +44,14 @@
   text-wrap: balance;
 }
 
+/* the author and date, then the reading time in a .tag-pill */
 .guide-byline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-2) var(--gap-3);
   margin: 0;
-  text-wrap: balance;
   font-family: var(--font-family-Medium);
   font-size: var(--compact-size);
   line-height: var(--compact-leading);
@@ -93,6 +86,10 @@
   color: inherit;
   font-family: inherit;
   letter-spacing: normal;
+}
+
+.guide-byline .tag-pill {
+  color: var(--text-color-dark);
 }
 
 .guide-page strong {

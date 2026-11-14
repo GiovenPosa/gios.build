@@ -537,16 +537,9 @@
 }
 
 /* each step: its badge, then the rest under it, all on one left edge */
+/* the shared .tag-outline */
 .ui-step-badge {
-  display: inline-block;
   margin: 0 0 var(--space-16);
-  padding: calc(var(--gap-1) + 2px) calc(var(--gap-2) + 2px);
-  border: 1px solid var(--text-color-dark);
-  --radius: 8px;
-  border-radius: var(--corner);
-  font-family: var(--font-family-Bold);
-  font-size: var(--font-size-small);
-  line-height: 1;
 }
 
 .ui-install-step-title {

@@ -107,19 +107,11 @@
   transition: opacity 0.2s ease;
 }
 
-/* a small tag beside a link, like Mobbin's "New" */
+/* a small tag beside a link, like Mobbin's "New" (the shared .tag-pill) */
 .footer-pill {
-  /* 1px more below than above: the lowercase letters sit low in the line,
-     so even padding leaves the word looking dropped */
-  padding: calc(var(--gap-1) - 1px) var(--gap-3) calc(var(--gap-1) + 1px);
+  --tag-bg: rgba(255, 255, 255, 0.12);
   /* taller than the text, but it mustn't push its row's spacing out */
   margin-block: calc(var(--gap-1) * -1);
-  --radius: 999px;
-  border-radius: var(--corner);
-  background: rgba(255, 255, 255, 0.12);
-  font-family: var(--font-family-Medium);
-  font-size: 14px;
-  line-height: 1.4;
   /* the link's line box has more room above its letters than below, so a
      box-centred pill reads high; this drops it onto the letters' middle */
   translate: 0 calc(0.08em + 1px);

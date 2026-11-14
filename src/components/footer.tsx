@@ -86,7 +86,7 @@ export function Footer() {
                   <li key={page.to}>
                     <Link to={page.to}>
                       {page.label}
-                      {page.tag && <span className='footer-pill'>{page.tag}</span>}
+                      {page.tag && <span className='tag-pill footer-pill'>{page.tag}</span>}
                     </Link>
                   </li>
                 ))}
@@ -109,7 +109,7 @@ export function Footer() {
               <ul>
                 <li>
                   <button type='button' onClick={() => openBooking('Footer')}>
-                    Get a mockup<span className='footer-pill'>Free</span>
+                    Get a mockup<span className='tag-pill footer-pill'>Free</span>
                   </button>
                 </li>
                 <li>

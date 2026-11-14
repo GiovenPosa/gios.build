@@ -297,7 +297,7 @@ function InstallSteps() {
 
       <ol className={`ui-install-steps${isVisible ? ' is-playing' : ''}`} ref={ref}>
         <Reveal as='li' className='ui-install-step'>
-          <p className='ui-step-badge'>Step 1</p>
+          <p className='tag-outline ui-step-badge'>Step 1</p>
           <h3 className='ui-install-step-title'>Tell your project where Gio UI lives</h3>
           <p className='ui-install-step-text'>
             Add one line to the <code>registries</code> in your <code>components.json</code>, so <code>@giosbuild</code> means
@@ -333,7 +333,7 @@ function InstallSteps() {
         </Reveal>
 
         <Reveal as='li' className='ui-install-step' delay={80}>
-          <p className='ui-step-badge'>Step 2</p>
+          <p className='tag-outline ui-step-badge'>Step 2</p>
           <h3 className='ui-install-step-title'>Add what you need</h3>
           <p className='ui-install-step-text'>
             Name the pieces and they’re copied in as plain files, with anything they’re built on. Here, a theme and the
