@@ -23,6 +23,9 @@ import { readSite } from './audit/crawl';
 import { pageSpeed } from './audit/pagespeed';
 import { assemble, reason, type GatherEnv } from './audit/gather';
 import type { AuditParams } from './auditWorkflow';
+import { factTable } from './audit/factTable';
+import type { AuditFacts } from './audit/facts';
+import type { AuditReport } from '../src/data/auditReport';
 
 export interface AuditEnv extends GatherEnv {
   SUPABASE_URL: string;
@@ -243,6 +246,47 @@ async function devFacts(req: Request, env: AuditEnv) {
   return json({ ...facts, screenshot: facts.screenshot ? `${facts.screenshot.slice(0, 40)}…` : null });
 }
 
+/**
+ * GET /api/audit/report/:reportId: a report for its private page. Only once
+ * Claude has written it (ready or held for review, or sent): Gio previews it
+ * at the same address before sending. Its evidence comes back as the facts'
+ * own labels and values, so the page shows the real numbers beside the
+ * words. Views are counted once it's been sent, so Gio's previews don't.
+ */
+async function reportFor(env: AuditEnv, reportId: string) {
+  const [row] = await db(
+    env,
+    `audits?report_id=eq.${reportId}&select=id,url,domain,created_at,status,facts,report,report_final,view_count,first_viewed_at`
+  );
+  const report = (row?.report_final ?? row?.report) as AuditReport | null;
+  if (!row || !report || !['review', 'ready', 'sent'].includes(String(row.status))) return fail(404, 'Report not found.');
+
+  const facts = row.facts as AuditFacts;
+  const rows = factTable(facts);
+  const cited = new Set(report.problems.flatMap((problem) => problem.evidence));
+  if (row.status === 'sent') {
+    await db(env, `audits?id=eq.${row.id}`, {
+      method: 'PATCH',
+      headers: { Prefer: 'return=minimal' },
+      body: JSON.stringify({ view_count: Number(row.view_count ?? 0) + 1, first_viewed_at: row.first_viewed_at ?? new Date().toISOString() }),
+    });
+  }
+  return json(
+    {
+      url: row.url,
+      domain: row.domain,
+      createdAt: row.created_at,
+      gatheredAt: facts.gatheredAt,
+      preview: row.status !== 'sent',
+      report,
+      evidence: rows.filter((r) => cited.has(r.key)),
+      screenshot: facts.screenshot,
+      gaps: facts.gaps,
+    },
+    200
+  );
+}
+
 /** Handles /api/audit; returns null for any other path. */
 export async function audit(req: Request, env: AuditEnv, pathname: string): Promise<Response | null> {
   if (pathname === '/api/audit/facts' && env.AUDIT_DEV === 'true' && req.method === 'GET') {
@@ -250,6 +294,15 @@ export async function audit(req: Request, env: AuditEnv, pathname: string): Prom
       return await devFacts(req, env);
     } catch (error) {
       return fail(400, reason(error));
+    }
+  }
+  const reportMatch = pathname.match(/^\/api\/audit\/report\/([0-9a-f]{32})$/);
+  if (reportMatch && req.method === 'GET') {
+    try {
+      return await reportFor(env, reportMatch[1]);
+    } catch (error) {
+      console.error('audit report', error);
+      return fail(500, 'Something went wrong loading the report.');
     }
   }
   if (pathname !== '/api/audit') return null;

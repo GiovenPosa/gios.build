@@ -3,5 +3,7 @@ Allow: /
 # the enquiry form's endpoint and the visit counter: not pages
 Disallow: /api/
 Disallow: /stats/
+# each audit's private report
+Disallow: /report/
 
 Sitemap: https://www.gios.build/sitemap.xml

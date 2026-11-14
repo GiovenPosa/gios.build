@@ -1,0 +1,335 @@
+/* An audit's private report (pages/reportPage.tsx). The scorecards and
+   rating pills are the audit page's sample (auditPage.css), so the real
+   report looks like the one visitors were shown. */
+
+.report-page {
+  max-width: 960px;
+  padding: calc(var(--space-128) + var(--space-32)) 0 var(--space-128);
+  color: var(--text-color-dark);
+}
+
+.report-status {
+  padding: calc(var(--space-128) + var(--space-64)) 0;
+  text-align: center;
+  font-family: var(--font-family-Regular);
+  color: var(--text-color-secondary);
+}
+
+.report-status a {
+  color: inherit;
+}
+
+.report-preview {
+  display: inline-block;
+  margin: 0 0 var(--space-32);
+  padding: 4px 12px 5px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.16);
+  color: #9a5b00;
+  font-family: var(--font-family-Medium);
+  font-size: var(--font-size-small);
+}
+
+/* ---- the top: who, the verdict, the scores, and their home page ---- */
+
+.report-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-64);
+  align-items: start;
+}
+
+.report-business {
+  margin: var(--gap-3) 0 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
+}
+
+.report-verdict {
+  margin: var(--space-16) 0 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-2-size);
+  line-height: var(--title-2-leading);
+  color: var(--text-color-secondary);
+  text-wrap: balance;
+}
+
+.report-scores {
+  margin-bottom: 0;
+}
+
+.report-scores li {
+  background: var(--bg-surface-color);
+}
+
+.report-shot {
+  margin: 0;
+  width: 13rem;
+  text-align: center;
+}
+
+.report-shot img {
+  display: block;
+  width: 100%;
+  --radius: 24px;
+  border-radius: var(--corner);
+  box-shadow:
+    0 0 0 1px var(--border-color-hairline),
+    0 24px 48px -28px rgba(20, 25, 40, 0.4);
+}
+
+.report-shot figcaption {
+  margin-top: var(--gap-3);
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-small);
+  color: var(--text-color-muted);
+}
+
+/* ---- sections ---- */
+
+.report-section {
+  margin-top: var(--space-128);
+}
+
+.report-section-title {
+  margin: 0 0 var(--space-32);
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-2-size);
+  line-height: var(--title-2-leading);
+}
+
+.report-problems,
+.report-wins,
+.report-notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.report-problem,
+.report-wins li {
+  padding: var(--space-32);
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+/* the most serious ones carry a red dot before their title */
+.report-problem.is-high h3::before {
+  content: '';
+  display: inline-block;
+  width: 0.4em;
+  height: 0.4em;
+  margin: 0 0.4em 0.12em 0;
+  border-radius: 50%;
+  background: #fe432a;
+  vertical-align: middle;
+}
+
+.report-problem h3,
+.report-wins h3 {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-3-size);
+  line-height: var(--title-3-leading);
+}
+
+.report-problem p,
+.report-wins p,
+.report-notes li {
+  margin: var(--gap-2) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  color: var(--text-color-secondary);
+}
+
+/* the measurements behind it, small */
+.report-evidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-2);
+  margin: var(--space-16) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.report-evidence li {
+  display: inline-flex;
+  gap: var(--gap-2);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--bg-light-color);
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-small);
+  color: var(--text-color-secondary);
+}
+
+.report-evidence strong {
+  font-family: var(--font-family-Medium);
+  font-weight: normal;
+  color: var(--text-color-dark);
+}
+
+.report-fix span {
+  font-family: var(--font-family-Medium);
+  color: var(--text-color-dark);
+}
+
+.report-notes li {
+  margin: 0;
+  padding: var(--space-16) var(--space-32);
+  --radius: 16px;
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+/* ---- how gios.build can help: the site's dark card, ending at the mockup ---- */
+
+.report-help {
+  margin-top: var(--space-128);
+  padding: var(--space-64);
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  background: var(--bg-dark-color);
+  color: var(--text-color-light);
+}
+
+.report-help .audit-sample-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.report-help h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-16);
+  margin: var(--gap-3) 0 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+}
+
+.report-help h2 span {
+  font-size: var(--title-3-size);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.report-help p,
+.report-help li {
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.report-help ul {
+  margin: var(--space-16) 0 0;
+  padding-left: 1.2em;
+}
+
+.report-help-also {
+  margin-top: var(--space-16);
+}
+
+.report-help-closing {
+  margin-top: var(--space-32);
+  color: var(--text-color-light) !important;
+}
+
+.report-help-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-32);
+  margin-top: var(--space-32);
+}
+
+/* the light button on the dark card (the site's buttons colour their
+   label themselves, so it's set on the label too) */
+.report-help-button,
+.report-help-button p,
+.report-help-button svg {
+  background: var(--bg-light-color);
+  color: var(--text-color-dark);
+}
+
+.report-help-link {
+  font-family: var(--font-family-Medium);
+  color: var(--text-color-light);
+}
+
+/* ---- the small print ---- */
+
+.report-method {
+  margin-top: var(--space-64);
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-small);
+  line-height: 1.6;
+  color: var(--text-color-muted);
+}
+
+.report-method h2 {
+  margin: 0 0 var(--gap-2);
+  font-family: var(--font-family-Medium);
+  font-weight: normal;
+  font-size: var(--font-size-small);
+  color: var(--text-color-secondary);
+}
+
+.report-method p,
+.report-method ul {
+  margin: 0;
+}
+
+.report-method ul {
+  margin-top: var(--gap-2);
+  padding-left: 1.2em;
+}
+
+/* ===== TABLET AND PHONES ===== */
+@media (max-width: 900px) {
+  .report-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-32);
+  }
+
+  .report-shot {
+    order: -1;
+    width: 10rem;
+  }
+
+  .report-help {
+    padding: var(--space-32);
+  }
+}
+
+@media (max-width: 600px) {
+  .report-page {
+    padding-top: var(--space-128);
+  }
+
+  .report-section,
+  .report-help {
+    margin-top: var(--space-64);
+  }
+
+  .report-problem,
+  .report-wins li {
+    padding: var(--space-32) var(--space-16) var(--space-16);
+  }
+
+  .report-help {
+    padding: var(--space-32) var(--space-16) var(--space-16);
+  }
+}

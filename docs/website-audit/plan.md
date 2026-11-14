@@ -1,6 +1,6 @@
 # Website Audit: implementation plan
 
-**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** Phase 1 live (14 Nov 2026). Phase 2 built and tested locally (14 Nov 2026), waiting to be pushed: the Workflow's first live run is its real test.
+**Spec:** [spec.md](spec.md) · **Written:** 14 Nov 2026 · **Status:** Phases 1 and 2 live (14 Nov 2026). Phase 3 built and pushed (14 Nov 2026), waiting on the Claude API key for its first live report.
 
 Five phases. Each one ships something that works on its own, so the feature
 can stop at any phase and still be useful. The section numbers (§) refer to
@@ -173,6 +173,41 @@ on its private page. It's held for review; nothing is emailed yet.
 | 3.5 | `GET /api/audit/report/:reportId`, with the noindex header and view counting | `worker/audit.ts` |
 | 3.6 | Report page at `/report/:id`, in the site's style (spec §10). The mockup button opens the enquiry form already filled in. | `src/pages/reportPage.tsx`, `src/pages/page-styles/reportPage.css`, `src/App.tsx`, `public/robots.txt` |
 | 3.7 | Lead app: read the draft, edit its text, and see the checks | lead app |
+
+**As built (14 Nov 2026):**
+- **Files:**
+  - `src/data/auditOffer.ts`, the offer (built from `packages.ts` and
+    `services.ts`, so prices never drift);
+  - `src/data/auditReport.ts`, the report's type and the tool's JSON
+    Schema;
+  - in `worker/audit/`: `factTable.ts` (the facts as keyed rows, in the
+    units a report uses: seconds, MB), `prompt.ts` (`PROMPT_VERSION`
+    `v1-2026-11-14`), `write.ts` (the Messages API with a forced
+    `write_report` tool, plus the phone screenshot as an image) and
+    `check.ts`;
+  - `src/pages/reportPage.tsx`, the report page.
+- **Workflow:** facts → status `writing` → Claude → checks → `ready` if they
+  pass, `review` if they don't. If writing fails, the facts stay and the
+  status is `review`, with the reason in `fail_reason`.
+- **Checker,** tested with ten planted mistakes. Every one is caught:
+  - an invented time, statistic or price;
+  - a fake evidence key;
+  - "I" or "We";
+  - a promise;
+  - a number in an observation;
+  - a package that doesn't exist.
+
+  The clean report passes. Prices and weeks must come from the offer, and
+  measurements from the facts.
+- **Report page:** `/report/<id>`. The Worker lets it through as a page
+  with `X-Robots-Tag: noindex`, and `robots.txt` disallows `/report/`.
+  Before sending it shows "Preview: not sent yet", and views are counted
+  only once it's sent. On the dev server, any id shows a made-up sample
+  (`SAMPLE_REPORT` in `vite.config.ts`).
+- **Lead app:** the verdict, the recommended package, the problems, what
+  the checks caught, and "Open the report ↗". The statuses read "Needs a
+  look" (`review`) and "Report ready" (`ready`).
+- **Report editing in the lead app** is left for Phase 4, alongside Send.
 
 **Done when:**
 - The NW and Elite reports reach the main findings from spec §18.

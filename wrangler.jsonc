@@ -30,7 +30,10 @@
     "AUDIT_DAILY_CAP": "50",
     // the audit's Google Business Profile check (worker/audit/places.ts):
     // on since Places billing was set up, 14 Nov 2026
-    "AUDIT_PLACES": "true"
+    "AUDIT_PLACES": "true",
+    // the model that writes the audit reports (worker/audit/write.ts). The
+    // Claude key is a secret: `npx wrangler secret put ANTHROPIC_API_KEY`
+    "AUDIT_MODEL": "claude-sonnet-5-5"
   },
   // enquiry form requests per visitor IP: generous for a person going back
   // and forth between steps, tight for a script

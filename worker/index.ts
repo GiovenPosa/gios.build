@@ -81,6 +81,12 @@ async function site(request: Request, env: Env, url: URL): Promise<Response> {
   const response = await env.ASSETS.fetch(request);
   // a path with no file comes back as the app's index.html with a 200
   const isPage = (response.headers.get('Content-Type') ?? '').startsWith('text/html');
+  // an audit's private report (/report/<id>): a real page, but never listed
+  if (isPage && /^\/report\/[0-9a-f]{32}$/.test(url.pathname)) {
+    const headers = new Headers(response.headers);
+    headers.set('X-Robots-Tag', 'noindex, nofollow');
+    return new Response(response.body, { status: response.status, headers });
+  }
   if (response.status === 200 && isPage && !PAGES.has(url.pathname)) {
     return new Response(response.body, { status: 404, headers: response.headers });
   }

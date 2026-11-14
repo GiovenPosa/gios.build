@@ -3,9 +3,9 @@
 // Each step's result is saved by Cloudflare, so a retry or a restart picks up
 // where it left off rather than reading the site again.
 //
-// Phase 2: gather the facts (the site, its speed on phones and computers,
-// and its Google profile when Places is on), save them to the audit, and
-// leave it for review. Phase 3 adds Claude writing the report after this.
+// Gather the facts (the site, its speed on phones and computers, and its
+// Google profile), save them, then have Claude write the report from them,
+// check it, and save it for Gio's review. (Sending comes in phase 4.)
 //
 // A part that fails after its retries becomes a "gap" in the facts, not a
 // failed audit; only a site that can't be read at all fails the audit.
@@ -17,8 +17,12 @@ import { pageSpeed } from './audit/pagespeed';
 import { findProfile } from './audit/places';
 import { assemble, profileQuery, reason, type GatherEnv } from './audit/gather';
 import type { ProfileFacts } from './audit/facts';
+import { factTable } from './audit/factTable';
+import { writeReport, type WriteEnv } from './audit/write';
+import { checkReport } from './audit/check';
+import { PROMPT_VERSION } from './audit/prompt';
 
-export interface AuditWorkflowEnv extends GatherEnv {
+export interface AuditWorkflowEnv extends GatherEnv, WriteEnv {
   SUPABASE_URL: string;
   SUPABASE_SECRET_KEY: string;
 }
@@ -110,13 +114,46 @@ export class AuditWorkflow extends WorkflowEntrypoint<AuditWorkflowEnv, AuditPar
       profileNote,
     });
 
-    // saved for review (phase 3 hands them to Claude from here instead)
+    // a site that couldn't be read ends here; otherwise on to writing
     await step.do('save the facts', async () => {
       await setStatus(
         site
-          ? { facts, status: 'review' }
+          ? { facts, status: 'writing' }
           : { facts, status: 'failed', fail_reason: siteError ?? 'The site couldn’t be read.' }
       );
+    });
+    if (!site) return;
+
+    // Claude writes the report from the facts; a failure leaves the facts
+    // for Gio to write it by hand
+    const rows = factTable(facts);
+    let written;
+    try {
+      written = await step.do(
+        'write the report',
+        { retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '4 minutes' },
+        () => writeReport(env, facts, rows)
+      );
+    } catch (error) {
+      await step.do('note the writing failed', async () => {
+        await setStatus({ status: 'review', fail_reason: `The report couldn’t be written: ${reason(error)}` });
+      });
+      return;
+    }
+
+    // checked, then held for review either way in this phase: a report that
+    // passes is "ready", one that fails waits with what's wrong
+    await step.do('check and save the report', async () => {
+      const checks = checkReport(written.report, rows);
+      await setStatus({
+        report: written.report,
+        checks,
+        model: written.model,
+        prompt_version: PROMPT_VERSION,
+        cost_tokens_in: written.tokensIn,
+        cost_tokens_out: written.tokensOut,
+        status: checks.passed ? 'ready' : 'review',
+      });
     });
   }
 }

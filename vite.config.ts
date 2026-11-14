@@ -111,6 +111,49 @@ const pageHeads = () => ({
   },
 })
 
+// a made-up report in the real shape (src/data/auditReport.ts), for the
+// local stand-in below
+const SAMPLE_REPORT = {
+  url: 'https://www.example-detailing.co.uk/',
+  domain: 'example-detailing.co.uk',
+  createdAt: '2026-11-14T10:00:00Z',
+  gatheredAt: '2026-11-14T10:01:30Z',
+  preview: true,
+  screenshot: null,
+  gaps: ['There isn’t enough real-visitor data in Google’s Chrome reports for this site, so speed is from a test visit only.'],
+  evidence: [
+    { key: 'speed.mobile.performance', label: 'Google speed score on a phone, out of 100', value: 51 },
+    { key: 'speed.mobile.interactiveSeconds', label: 'Seconds until the page can be used on a phone', value: 21.9 },
+    { key: 'site.places.Westbury', label: 'Times "Westbury" is named across the pages read', value: 0 },
+    { key: 'page.5.title', label: 'Google title of /service-page/ppf-1', value: 'PPF 1 | Example Detailing' },
+    { key: 'profile.nameMatches', label: 'Google profile name matches the site', value: false },
+  ],
+  report: {
+    business: { name: 'Example Detailing', whatTheyDo: 'car detailing and paint protection', where: 'Southwick, near Trowbridge', customers: 'car owners nearby' },
+    verdict: 'Great reviews, but a slow site that Google struggles to place.',
+    scorecards: [
+      { area: 'speed', rating: 'poor', summary: 'Phone speed score 51 out of 100' },
+      { area: 'google', rating: 'needs work', summary: 'Service page titles don’t say what or where' },
+      { area: 'local', rating: 'needs work', summary: 'Nearby towns aren’t named on the site' },
+    ],
+    problems: [
+      { title: 'Customers give up waiting.', whatItCosts: 'On a phone, the home page takes 21.9 seconds before it can be used. Someone looking for a valet today will go back and pick the next result.', evidence: ['speed.mobile.interactiveSeconds', 'speed.mobile.performance'], fix: 'A lighter, faster site, built for phones first.', severity: 'high' },
+      { title: 'Nobody next door finds you.', whatItCosts: 'Westbury isn’t named once across the pages read, so Google has no reason to show the business to people searching there.', evidence: ['site.places.Westbury'], fix: 'Name the towns you serve, with a page for each of the main ones.', severity: 'medium' },
+      { title: 'Google can’t tell what you sell.', whatItCosts: 'Service pages have titles like "PPF 1 | Example Detailing", which say neither the service nor the place.', evidence: ['page.5.title'], fix: 'Titles like "Paint protection film in Trowbridge".', severity: 'medium' },
+    ],
+    observations: [
+      'From reading your site, it’s clear you take on everything from valets to paint protection, which is a strong range.',
+      'From your home page on a phone, the first screen shows your logo and a photo, but not how to book.',
+    ],
+    quickWins: [
+      { title: 'Match your name everywhere', how: 'Make the business name on your website match your Google profile exactly. It helps Google trust both.' },
+      { title: 'Put the town in your title', how: 'Change the home page title to say what you do and where, like "Car detailing in Trowbridge".' },
+    ],
+    recommendation: { package: 'redesign', why: 'The site exists and has real content, but it’s slow and Google can’t read what or where you sell. A redesign fixes both while keeping the rankings you already have.', includes: ['Faster loading pages', 'Clearer messaging that sells', 'Keep your Google rankings'], alsoConsider: 'Growth adds a page for each town you serve.' },
+    closing: 'See what your new homepage could look like, free, before you decide anything.',
+  },
+}
+
 /**
  * Local stand-in for the enquiry form's endpoint (and the free audit's). On the live site /api/enquiry
  * is the Cloudflare Worker (worker/enquiry.ts), which `vite` and `vite preview`
@@ -125,6 +168,13 @@ const localEnquiry = () => {
   type Res = import('http').ServerResponse
   const handle = (req: Req, res: Res, next: Next) => {
     const path = req.url?.split('?')[0]
+    // an audit report, for checking the report page's design: any id gives
+    // the same made-up example (worker/audit.ts serves the real ones)
+    if (path?.startsWith('/api/audit/report/')) {
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify(SAMPLE_REPORT))
+      return
+    }
     // the free audit's form (worker/audit.ts): answers as the Worker would, saves nothing
     if (path === '/api/audit') {
       let raw = ''
