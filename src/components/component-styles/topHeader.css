@@ -165,6 +165,8 @@
   align-items: center;
   gap: var(--gap-2);
   padding: var(--gap-3) var(--space-16);
+  /* bold, like every primary button (homePage.css) */
+  font-family: var(--font-family-Bold);
   font-size: var(--font-size-regular);
   --radius: 22px;
   border-radius: var(--corner);

@@ -41,6 +41,13 @@
   color: var(--text-color-dark);
 }
 
+/* the primary buttons (black, or white on a dark card) in Jakarta Bold, so
+   the main action reads first; the grey secondary ones and the report's
+   outlined WhatsApp button stay Medium */
+.hero-action-button:not(.secondary):not(.report-help-whatsapp) {
+  font-family: var(--font-family-Bold);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .hero-action-button:hover {
     opacity: var(--opacity-hover);
