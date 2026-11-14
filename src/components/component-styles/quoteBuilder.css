@@ -307,6 +307,19 @@
   color: var(--text-color-muted);
 }
 
+/* the second way to ask: white on the white receipt, lifted by a soft
+   shadow, close under the black button */
+.qb-whatsapp {
+  margin-top: var(--space-16);
+  background-color: #fff;
+  color: var(--text-color-dark);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 6px 20px -8px rgba(0, 0, 0, 0.22);
+}
+
+.qb-whatsapp p {
+  margin: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .qb-line,
   .qb-also-item {

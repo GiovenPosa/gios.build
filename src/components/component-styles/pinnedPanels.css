@@ -255,6 +255,12 @@
   }
 }
 
+/* a button under the closing line */
+.pinned-foot-action {
+  display: flex;
+  margin-top: var(--space-32);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pinned-tile,
   .pinned-name,

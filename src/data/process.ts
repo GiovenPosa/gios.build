@@ -10,25 +10,25 @@ export const processData: ProcessStep[] = [
   {
     id: '01',
     title: 'Discover',
-    text: 'We talk about your business, your customers and what the website needs to do. Then I design a free mockup of your new homepage.',
-    items: ['A chat about your business', 'Who your customers are', 'What the website needs to do', 'A free mockup of your homepage']
+    text: "You get in touch and we have a proper chat. I get to know your business, your customers, and what's working for you and what isn't. Then I design a free mockup of your new homepage.",
+    items: ['You get in touch, we have a proper chat.', 'I get to know you and your customers.', "What's working for you, and what isn't.", 'A free homepage mockup, made for you.']
   },
   {
     id: '02',
     title: 'Design',
-    text: 'If you love the mockup, we agree the pages, features and price, and I design the rest of the site around it.',
-    items: ['Go ahead only if you love the mockup', 'Pages and features agreed', 'The price agreed upfront', 'The rest designed around it']
+    text: "If you love the mockup, we go ahead. We agree the pages, features and price, then I design every page around your customers, so the site looks and feels like you.",
+    items: ['If you love the mockup, we go ahead.', 'Your pages, your features, your prices.', 'Every page made for your customers.', 'Designed to look and feel like you.']
   },
   {
     id: '03',
     title: 'Refine',
-    text: 'You see progress as I build and we refine it together. How many rounds depends on how bespoke the project is, and we agree that upfront.',
-    items: ['See progress as I build', 'Refine it together', 'Rounds agreed upfront', 'More rounds for more bespoke builds']
+    text: "You see the site as I build it and we refine it together. Your feedback shapes every page, and you decide when it's ready.",
+    items: ['You see the site as I build it.', 'Your feedback shapes every page.', "You decide when it's ready.", "Nothing goes live until you're happy."]
   },
   {
     id: '04',
     title: 'Deliver',
     text: "I set up hosting and your domain, then launch. A simple website is usually live in about 4 weeks. 30 days on, we review what's working.",
-    items: ['Hosting and domain set up', 'Launched and live', 'A simple site in about 4 weeks', "A review at 30 days of what's working"]
+    items: ['I sort your hosting and domain.', 'Launched, live and handed over to you.', 'A simple site live in about 4 weeks.', "30 days on, we look at what's working."]
   }
 ];

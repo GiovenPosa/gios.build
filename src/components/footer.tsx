@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useBooking } from '../context/bookingContext';
 import { track } from '../lib/analytics';
+import { WhatsAppLink } from './whatsappLink';
 import { servicesData } from '../data/services';
 import { AREAS } from '../data/areas';
 import { INDUSTRIES } from '../data/industries';
@@ -109,6 +110,9 @@ export function Footer() {
                   <button type='button' onClick={() => openBooking('Footer')}>
                     Get a mockup<span className='footer-pill'>Free</span>
                   </button>
+                </li>
+                <li>
+                  <WhatsAppLink from='Footer' revealNumber>WhatsApp me</WhatsAppLink>
                 </li>
                 <li>
                   <a href='mailto:contact@gios.build' onClick={() => track('Contact link', { to: 'email' })}>

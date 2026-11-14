@@ -1,7 +1,7 @@
 import './page-styles/pricingPage.css';
 import { GoArrowUpRight } from 'react-icons/go';
 import { PageMeta } from '../components/pageMeta';
-import { useBooking } from '../context/bookingContext';
+import { WhatsAppLink } from '../components/whatsappLink';
 import { Reveal } from '../components/reveal';
 import { PackageStack } from '../components/packageStack';
 import { QuoteBuilder } from '../components/quoteBuilder';
@@ -14,7 +14,6 @@ import { ClosingCta } from '../components/closingCta';
 // closing call to action. (The previous page is kept in packagesPage.tsx;
 // point the /packages route back at it to restore it.)
 export function PricingPage() {
-  const { openBooking } = useBooking();
 
   return (
     <>
@@ -46,14 +45,15 @@ export function PricingPage() {
               <h2 id='care-title'>Hosting & Care</h2>
               <p>Your site shouldn't need you to think about it again. I host it, back it up and keep it running, for one simple monthly fee.</p>
             </div>
-            <button
-              type='button'
+            <WhatsAppLink
               className='hero-action-button secondary pricing-care-button'
-              onClick={() => openBooking('Hosting & care', { packageId: 'not-sure', message: "I'd like to ask about hosting & care." })}
+              from='Hosting & care'
+              revealNumber
+              message="Hi Gio, I'd like to ask about hosting & care."
             >
               <p>Ask about care</p>
               <GoArrowUpRight aria-hidden />
-            </button>
+            </WhatsAppLink>
           </Reveal>
 
           <section className='home-faq-block pricing-faq'>

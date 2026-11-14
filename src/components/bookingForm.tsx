@@ -1,6 +1,7 @@
 import './component-styles/bookingForm.css';
 import { useBooking } from '../context/bookingContext';
 import { track } from '../lib/analytics';
+import { WhatsAppLink } from './whatsappLink';
 import { BUSINESS_TYPES, ENQUIRY_PACKAGES, EMAIL_PATTERN } from '../data/enquiry';
 import { IoCloseOutline, IoCheckmarkCircle } from "react-icons/io5";
 import { useState, useEffect, useRef } from 'react';
@@ -321,6 +322,15 @@ export function BookingForm() {
               <p>Done</p>
               <GoArrowRight />
             </button>
+            <p className='success-whatsapp'>
+              Want a quicker reply?{' '}
+              <WhatsAppLink
+                from='Enquiry sent'
+                message={`Hi Gio, it's ${formData.name.split(' ')[0]}. I've just sent an enquiry through your website.`}
+              >
+                WhatsApp me
+              </WhatsAppLink>
+            </p>
           </div>
         ) : (
           <>

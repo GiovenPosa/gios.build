@@ -309,6 +309,11 @@
   transition: opacity 0.3s ease;
 }
 
+/* the WhatsApp button under the links */
+.mobile-menu-overlay .mobile-menu-whatsapp {
+  margin-top: var(--space-16);
+}
+
 .mobile-menu-overlay.open {
   opacity: 1;
   pointer-events: auto;

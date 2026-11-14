@@ -1,7 +1,7 @@
 import { useEffect, useRef, type CSSProperties } from 'react';
 import { GoArrowRight } from 'react-icons/go';
 import { journeyData } from '../data/journey';
-import { useBooking } from '../context/bookingContext';
+import { WhatsAppLink } from './whatsappLink';
 import { Reveal } from './reveal';
 import { LoopVideo } from './loopVideo';
 // square, card-sized cuts: the cards only ever show a small square
@@ -58,7 +58,6 @@ const SLOTS = ['#dfd5cb', '#b8c4db', '#c9d6c8', '#1c1c1c'];
  * (0 to 1, how much of it the next card has covered).
  */
 export function StoryStack() {
-  const { openBooking } = useBooking();
   const listRef = useRef<HTMLOListElement | null>(null);
 
   useEffect(() => {
@@ -133,10 +132,10 @@ export function StoryStack() {
               <h3 className='story-title'>{step.title}</h3>
               <p className='story-text'>{step.text}</p>
               {index === last && (
-                <button type='button' className='hero-action-button story-cta' onClick={() => openBooking('Story')}>
-                  <p>Get a free mockup</p>
+                <WhatsAppLink className='hero-action-button light story-cta' from='Story' revealNumber>
+                  <p>WhatsApp me</p>
                   <GoArrowRight aria-hidden />
-                </button>
+                </WhatsAppLink>
               )}
             </div>
             <div className='story-slot' style={{ '--slot': SLOTS[index % SLOTS.length] } as CSSProperties} aria-hidden>

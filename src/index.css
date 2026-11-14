@@ -251,6 +251,20 @@
   border-radius: inherit;
 }
 
+/* Light pills (white, dark text: the founder card's button, the quote
+   builder's WhatsApp one): a white band can't show on white, so theirs is
+   a faint dark one, the same sweep in reverse contrast. */
+.hero-action-button.light::after {
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(0, 0, 0, 0.06) 44%,
+    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0.06) 56%,
+    transparent 70%
+  );
+}
+
 @media (hover: hover) and (pointer: fine) {
   :is(
   .hero-action-button:not(.secondary),

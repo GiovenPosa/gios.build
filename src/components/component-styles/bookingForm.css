@@ -565,6 +565,21 @@
   margin: 0;
 }
 
+/* a quicker way to reach me, under Done */
+.success-whatsapp {
+  margin: var(--space-16) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-regular);
+  color: var(--text-color-muted);
+}
+
+.success-whatsapp a {
+  color: var(--text-color-dark);
+  font-family: var(--font-family-Medium);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ===== TABLET (900px and below) ===== */
 @media (max-width: 900px) {
   .booking-form {

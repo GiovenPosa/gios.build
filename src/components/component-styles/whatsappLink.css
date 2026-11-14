@@ -1,0 +1,95 @@
+/* WhatsApp links that show my number on hover (see whatsappLink.tsx) */
+
+.wa-swap {
+  display: inline-grid;
+  justify-items: center;
+  align-items: center;
+  /* passes the button's text-to-arrow spacing on to the label (one cell,
+     so it spaces nothing here) */
+  gap: inherit;
+}
+
+/* The label and the number stacked in the same cell. They swap with a
+   blur: the one leaving softens and fades, the one arriving comes into
+   focus a beat later, so the two are never sharp on top of each other.
+   Only a few pixels of travel, so it reads as a change of focus rather
+   than things sliding about. */
+.wa-label,
+.wa-number {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, filter, transform;
+}
+
+/* the label keeps the button's own spacing between text and arrow; on the
+   way back the number leaves at once and the label follows it in */
+.wa-label {
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+  transition-delay: 0.08s;
+}
+
+.wa-label p {
+  margin: 0;
+}
+
+.wa-number {
+  margin: 0;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(4px);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+/* the number in: the label leaves at once, the number follows it in */
+.wa-reveal:focus-visible .wa-label {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(-4px);
+  transition-delay: 0s;
+}
+
+.wa-reveal:focus-visible .wa-number {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+  transition-delay: 0.08s;
+}
+
+/* only with a mouse: on a phone the tap opens WhatsApp anyway */
+@media (hover: hover) and (pointer: fine) {
+  /* the swap is the hover feedback, so no dimming on top (beats the
+     buttons' and footer links' own hover opacity) */
+  a.wa-reveal.wa-reveal:hover {
+    opacity: 1;
+  }
+
+  .wa-reveal:hover .wa-label {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(-4px);
+    transition-delay: 0s;
+  }
+
+  .wa-reveal:hover .wa-number {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+    transition-delay: 0.08s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-label,
+  .wa-number {
+    filter: none !important;
+    transform: none !important;
+    transition: opacity 0.2s ease;
+  }
+}

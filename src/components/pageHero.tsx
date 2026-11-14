@@ -102,9 +102,9 @@ type HeroFace =
   | { kind: 'app'; name: string };
 
 const HERO_ICONS: HeroFace[][] = [
-  // the first line's: light and cool, with the blue "+" and the apps people find you on
+  // the first line's: light and cool, with the blue "+" and the apps people
+  // find you on. It opens on the blue face.
   [
-    { kind: 'tile', colour: '#ffffff' },
     { kind: 'eyes', colour: '#7cc4e4', ink: '#ffffff' },
     { kind: 'plus' },
     { kind: 'app', name: 'Google Business Profile' },
@@ -113,10 +113,11 @@ const HERO_ICONS: HeroFace[][] = [
     { kind: 'app', name: 'Instagram' },
     { kind: 'tile', colour: '#c9b8f5' },
     { kind: 'app', name: 'Shopify' },
+    { kind: 'tile', colour: '#ffffff' },
   ],
-  // the second line's: deep and warm, with the tick and the apps that bring work in
+  // the second line's: deep and warm, with the tick and the apps that bring
+  // work in. It opens on the green tick.
   [
-    { kind: 'tile', colour: '#0d0d0d' },
     { kind: 'tick' },
     { kind: 'eyes', colour: '#fe432a', ink: '#ffffff' },
     { kind: 'app', name: 'Shopify' },
@@ -125,6 +126,7 @@ const HERO_ICONS: HeroFace[][] = [
     { kind: 'app', name: 'Stripe' },
     { kind: 'tile', colour: '#f7e07a' },
     { kind: 'app', name: 'WhatsApp Business' },
+    { kind: 'tile', colour: '#0d0d0d' },
   ],
 ];
 
