@@ -12,9 +12,13 @@ import { ScrollToTop } from './components/scrollToTop'
 const PricingPage = lazy(() => import('./pages/pricingPage').then((m) => ({ default: m.PricingPage })))
 const PrivacyPage = lazy(() => import('./pages/privacyPage').then((m) => ({ default: m.PrivacyPage })))
 const UiPage = lazy(() => import('./pages/uiPage').then((m) => ({ default: m.UiPage })))
+const IndustryPage = lazy(() => import('./pages/industryPage').then((m) => ({ default: m.IndustryPage })))
+const AreaPage = lazy(() => import('./pages/areaPage').then((m) => ({ default: m.AreaPage })))
 const NotFoundPage = lazy(() => import('./pages/notFoundPage').then((m) => ({ default: m.NotFoundPage })))
 import { BookingProvider } from './context/bookingContext'
 import { BookingForm } from './components/bookingForm'
+import { AREAS } from './data/areas'
+import { INDUSTRIES } from './data/industries'
 
 function App() {
   return (
@@ -28,7 +32,10 @@ function App() {
             <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/work" element={<WorkPage />} />
+              {/* /work/kape-coffee and the rest: the Work page with that
+                  project's larger view open (one route, so moving between
+                  them never reloads the page) */}
+              <Route path="/work/:slug?" element={<WorkPage />} />
               {/* the About page became the home page's My Story section */}
               <Route path="/about" element={<Navigate to="/#story" replace />} />
               {/* the Contact page became the footer */}
@@ -36,6 +43,14 @@ function App() {
               <Route path="/packages" element={<PricingPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/ui" element={<UiPage />} />
+              {/* a page per town (data/areas.ts) */}
+              {AREAS.map((area) => (
+                <Route key={area.path} path={area.path} element={<AreaPage area={area} />} />
+              ))}
+              {/* a page per kind of business (data/industries.ts) */}
+              {INDUSTRIES.map((industry) => (
+                <Route key={industry.path} path={industry.path} element={<IndustryPage industry={industry} />} />
+              ))}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
             </Suspense>

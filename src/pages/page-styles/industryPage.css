@@ -1,0 +1,167 @@
+/* An industry page's own sections (pages/industryPage.tsx); the layout,
+   spacing and the rest come from areaPage.css. */
+
+/* ---- the project, shown big: its reel beside a headline and a line ---- */
+
+.ind-project {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-64);
+}
+
+.ind-project-media {
+  aspect-ratio: 16 / 10;
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  overflow: hidden;
+  background: var(--bg-surface-color);
+}
+
+.ind-project-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ind-project-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.ind-project-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: var(--space-32);
+  --radius: 16px;
+  border-radius: var(--corner);
+  box-shadow: 0 10px 22px -12px rgba(0, 0, 0, 0.45);
+}
+
+.ind-project-text {
+  margin: var(--space-16) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+}
+
+.ind-project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-2);
+  margin-top: var(--space-32);
+  font-family: var(--font-family-Medium);
+  font-size: var(--body-size);
+  color: var(--text-color-dark);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ind-project-link:hover {
+    opacity: var(--opacity-hover);
+  }
+}
+
+/* ---- what customers look for: two by two, each card's words on top and
+   a phone from the project rising from its foot ---- */
+
+.ind-features-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ind-feature {
+  display: flex;
+  flex-direction: column;
+  height: 34rem;
+  overflow: hidden;
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+.ind-feature-copy {
+  padding: var(--space-32) var(--space-32) 0;
+  /* room for a title and three lines, so the phones all start level */
+  min-height: 9rem;
+}
+
+.ind-feature-copy h3 {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-3-size);
+  line-height: var(--title-3-leading);
+  text-wrap: balance;
+}
+
+.ind-feature-copy p {
+  max-width: 30rem;
+  margin: var(--gap-3) 0 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+}
+
+/* the phone at its own height, so it runs on past the card's foot */
+.ind-feature-shot {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-height: 0;
+  padding-top: var(--space-32);
+}
+
+.ind-feature-shot img {
+  display: block;
+  width: 13rem;
+  height: auto;
+  align-self: flex-start;
+  --radius: 24px;
+  border-radius: var(--corner);
+  box-shadow:
+    0 0 0 1px var(--border-color-hairline),
+    0 24px 48px -28px rgba(20, 25, 40, 0.4);
+}
+
+/* ===== TABLET AND PHONES ===== */
+@media (max-width: 900px) {
+  .ind-project {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-32);
+  }
+
+  .ind-features-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ind-feature {
+    height: 30rem;
+  }
+
+  /* one card to a row: nothing to line up with */
+  .ind-feature-copy {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .ind-feature-copy {
+    padding: var(--space-32) var(--space-16) 0;
+  }
+
+  .ind-feature-shot img {
+    width: 11rem;
+  }
+}

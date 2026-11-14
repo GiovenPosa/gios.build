@@ -12,6 +12,8 @@
 //
 // Plain data only: vite.config.ts imports this file too.
 
+import { workAbout, workPages, type WorkTitle } from './workAbout';
+
 export const SITE_URL = 'https://www.gios.build';
 export const SITE_NAME = 'gios.build';
 
@@ -34,7 +36,7 @@ export interface PageSeo {
 
 export const DEFAULT_IMAGE = '/og/home.png';
 
-export const PAGES = {
+const STATIC_PAGES = {
   '/': {
     title: 'Web Design in Bath & Bristol for Small Businesses | gios.build',
     description:
@@ -82,6 +84,80 @@ export const PAGES = {
     imageAlt: 'Gio UI: a React component library you copy into your project and make your own.',
     crumb: 'Gio UI',
   },
+  // the area pages (data/areas.ts)
+  '/web-design-bath': {
+    title: 'Web Designer in Bath, Somerset | gios.build',
+    description:
+      'Websites for Bath businesses, built so locals and visitors find you on Google. From £600, with a free homepage mockup first. Based in Bath, happy to meet.',
+    keywords:
+      'web designer bath, web design bath, website design bath, bath web designer, small business website bath, local seo bath, web design somerset, gios.build',
+    shareTitle: 'Websites for Bath, made in Bath | gios.build',
+    shareDescription: 'Built so locals and visitors find you, trust you and get in touch. From £600, with a free homepage mockup first.',
+    image: '/og/bath.png',
+    imageAlt: 'gios.build: Websites for Bath, made in Bath. From £600, with a free homepage mockup first.',
+    crumb: 'Web design in Bath',
+  },
+  '/web-design-bristol': {
+    title: 'Web Designer in Bristol | Small Business Websites | gios.build',
+    description:
+      'Websites for Bristol businesses: agency quality at small business prices, built to be found on Google. From £600, with a free homepage mockup first.',
+    keywords:
+      'web designer bristol, web design bristol, website design bristol, freelance web designer bristol, small business website bristol, local seo bristol, gios.build',
+    shareTitle: 'Websites for Bristol businesses | gios.build',
+    shareDescription: 'Agency quality at small business prices. From £600, with a free homepage mockup first.',
+    image: '/og/bristol.png',
+    imageAlt: 'gios.build: Websites for Bristol businesses that win work. From £600, with a free homepage mockup first.',
+    crumb: 'Web design in Bristol',
+  },
+  '/web-design-trowbridge': {
+    title: 'Web Designer in Trowbridge, Wiltshire | gios.build',
+    description:
+      'Websites for Trowbridge businesses, built to be found on Google. From £600, with a free homepage mockup first. Based in Bath and happy to meet in person.',
+    keywords:
+      'web designer trowbridge, web design trowbridge, website design wiltshire, web designer wiltshire, small business website trowbridge, local seo trowbridge, gios.build',
+    shareTitle: 'Websites for Trowbridge businesses | gios.build',
+    shareDescription: 'Built so people nearby find you, trust you and get in touch. From £600, with a free homepage mockup first.',
+    image: '/og/trowbridge.png',
+    imageAlt: 'gios.build: Websites for Trowbridge businesses. From £600, with a free homepage mockup first.',
+    crumb: 'Web design in Trowbridge',
+  },
+  // the industry pages (data/industries.ts)
+  '/websites-for-cafes': {
+    title: 'Websites for Cafés & Coffee Shops | gios.build',
+    description:
+      'Café websites with your menu, hours and photos clear on every phone, built to be found on Google. From £600, with a free homepage mockup first.',
+    keywords:
+      'cafe website, coffee shop website, website for cafe, cafe website design, restaurant website uk, small cafe website, cafe menu website, gios.build',
+    shareTitle: 'Websites for cafés that fill tables | gios.build',
+    shareDescription: 'Your menu, your hours and how to find you, clear on every phone. From £600, with a free homepage mockup first.',
+    image: '/og/cafes.jpg',
+    imageAlt: 'gios.build: Websites for cafés that fill tables. The Kape Coffee website on a phone.',
+    crumb: 'Websites for cafés',
+  },
+  '/websites-for-fitness-studios': {
+    title: 'Websites for Fitness, Pilates & Yoga Studios | gios.build',
+    description:
+      'Studio websites with your timetable, prices and a Book button on every screen, built to be found on Google. From £600, with a free homepage mockup first.',
+    keywords:
+      'fitness studio website, pilates studio website, yoga studio website, gym website design, personal trainer website, website for fitness business uk, gios.build',
+    shareTitle: 'Websites for studios that fill classes | gios.build',
+    shareDescription: 'Your timetable, your prices and a Book button on every screen. From £600, with a free homepage mockup first.',
+    image: '/og/fitness.jpg',
+    imageAlt: 'gios.build: Websites for studios that fill classes. The Ossa Pilates website on a phone.',
+    crumb: 'Websites for fitness studios',
+  },
+  '/websites-for-local-services': {
+    title: 'Websites for Local Service Businesses | gios.build',
+    description:
+      'Websites for cleaners, installers and local service businesses, built to bring in quote requests and be found on Google. From £600, free mockup first.',
+    keywords:
+      'service business website, cleaning company website, website for tradesmen, quote request website, b2b website small business, local service website uk, gios.build',
+    shareTitle: 'Websites that bring in quote requests | gios.build',
+    shareDescription: 'Say what you do, show where you cover, and make it easy to ask for a price. From £600, with a free homepage mockup first.',
+    image: '/og/local-services.jpg',
+    imageAlt: 'gios.build: Websites that bring in quote requests. The Prime Stock Central website on a phone.',
+    crumb: 'Websites for local services',
+  },
   '/privacy': {
     title: 'Privacy | gios.build',
     description:
@@ -92,4 +168,26 @@ export const PAGES = {
   },
 } satisfies Record<string, PageSeo>;
 
-export type PagePath = keyof typeof PAGES;
+/** each project's page (data/workAbout.ts), at /work/<slug> */
+export type WorkPagePath = `/work/${string}`;
+const WORK_PAGES = Object.fromEntries(
+  (Object.keys(workPages) as WorkTitle[]).map((title) => {
+    const page = workPages[title];
+    const seo: PageSeo = {
+      title: page.title,
+      description: page.description,
+      keywords: `${title.toLowerCase()} website, ${workAbout[title].facts[0].values[0].toLowerCase()} website design, web design portfolio, gios.build`,
+      shareTitle: `${title} | gios.build`,
+      shareDescription: workAbout[title].summary,
+      image: page.image,
+      imageAlt: `The ${title} website, designed and built by gios.build.`,
+      crumb: title,
+    };
+    return [`/work/${page.slug}`, seo];
+  })
+) as Record<WorkPagePath, PageSeo>;
+
+export type PagePath = keyof typeof STATIC_PAGES | WorkPagePath;
+
+/** every page: the site's own, then each project's */
+export const PAGES: Record<PagePath, PageSeo> = { ...STATIC_PAGES, ...WORK_PAGES };

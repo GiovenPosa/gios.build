@@ -1,0 +1,121 @@
+/* A town's page (pages/areaPage.tsx). The home page's gutters, width and
+   section gap; the hero is the home page's (components/pageHero.tsx); the
+   rest are the home page's own sections. */
+.area-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--page-gutter);
+  box-sizing: border-box;
+  color: var(--text-color-dark);
+  overflow-x: clip;
+}
+
+.area-page-container {
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+/* the home page's hero, then the full section gap before the first section */
+.page-hero.area-hero {
+  margin-bottom: var(--section-space);
+}
+
+/* every section the same distance from the next, like the home page */
+.area-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-space);
+}
+
+.area-sections > * {
+  flex-shrink: 0;
+}
+
+/* the closing call keeps its own padding above; the gap already gives it */
+.area-sections > .cta {
+  margin-top: calc(var(--section-space) * -1);
+}
+
+/* ---- what I found on local websites ---- */
+
+.area-findings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.area-findings-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap-5);
+  width: 100%;
+  margin: var(--space-64) 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.area-finding {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding: var(--space-32);
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+.area-finding-figure {
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-2-size);
+  line-height: var(--title-2-leading);
+  letter-spacing: var(--title-2-tracking);
+  /* even lines, so a title never leaves one word on its own */
+  text-wrap: balance;
+}
+
+.area-finding p {
+  margin: 0;
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+}
+
+.area-findings-foot {
+  margin: var(--space-32) 0 0;
+  font-family: var(--font-family-Medium);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+}
+
+/* ---- packages: a centred headline above the price list ---- */
+
+.area-packages-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--space-64);
+}
+
+/* ===== TABLET AND PHONES ===== */
+@media (max-width: 900px) {
+  .area-findings-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .area-sections > .cta {
+    margin-top: 0;
+  }
+
+  .area-finding {
+    padding: var(--space-32) var(--space-16) var(--space-16);
+  }
+}

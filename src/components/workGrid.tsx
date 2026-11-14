@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { GoArrowLeft, GoArrowRight, GoX } from 'react-icons/go';
 import { useColumnCount } from '../hooks/useColumnCount';
@@ -7,6 +7,9 @@ import type { WorkItem, WorkMedia } from '../data/work';
 import { Reveal } from './reveal';
 import { track } from '../lib/analytics';
 import { LoopVideo, WEBM_TYPE } from './loopVideo';
+import { PageMeta } from './pageMeta';
+import { workPath } from '../data/workAbout';
+import type { PagePath } from '../data/seo';
 import './component-styles/workGrid.css';
 
 // Two columns: each card goes in whichever column is shorter so far, so the
@@ -180,7 +183,13 @@ interface Opened {
  * projects, its kind, name, a line about it and when, then its facts. The
  * media grows out of the card that opened it and shrinks back into it.
  */
-function WorkViewer({ opened, items, onClose }: { opened: Opened; items: WorkItem[]; onClose: () => void }) {
+function WorkViewer({ opened, items, onClose, onStep }: {
+  opened: Opened;
+  items: WorkItem[];
+  onClose: () => void;
+  /** the arrows moved to another project */
+  onStep: (item: WorkItem) => void;
+}) {
   const frameRef = useRef<HTMLDivElement>(null);
   const scrimRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLElement>(null);
@@ -191,6 +200,14 @@ function WorkViewer({ opened, items, onClose }: { opened: Opened; items: WorkIte
   const item = items[index];
   const media = item.full ?? item.media;
   const about = item.about;
+  const path = workPath(item.title);
+
+  // the address follows the project shown (its own page, /work/<slug>)
+  const stepped = useRef(false);
+  useEffect(() => {
+    if (stepped.current) onStep(items[index]);
+    stepped.current = true;
+  }, [index, items, onStep]);
 
   // from the card's place and size to the middle of the screen, scaled
   // evenly so nothing stretches on the way
@@ -254,6 +271,8 @@ function WorkViewer({ opened, items, onClose }: { opened: Opened; items: WorkIte
 
   return createPortal(
     <div className='work-viewer' role='dialog' aria-modal='true' aria-label={item.title} onClick={close}>
+      {/* while it's open, the tab, link previews and canonical are the project's own page */}
+      {path !== '/work' && <PageMeta path={path as PagePath} />}
       <div className='work-viewer-scrim' ref={scrimRef} />
 
       {/* the panel: clicks in it stay in it */}
@@ -318,8 +337,10 @@ function WorkViewer({ opened, items, onClose }: { opened: Opened; items: WorkIte
  * under each (unless `captions` is off). Clicking a card opens its reel larger. Shared by the home page
  * and the Work page so the two never drift apart.
  */
-export function WorkGrid({ items, hold = false, captions = true }: {
+export function WorkGrid({ items, hold = false, captions = true, openTitle }: {
   items: WorkItem[];
+  /** open this project's larger view straight away (its own page's address) */
+  openTitle?: string;
   /** the title and meta row under each card (the home page leaves it off) */
   captions?: boolean;
   /** keep the top row back (the home page holds it until the hero has built) */
@@ -352,15 +373,78 @@ export function WorkGrid({ items, hold = false, captions = true }: {
   // chance), so they don't take its bandwidth
   const firstRowDone = patienceUp || firstRow.every((title) => moving.has(title));
 
+  // Each project's larger view has its own address (/work/kape-coffee), so
+  // it reads as the project's page: opening one moves the address there,
+  // closing it (or going back) returns to where you were, and the arrows
+  // move it along. The browser's history is written directly rather than
+  // through the router, so the page underneath (the home page, say) stays
+  // put instead of changing route.
+  const gridRef = useRef<HTMLDivElement>(null);
+  // whether opening it added a history entry, to be taken off on close
+  const pushed = useRef(false);
+  const isOpen = useRef(false);
+
   const open = (item: WorkItem, card: HTMLElement) => {
     const surface = card.querySelector('.work-surface') ?? card;
     track('Open project', { project: item.title });
+    isOpen.current = true;
     setOpened({ item, from: surface.getBoundingClientRect() });
+    const path = workPath(item.title);
+    if (path !== '/work' && window.location.pathname !== path) {
+      window.history.pushState(window.history.state, '', path);
+      pushed.current = true;
+    }
   };
+
+  // arriving at a project's address: open it, growing out of its card (a
+  // frame later, once the cards are laid out)
+  useEffect(() => {
+    if (!openTitle) return;
+    const item = items.find((entry) => entry.title === openTitle);
+    if (!item) return;
+    const frame = window.requestAnimationFrame(() => {
+      const card = gridRef.current?.querySelector(`[data-project="${CSS.escape(openTitle)}"] .work-surface`);
+      pushed.current = false;
+      isOpen.current = true;
+      setOpened({ item, from: card?.getBoundingClientRect() ?? new DOMRect(window.innerWidth / 2, window.innerHeight / 2, 1, 1) });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [openTitle, items]);
+
+  // the browser's back button closes it, like leaving a page
+  useEffect(() => {
+    const onPop = () => {
+      if (!isOpen.current) return;
+      isOpen.current = false;
+      pushed.current = false;
+      setOpened(null);
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  const close = () => {
+    isOpen.current = false;
+    setOpened(null);
+    if (pushed.current) {
+      pushed.current = false;
+      window.history.back();
+    } else if (window.location.pathname.startsWith('/work/')) {
+      // arrived at the project's address: closing leaves the Work page
+      window.history.replaceState(window.history.state, '', '/work');
+    }
+  };
+
+  const step = useCallback((item: WorkItem) => {
+    const path = workPath(item.title);
+    if (path !== '/work' && window.location.pathname.startsWith('/work/')) {
+      window.history.replaceState(window.history.state, '', path);
+    }
+  }, []);
 
   return (
     <>
-      <div className='work-grid'>
+      <div className='work-grid' ref={gridRef}>
         {columns.map((column, columnIndex) => (
           <div className='work-column' key={columnIndex}>
             {column.map((item, row) => (
@@ -368,6 +452,7 @@ export function WorkGrid({ items, hold = false, captions = true }: {
                 as="div"
                 key={item.title}
                 className={`work-card${item.dark ? ' is-dark' : ''}`}
+                data-project={item.title}
                 delay={columnIndex * 80}
                 // the top row comes in together, however little of a tall
                 // card is showing yet
@@ -410,7 +495,7 @@ export function WorkGrid({ items, hold = false, captions = true }: {
           </div>
         ))}
       </div>
-      {opened && <WorkViewer key={opened.item.title} opened={opened} items={items} onClose={() => setOpened(null)} />}
+      {opened && <WorkViewer key={opened.item.title} opened={opened} items={items} onClose={close} onStep={step} />}
     </>
   );
 }

@@ -12,6 +12,7 @@
 
 import { enquiry, type EnquiryEnv } from './enquiry';
 import { waitlist } from './waitlist';
+import { PAGES as SEO_PAGES } from '../src/data/seo';
 
 interface Env extends EnquiryEnv {
   ASSETS: { fetch: (request: Request) => Promise<Response> };
@@ -57,10 +58,11 @@ async function send(request: Request): Promise<Response> {
 // see two copies of a page.
 const HOST = 'www.gios.build';
 
-// The app's real pages (src/App.tsx). Any other path still gets the app,
-// which shows its not-found page, but with a 404 status, so search engines
-// don't index it as a page of its own.
-const PAGES = new Set(['/', '/work', '/packages', '/ui', '/privacy']);
+// The app's real pages (src/data/seo.ts, the same list the router and the
+// sitemap use). Any other path still gets the app, which shows its
+// not-found page, but with a 404 status, so search engines don't index it
+// as a page of its own.
+const PAGES = new Set(Object.keys(SEO_PAGES));
 
 // Old pages folded into the home page: moved for good.
 const MOVED: Record<string, string> = {

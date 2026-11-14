@@ -12,7 +12,9 @@ import { PAGES, SITE_NAME, SITE_URL, type PagePath } from './seo';
 import { faqData } from './faq';
 import { packagesData } from './packages';
 import { servicesData } from './services';
-import { workAbout, workStills, type WorkTitle } from './workAbout';
+import { workAbout, workBySlug, workPages, workStills, type WorkTitle } from './workAbout';
+import { areaByPath, type Area } from './areas';
+import { industryByPath, type Industry } from './industries';
 
 /** a built asset's full address from its source file name (e.g.
  *  "gio-portrait.webp"), once Vite has given it its hashed name */
@@ -179,21 +181,23 @@ function webPage(path: PagePath, type: string, extra: Record<string, unknown> = 
     nodes.push({
       '@type': 'BreadcrumbList',
       '@id': `${url}#breadcrumb`,
+      // a project's page sits under the Work page
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: PAGES['/'].crumb, item: `${SITE_URL}/` },
-        { '@type': 'ListItem', position: 2, name: page.crumb, item: url },
-      ],
+        { name: PAGES['/'].crumb, item: `${SITE_URL}/` },
+        ...(path.startsWith('/work/') ? [{ name: PAGES['/work'].crumb, item: `${SITE_URL}/work` }] : []),
+        { name: page.crumb, item: url },
+      ].map((crumb, index) => ({ '@type': 'ListItem', position: index + 1, ...crumb })),
     });
   }
   return nodes;
 }
 
-/** the questions on the home page, with their answers */
-function faqPage() {
+/** a page's questions, with their answers: the home page's by default */
+function faqPage(items = faqData, url = `${SITE_URL}/`) {
   return {
     '@type': 'FAQPage',
-    '@id': `${SITE_URL}/#faq`,
-    mainEntity: faqData.map((item) => ({
+    '@id': `${url}#faq`,
+    mainEntity: items.map((item) => ({
       '@type': 'Question',
       name: item.question,
       acceptedAnswer: { '@type': 'Answer', text: item.answer },
@@ -217,6 +221,8 @@ function workList(asset: AssetUrl) {
         position: index + 1,
         item: {
           '@type': 'CreativeWork',
+          '@id': `${SITE_URL}/work/${workPages[title].slug}#project`,
+          url: `${SITE_URL}/work/${workPages[title].slug}`,
           name: `${title} website`,
           description: about.summary,
           image: asset(workStills[title]),
@@ -228,6 +234,27 @@ function workList(asset: AssetUrl) {
         },
       };
     }),
+  };
+}
+
+/** one project, on its own page */
+function project(title: WorkTitle, asset: AssetUrl) {
+  const about = workAbout[title];
+  const url = `${SITE_URL}/work/${workPages[title].slug}`;
+  const facts = Object.fromEntries(about.facts.map((fact) => [fact.label, fact.values]));
+  return {
+    '@type': 'CreativeWork',
+    '@id': `${url}#project`,
+    name: `${title} website`,
+    description: about.summary,
+    url,
+    image: [asset(workStills[title]), `${SITE_URL}${workPages[title].image}`],
+    dateCreated: about.date,
+    genre: facts.Category?.[0],
+    keywords: [...(facts.Style ?? []), ...(facts.Framework ?? []), ...(facts.Library ?? [])].join(', '),
+    creator: { '@id': PERSON },
+    publisher: { '@id': BUSINESS },
+    isPartOf: { '@id': `${SITE_URL}/work#projects` },
   };
 }
 
@@ -249,6 +276,52 @@ function packageCatalog() {
   };
 }
 
+/** an area page's service: web design in the town and the places around it */
+function areaService(area: Area) {
+  const url = `${SITE_URL}${area.path}`;
+  return {
+    '@type': 'Service',
+    '@id': `${url}#service`,
+    name: `Web design in ${area.town}`,
+    serviceType: 'Web design',
+    description: `Websites for small businesses in ${area.town} and the places around it, built to be found on Google, with a free homepage mockup first.`,
+    url,
+    provider: { '@id': BUSINESS },
+    areaServed: [
+      { '@type': 'City', name: area.town, sameAs: wiki(area.wiki) },
+      ...area.nearby.map((name) => ({ '@type': 'City', name })),
+      { '@type': 'AdministrativeArea', name: area.county, sameAs: wiki(area.county.replace(/ /g, '_')) },
+    ],
+    offers: packagesData.map((pkg) => ({
+      '@type': 'Offer',
+      name: `${pkg.name} website`,
+      priceSpecification: price(pkg.from, pkg.to),
+    })),
+  };
+}
+
+/** an industry page's service: web design for that kind of business,
+ *  anywhere in the UK */
+function industryService(industry: Industry) {
+  const url = `${SITE_URL}${industry.path}`;
+  return {
+    '@type': 'Service',
+    '@id': `${url}#service`,
+    name: `Websites for ${industry.name}`,
+    serviceType: 'Web design',
+    description: `${industry.hero.sub} Websites for ${industry.name} across the UK.`,
+    url,
+    provider: { '@id': BUSINESS },
+    audience: { '@type': 'BusinessAudience', audienceType: industry.audience },
+    areaServed: AREAS,
+    offers: packagesData.map((pkg) => ({
+      '@type': 'Offer',
+      name: `${pkg.name} website`,
+      priceSpecification: price(pkg.from, pkg.to),
+    })),
+  };
+}
+
 /** everything for one page, as a single JSON-LD graph */
 export function pageSchema(path: PagePath, asset: AssetUrl) {
   const graph: Record<string, unknown>[] = [...site(asset)];
@@ -262,8 +335,20 @@ export function pageSchema(path: PagePath, asset: AssetUrl) {
     case '/packages':
       graph.push(...webPage('/packages', 'WebPage', { mainEntity: { '@id': `${SITE_URL}/packages#packages` } }), packageCatalog());
       break;
-    default:
-      graph.push(...webPage(path, 'WebPage'));
+    default: {
+      const area = areaByPath(path);
+      const industry = industryByPath(path);
+      const work = path.startsWith('/work/') ? workBySlug(path.slice('/work/'.length)) : undefined;
+      if (work) {
+        graph.push(...webPage(path, 'ItemPage', { mainEntity: { '@id': `${SITE_URL}${path}#project` } }), project(work, asset));
+      } else if (industry) {
+        const url = `${SITE_URL}${industry.path}`;
+        graph.push(...webPage(path, 'WebPage', { mainEntity: { '@id': `${url}#service` } }), industryService(industry), faqPage(industry.faq, url));
+      } else if (area) {
+        const url = `${SITE_URL}${area.path}`;
+        graph.push(...webPage(path, 'WebPage', { mainEntity: { '@id': `${url}#service` } }), areaService(area), faqPage(area.faq, url));
+      } else graph.push(...webPage(path, 'WebPage'));
+    }
   }
   return { '@context': 'https://schema.org', '@graph': graph };
 }

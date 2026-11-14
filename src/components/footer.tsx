@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { useBooking } from '../context/bookingContext';
 import { track } from '../lib/analytics';
 import { servicesData } from '../data/services';
+import { AREAS } from '../data/areas';
+import { INDUSTRIES } from '../data/industries';
 import './component-styles/footer.css';
 
 // `tag` adds a small pill beside the link
@@ -112,6 +114,25 @@ export function Footer() {
                     Email me
                   </a>
                 </li>
+              </ul>
+            </div>
+
+            {/* the industry and town pages (data/industries.ts, data/areas.ts),
+                so people and search engines find them; after Contact, so on
+                phones Contact keeps the wider left column */}
+            <div className='footer-column footer-animate-item' style={getItemStyle(3)}>
+              <p className='footer-column-title'>Websites for</p>
+              <ul>
+                {INDUSTRIES.map((industry) => (
+                  <li key={industry.path}>
+                    <Link to={industry.path}>{industry.label}</Link>
+                  </li>
+                ))}
+                {AREAS.map((area) => (
+                  <li key={area.path}>
+                    <Link to={area.path}>{area.town}</Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </nav>

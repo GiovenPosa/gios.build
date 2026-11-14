@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
-import { readdirSync, readFileSync, writeFileSync } from 'fs'
-import { resolve } from 'path'
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs'
+import { dirname, resolve } from 'path'
 import { PAGES, SITE_URL, type PagePath, type PageSeo } from './src/data/seo'
 import { pageSchema } from './src/data/schema'
-import { workStills } from './src/data/workAbout'
+import { workPages, workStills, type WorkTitle } from './src/data/workAbout'
 
 // Hosted on Cloudflare: a Worker serving dist/ (see wrangler.jsonc). A path
 // with no file gets index.html with a 200, and the router shows the page (or
@@ -74,8 +74,10 @@ const pageHeads = () => ({
       // the app's own canonical (react-helmet-async) takes over once it runs
       html = set(html, /(<!-- page canonical -->)()/, `\n    <link rel="canonical" href="${url}" data-rh="true">`)
       html = set(html, /(<!-- structured data -->)()/, `\n    <script type="application/ld+json">${schema}</script>`)
-      const file = path === '/' ? 'index.html' : `${path.slice(1)}.html`
-      writeFileSync(resolve(__dirname, 'dist', file), html)
+      // a project's page goes in a folder: /work/kape-coffee is work/kape-coffee.html
+      const file = resolve(__dirname, 'dist', path === '/' ? 'index.html' : `${path.slice(1)}.html`)
+      mkdirSync(dirname(file), { recursive: true })
+      writeFileSync(file, html)
     }
 
     // the pages, each with the images that matter on it. No lastmod: a date
@@ -86,6 +88,15 @@ const pageHeads = () => ({
       '/work': [`${SITE_URL}/og/work.jpg`, ...Object.values(workStills).map(asset)],
       '/packages': [`${SITE_URL}/og/packages.png`],
       '/ui': [`${SITE_URL}/og/ui.png`],
+      '/web-design-bath': [`${SITE_URL}/og/bath.png`],
+      '/web-design-bristol': [`${SITE_URL}/og/bristol.png`],
+      '/web-design-trowbridge': [`${SITE_URL}/og/trowbridge.png`],
+      '/websites-for-fitness-studios': [`${SITE_URL}/og/fitness.jpg`, asset('ossa-1-hero.webp'), asset('ossa-3-new.webp'), asset('ossa-2-seen.webp'), asset('ossa-8-reviews.webp')],
+      '/websites-for-local-services': [`${SITE_URL}/og/local-services.jpg`, asset('primestock-1-hero.webp'), asset('primestock-2-always-on.webp'), asset('primestock-5-founding.webp'), asset('primestock-6-quote-form.webp')],
+      '/websites-for-cafes': [`${SITE_URL}/og/cafes.jpg`, asset('kape-1-hero.webp'), asset('kape-4-our-menu.webp'), asset('kape-3-new-on-menu.webp'), asset('kape-5-merienda.webp')],
+    }
+    for (const title of Object.keys(workPages) as WorkTitle[]) {
+      images[`/work/${workPages[title].slug}`] = [`${SITE_URL}${workPages[title].image}`, asset(workStills[title])]
     }
     const urls = (Object.keys(PAGES) as PagePath[]).map((path) => {
       const pictures = (images[path] ?? []).map((src) => `\n    <image:image><image:loc>${src}</image:loc></image:image>`).join('')

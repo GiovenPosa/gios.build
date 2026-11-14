@@ -83,13 +83,22 @@ function SearchSpark() {
  * card, its favicon tucked into the corner like an app icon (or, without
  * one, its initial on a black tile).
  */
-export function SearchShowcase() {
+interface SearchShowcaseProps {
+  /** the two big lines; the home page's by default */
+  headline?: string[];
+  /** the grey lines under them */
+  lines?: string[];
+  /** the searches that type themselves out */
+  queries?: string[];
+}
+
+export function SearchShowcase({ headline = HEADLINE, lines = LINES, queries = QUERIES }: SearchShowcaseProps = {}) {
   const ref = useRef<HTMLHeadingElement>(null);
   // which search, how many of its letters show, and whether the cursor is
   // busy (typing or erasing, when it holds solid instead of blinking). With
   // motion off, the first search simply sits there in full.
   const [step, setStep] = useState(0);
-  const [shown, setShown] = useState(() => (reducedMotion() ? QUERIES[0].length : 0));
+  const [shown, setShown] = useState(() => (reducedMotion() ? queries[0].length : 0));
   const [busy, setBusy] = useState(false);
 
   // type, hold, erase, next: one timer at a time, only while on screen
@@ -102,7 +111,7 @@ export function SearchShowcase() {
     let phase: 'type' | 'hold' | 'erase' | 'gap' = 'gap';
 
     const tick = () => {
-      const length = QUERIES[index % QUERIES.length].length;
+      const length = queries[index % queries.length].length;
       if (phase === 'type') {
         count += 1;
         setShown(count);
@@ -142,9 +151,10 @@ export function SearchShowcase() {
       observer.disconnect();
       window.clearTimeout(timer);
     };
-  }, []);
+    // pass `queries` as a constant, or this restarts on every render
+  }, [queries]);
 
-  const query = QUERIES[step % QUERIES.length];
+  const query = queries[step % queries.length];
 
   // the row holds the set twice, and slides by exactly one set, so the
   // loop never shows a seam
@@ -154,14 +164,14 @@ export function SearchShowcase() {
     <section className='showcase' aria-labelledby='showcase-title'>
       <div className='showcase-copy'>
         <Reveal as='h2' className='showcase-headline' id='showcase-title'>
-          {HEADLINE.map((line) => <span key={line}>{line}</span>)}
+          {headline.map((line) => <span key={line}>{line}</span>)}
         </Reveal>
         <Reveal as='p' className='showcase-lines' delay={80}>
-          {LINES.map((line) => <span key={line}>{line} </span>)}
+          {lines.map((line) => <span key={line}>{line} </span>)}
         </Reveal>
 
         {/* read out once, as the whole list, rather than every two seconds */}
-        <h3 className='showcase-query' ref={ref} aria-label={QUERIES.join(', ')}>
+        <h3 className='showcase-query' ref={ref} aria-label={queries.join(', ')}>
           <SearchSpark key={step} />
           {/* the letters so far, then the text cursor after them */}
           <span className='showcase-query-words' aria-hidden>

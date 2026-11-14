@@ -69,3 +69,41 @@ export const workStills: Record<WorkTitle, string> = {
   'Ossa Pilates': 'OssaAnimate.webp',
   'Kape Coffee': 'KappeAnimate.webp',
 };
+
+/** Each project's own page: the larger view, at an address of its own
+ *  (/work/<slug>), so it can be linked to, shared and found on Google. The
+ *  title and description are what search results and link previews show;
+ *  the image is its preview, in public/og. */
+export const workPages: Record<WorkTitle, { slug: string; title: string; description: string; image: string }> = {
+  'Prime Stock Central': {
+    slug: 'prime-stock-central',
+    title: 'Prime Stock Central Website | Web Design in Bath | gios.build',
+    description:
+      'Prime Stock Central: a website for a Bath vending company, by gios.build. Bold colour, a 3D machine brought to life as you scroll, and a quote form.',
+    image: '/og/work-prime-stock-central.jpg',
+  },
+  'Ossa Pilates': {
+    slug: 'ossa-pilates',
+    title: 'Ossa Pilates Website | Studio Web Design | gios.build',
+    description:
+      'Ossa Pilates: a boutique Pilates and yoga studio website by gios.build. Editorial, warm and calm, with a Book button on every screen.',
+    image: '/og/work-ossa-pilates.jpg',
+  },
+  'Kape Coffee': {
+    slug: 'kape-coffee',
+    title: 'Kape Coffee Website | Café Web Design | gios.build',
+    description:
+      'Kape Coffee: a Filipino coffee shop website by gios.build. Playful and illustrated, with the menu written out and a story told as you scroll.',
+    image: '/og/work-kape-coffee.jpg',
+  },
+};
+
+/** a project's page address, e.g. "/work/kape-coffee" */
+export const workPath = (title: string) => {
+  const page = workPages[title as WorkTitle];
+  return page ? `/work/${page.slug}` : '/work';
+};
+
+/** the project at a page address's slug */
+export const workBySlug = (slug: string) =>
+  (Object.keys(workPages) as WorkTitle[]).find((title) => workPages[title].slug === slug);
