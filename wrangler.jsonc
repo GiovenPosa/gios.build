@@ -27,7 +27,10 @@
     // website audits a day across the site before new ones are held
     // (worker/audit.ts). The audit's Turnstile secret is a secret:
     // `npx wrangler secret put TURNSTILE_SECRET`
-    "AUDIT_DAILY_CAP": "50"
+    "AUDIT_DAILY_CAP": "50",
+    // the audit's Google Business Profile check (worker/audit/places.ts):
+    // on since Places billing was set up, 14 Nov 2026
+    "AUDIT_PLACES": "true"
   },
   // enquiry form requests per visitor IP: generous for a person going back
   // and forth between steps, tight for a script
