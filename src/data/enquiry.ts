@@ -17,9 +17,9 @@ export const BUSINESS_TYPES = [
 
 // `id` is what's stored in booking_inquiries.selected_package
 export const ENQUIRY_PACKAGES = [
-  { id: 'starter', name: 'Starter Website', price: '£500-£800' },
-  { id: 'redesign', name: 'Website Redesign', price: '£800-£1,500' },
-  { id: 'lead-system', name: 'Growth Website', price: '£1,500+' },
+  { id: 'starter', name: 'Starter Website', price: '£600-£900' },
+  { id: 'redesign', name: 'Website Redesign', price: '£900-£1,600' },
+  { id: 'lead-system', name: 'Growth Website', price: '£1,800+' },
   { id: 'not-sure', name: 'Not sure yet', price: '' },
 ];
 

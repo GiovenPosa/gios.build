@@ -21,26 +21,29 @@ export const packagesData: PackageItem[] = [
     id: 'starter',
     name: 'Starter',
     for: 'For new businesses that need to look professional online.',
-    from: 500,
-    to: 800,
-    items: ['One-page website', 'Mobile-friendly design', 'Contact form to your inbox', 'Visit tracking & a 30-day review'],
+    from: 600,
+    to: 900,
+    // SEO foundations are in every package: a site Google can't read isn't a
+    // good website, whatever it costs (see the FAQ for foundations vs local SEO)
+    items: ['One-page website', 'Mobile-friendly design', 'SEO foundations', 'Contact form to your inbox', 'Visit tracking & a 30-day review'],
     timeline: 'Live in about 4 weeks',
   },
   {
     id: 'redesign',
     name: 'Redesign',
     for: "For sites that look dated or don't bring in enquiries.",
-    from: 800,
-    to: 1500,
-    items: ['A modern redesign of your site', 'Faster loading pages', 'Clearer messaging that sells'],
+    from: 900,
+    to: 1600,
+    // redirects from the old pages, so the redesign keeps its Google rankings
+    items: ['A modern redesign of your site', 'Faster loading pages', 'Clearer messaging that sells', 'Keep your Google rankings'],
     timeline: 'Usually 4 to 6 weeks',
   },
   {
     id: 'lead-system',
     name: 'Growth',
     for: 'For businesses ready to make their website a source of leads.',
-    from: 1500,
-    items: ['Multiple pages', 'Bookings, maps & integrations', 'Detailed enquiry forms', 'SEO foundations & enquiry tracking'],
+    from: 1800,
+    items: ['Multiple pages', 'Bookings, maps & integrations', 'Detailed forms & enquiry tracking', 'Local SEO & Google Business Profile'],
     timeline: 'Typically 6 to 8 weeks',
   },
 ];

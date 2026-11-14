@@ -30,7 +30,7 @@ export function PackagesPage() {
 
         <meta
           name="description"
-          content="Clear website pricing for small businesses: starter sites from £500, redesigns from £800 and growth websites from £1,500. Every project starts with a free homepage mockup."
+          content="Clear website pricing for small businesses: starter sites from £600, redesigns from £900 and growth websites from £1,800. Every project starts with a free homepage mockup."
         />
 
         <meta
@@ -58,7 +58,7 @@ export function PackagesPage() {
               <div className='packages-card-title'>
                 <h2>01 Starter Website</h2>
                 <p>For new businesses that need to look professional online.</p>
-                <p>£500-£800</p>
+                <p>£600-£900</p>
               </div>
               <div className='packages-card-content'>
                 <span className='package-card-item'>
@@ -90,7 +90,7 @@ export function PackagesPage() {
               <div className='packages-card-title'>
                 <h2>02 Website Redesign</h2>
                 <p>For sites that look dated or don't bring in enquiries.</p>
-                <p>£800-£1,500</p>
+                <p>£900-£1,600</p>
               </div>
               <div className='packages-card-content'>
                 <span className='package-card-item'>
@@ -126,7 +126,7 @@ export function PackagesPage() {
               <div className='packages-card-title'>
                 <h2>03 Growth Website</h2>
                 <p>For businesses ready to make their website a source of leads.</p>
-                <p>£1,500+</p>
+                <p>£1,800+</p>
               </div>
               <div className='packages-card-content'>
                 <span className='package-card-item'>

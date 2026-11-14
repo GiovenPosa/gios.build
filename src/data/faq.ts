@@ -18,6 +18,10 @@ export const faqData: FaqItem[] = [
     answer: "It depends on how bespoke the project is, so we agree it upfront in your quote. The free mockup means we're aligned on the direction before the build starts."
   },
   {
+    question: 'Will people find me on Google?',
+    answer: "Every site is built to be found: clear page titles, fast pages, your business details in a form Google understands, and Search Console set up so Google knows you exist. Growth sites go further with local SEO, so you show up when people nearby search for what you do: your Google Business Profile, a page for each service or area, and a plan for reviews."
+  },
+  {
     question: 'Can you handle hosting and my domain?',
     answer: 'Yes. Hosting and domain setup can be included. The cost depends on what your site needs, and I\'ll include it in your quote.'
   },

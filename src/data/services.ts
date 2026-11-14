@@ -16,7 +16,8 @@ export const servicesData = [
   },
   {
     title: 'Getting Found',
-    items: ['SEO foundations', 'Google Search Console setup', 'Analytics to see what works', 'Fast, accessible pages']
+    // foundations come with every site; local SEO is Growth's
+    items: ['SEO foundations on every site', 'Google Search Console setup', 'Local SEO & Google Business Profile', 'Analytics to see what works']
   },
   {
     title: 'Hosting & Care',

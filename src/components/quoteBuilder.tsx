@@ -47,7 +47,7 @@ const QUESTIONS: Question[] = [
     title: 'How should people get in touch?',
     choices: [
       { id: 'simple-form', label: 'Simple contact form', tier: 0 },
-      { id: 'detailed-form', label: 'Detailed enquiry form', tier: 2, covers: 'Detailed enquiry forms' },
+      { id: 'detailed-form', label: 'Detailed enquiry form', tier: 2, covers: 'Detailed forms & enquiry tracking' },
     ],
   },
   {
@@ -57,7 +57,9 @@ const QUESTIONS: Question[] = [
     choices: [
       { id: 'bookings', label: 'Take bookings', tier: 2, covers: 'Bookings, maps & integrations' },
       { id: 'tools', label: 'Connect my tools', tier: 2, covers: 'Bookings, maps & integrations' },
-      { id: 'seo', label: 'Get found on Google', tier: 2, covers: 'SEO foundations & enquiry tracking' },
+      // every site is built to be found (SEO foundations); this is ranking
+      // against the businesses nearby, which is Growth's local SEO
+      { id: 'seo', label: 'Rank locally on Google', tier: 2, covers: 'Local SEO & Google Business Profile' },
       { id: 'care', label: 'Look after it for me' },
     ],
   },
@@ -246,7 +248,7 @@ export function QuoteBuilder() {
             </div>
             <p className='qb-range'>
               {pkg.to ? `Usually ${priceRange(pkg)}` : `Starts at ${formatPrice(pkg.from)}`}
-              {care && ', plus a monthly care plan'}
+              {care && ', plus a monthly care plan'}. SEO foundations included.
             </p>
 
             <button type='button' className='hero-action-button qb-book' onClick={book}>

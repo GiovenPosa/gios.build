@@ -23,10 +23,10 @@ export const PAGES = {
   '/': {
     title: 'gios.build | Websites for Small Businesses in Bath & Across the UK | Gio Posa',
     description:
-      "I'm Gio, a web designer and software engineer in Bath. I build new websites and redesign old ones for small businesses across the UK, from £500, with a free homepage mockup before you commit.",
+      "I'm Gio, a web designer and software engineer in Bath. I build new websites and redesign old ones for small businesses across the UK, from £600, built to be found on Google, with a free homepage mockup before you commit.",
     keywords: 'web designer bath, web developer bath, small business website, website redesign, web design uk, gios.build',
     shareTitle: 'gios.build | Websites for Small Businesses',
-    shareDescription: 'New websites and redesigns for small businesses, from £500. See a free mockup of your new homepage before you commit.',
+    shareDescription: 'New websites and redesigns for small businesses, from £600. See a free mockup of your new homepage before you commit.',
   },
   '/work': {
     title: 'Work | gios.build | Websites & Software Built by Gio Posa',
@@ -40,11 +40,11 @@ export const PAGES = {
   '/packages': {
     title: 'Website Packages & Pricing for Small Businesses | gios.build',
     description:
-      'Clear website pricing for small businesses: starter sites from £500, redesigns from £800 and growth websites from £1,500. Every project starts with a free homepage mockup.',
+      'Clear website pricing for small businesses: starter sites from £600, redesigns from £900 and growth websites with local SEO from £1,800. SEO foundations and a free homepage mockup with every project.',
     keywords:
       'web design packages, website pricing uk, small business website, website redesign, lead generation website, web design services, landing page design, gios.build',
     shareTitle: 'Packages & Pricing | gios.build',
-    shareDescription: 'Starter sites from £500, redesigns from £800, growth websites from £1,500. Every project starts with a free homepage mockup.',
+    shareDescription: 'Starter sites from £600, redesigns from £900, growth websites from £1,800. SEO foundations and a free homepage mockup with every project.',
   },
   '/ui': {
     title: 'Gio UI | A React Component Library You Own | gios.build',
