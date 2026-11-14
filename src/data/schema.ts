@@ -12,6 +12,7 @@ import { PAGES, SITE_NAME, SITE_URL, type PagePath } from './seo';
 import { faqData } from './faq';
 import { packagesData } from './packages';
 import { servicesData } from './services';
+import { serviceDetails } from './results';
 import { workAbout, workBySlug, workPages, workStills, type WorkTitle } from './workAbout';
 import { areaByPath, type Area } from './areas';
 import { industryByPath, type Industry } from './industries';
@@ -123,21 +124,41 @@ function site(asset: AssetUrl) {
         'Google Business Profile',
         'React',
         'Next.js',
+        'Custom website development',
+        'UI and UX design',
+        'Shopify',
+        'Web accessibility',
+        'WCAG 2.2',
+        'Website hosting',
+        'Content management systems',
       ],
       hasOfferCatalog: {
         '@type': 'OfferCatalog',
         name: 'Website services',
-        itemListElement: servicesData.map((service) => ({
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: service.title,
-            serviceType: SERVICE_TYPES[service.title]?.type,
-            description: SERVICE_TYPES[service.title]?.description,
-            provider: { '@id': BUSINESS },
-            areaServed: AREAS,
-          },
-        })),
+        itemListElement: [
+          ...servicesData.map((service) => ({
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: service.title,
+              serviceType: SERVICE_TYPES[service.title]?.type,
+              description: SERVICE_TYPES[service.title]?.description,
+              provider: { '@id': BUSINESS },
+              areaServed: AREAS,
+            },
+          })),
+          // the specialist work on top, as the home page's cards describe it
+          ...serviceDetails.map((detail) => ({
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: detail.title,
+              description: detail.text,
+              provider: { '@id': BUSINESS },
+              areaServed: AREAS,
+            },
+          })),
+        ],
       },
       makesOffer: packagesData.map((pkg) => ({
         '@type': 'Offer',
