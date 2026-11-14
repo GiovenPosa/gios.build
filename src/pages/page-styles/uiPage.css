@@ -747,6 +747,14 @@
   color: var(--text-color-muted);
 }
 
+/* ---- The FAQ: the home page's thread (home-faq-block), which leaves the
+   space around it to its page, so this one sets its own like the sections
+   above it ---- */
+.ui-faq {
+  padding-top: var(--space-256);
+  margin-bottom: var(--space-128);
+}
+
 /* ---- 4. Component grid ---- */
 
 .ui-grid {
