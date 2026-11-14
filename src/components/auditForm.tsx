@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type FormEvent, type RefObject } from 'react';
 import { GoArrowRight } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import { AUDIT_CONSENT, AUDIT_PATH, AUDIT_TURNAROUND, TURNSTILE_SITE_KEY } from '../data/audit';
@@ -32,12 +32,31 @@ const loadTurnstile = () =>
     document.head.appendChild(script);
   }));
 
-/** The "I'm human" check: invisible unless Cloudflare wants a click. */
-function useTurnstile(onToken: (token: string | null) => void) {
+/**
+ * The "I'm human" check: invisible unless Cloudflare wants a click. Its
+ * scripts weigh about 1.7 MB, so they load only once the form is near the
+ * screen or someone starts filling it in, never with the page itself.
+ */
+function useTurnstile(onToken: (token: string | null) => void, form: RefObject<HTMLElement | null>) {
   const ref = useRef<HTMLDivElement>(null);
   const widget = useRef<string | null>(null);
+  const [wanted, setWanted] = useState(false);
+
   useEffect(() => {
-    if (!TURNSTILE_ON || !ref.current) return;
+    const el = form.current;
+    if (!TURNSTILE_ON || !el || wanted) return;
+    const want = () => setWanted(true);
+    const near = new IntersectionObserver(([entry]) => entry.isIntersecting && want(), { rootMargin: '400px 0px' });
+    near.observe(el);
+    el.addEventListener('focusin', want, { once: true });
+    return () => {
+      near.disconnect();
+      el.removeEventListener('focusin', want);
+    };
+  }, [form, wanted]);
+
+  useEffect(() => {
+    if (!TURNSTILE_ON || !wanted || !ref.current) return;
     let cancelled = false;
     loadTurnstile()
       .then((turnstile) => {
@@ -57,7 +76,7 @@ function useTurnstile(onToken: (token: string | null) => void) {
       cancelled = true;
       if (widget.current) window.turnstile?.remove(widget.current);
     };
-  }, [onToken]);
+  }, [onToken, wanted]);
   const reset = () => widget.current && window.turnstile?.reset(widget.current);
   return { ref, reset };
 }
@@ -81,9 +100,9 @@ export function AuditForm() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sentTo, setSentTo] = useState<string | null>(null);
-  const turnstile = useTurnstile(setToken);
   // the form's height as it's sent, so the thank-you card can shrink from it
   const formRef = useRef<HTMLFormElement>(null);
+  const turnstile = useTurnstile(setToken, formRef);
   const sentRef = useRef<HTMLDivElement>(null);
   const fromHeight = useRef(0);
 

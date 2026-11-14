@@ -16,6 +16,10 @@ import { workAbout, workBySlug, workPages, workStills, type WorkTitle } from './
 import { areaByPath, type Area } from './areas';
 import { industryByPath, type Industry } from './industries';
 import { AUDIT_FAQ, AUDIT_PATH } from './audit';
+import { WHATSAPP_NUMBER } from './contact';
+
+// the phone (WhatsApp) number, as Google wants it: +44 7443 560432
+const TELEPHONE = `+${WHATSAPP_NUMBER.slice(0, 2)} ${WHATSAPP_NUMBER.slice(2, 6)} ${WHATSAPP_NUMBER.slice(6)}`;
 
 /** a built asset's full address from its source file name (e.g.
  *  "gio-portrait.webp"), once Vite has given it its hashed name */
@@ -84,6 +88,16 @@ function site(asset: AssetUrl) {
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo-512.png`, width: 512, height: 512 },
       image: `${SITE_URL}/og/home.png`,
       email: 'contact@gios.build',
+      // the same number the site's WhatsApp links use (data/contact.ts)
+      telephone: TELEPHONE,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        telephone: TELEPHONE,
+        email: 'contact@gios.build',
+        areaServed: 'GB',
+        availableLanguage: 'en-GB',
+      },
       slogan: "Most websites blend in. Yours won't.",
       description:
         'Website design and development for small businesses in Bath, Bristol, Somerset, Wiltshire and across the UK: new websites, redesigns, enquiry and booking forms, SEO and local SEO, hosting and care. Every project starts with a free homepage mockup.',

@@ -76,7 +76,7 @@ const STATIC_PAGES = {
   '/ui': {
     title: 'Gio UI | A React Component Library You Own | gios.build',
     description:
-      'Gio UI is a copy-in React component library: pull components into your project, theme them with CSS variables, and hand plain code to your client. Join the waitlist.',
+      'Gio UI is a copy-in React component library: pull components into your project, theme them with CSS variables, and hand plain code to your client.',
     keywords: 'react component library, copy-in components, shadcn registry, css modules components, react ui kit, design system, gios.build',
     shareTitle: 'Gio UI | Copy it in. Make it yours.',
     shareDescription: 'A React component library you copy into your project, theme with CSS variables and hand over as plain code.',

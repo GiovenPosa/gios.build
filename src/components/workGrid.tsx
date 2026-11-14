@@ -198,7 +198,10 @@ function WorkViewer({ opened, items, onClose, onStep }: {
   const { from } = opened;
   const [index, setIndex] = useState(() => Math.max(0, items.indexOf(opened.item)));
   const item = items[index];
-  const media = item.full ?? item.media;
+  // On a phone the card's own cut (960 wide, about 1.2 MB) is plenty sharp;
+  // the full reel (5 to 6 MB) is for bigger screens
+  const [small] = useState(() => window.matchMedia('(max-width: 900px)').matches);
+  const media = small ? item.media : item.full ?? item.media;
   const about = item.about;
   const path = workPath(item.title);
 
@@ -321,7 +324,7 @@ function WorkViewer({ opened, items, onClose, onStep }: {
       <div className='work-viewer-frame' ref={frameRef} style={{ '--aspect': item.aspect } as CSSProperties}>
         <div className='work-viewer-media' key={item.title}>
           {media.type === 'video' ? (
-            <LoopVideo src={media.src} />
+            <LoopVideo src={media.src} webm={media.webm} poster={small ? media.poster : undefined} />
           ) : (
             <img src={media.src} alt={item.title} draggable={false} />
           )}
