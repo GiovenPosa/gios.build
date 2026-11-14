@@ -16,6 +16,7 @@ const ReportPage = lazy(() => import('./pages/reportPage').then((m) => ({ defaul
 const AuditPage = lazy(() => import('./pages/auditPage').then((m) => ({ default: m.AuditPage })))
 const IndustryPage = lazy(() => import('./pages/industryPage').then((m) => ({ default: m.IndustryPage })))
 const AreaPage = lazy(() => import('./pages/areaPage').then((m) => ({ default: m.AreaPage })))
+const WebsiteCostGuide = lazy(() => import('./pages/guides/websiteCostGuide').then((m) => ({ default: m.WebsiteCostGuide })))
 const NotFoundPage = lazy(() => import('./pages/notFoundPage').then((m) => ({ default: m.NotFoundPage })))
 import { BookingProvider } from './context/bookingContext'
 import { BookingForm } from './components/bookingForm'
@@ -49,6 +50,7 @@ function App() {
               <Route path="/website-audit" element={<AuditPage />} />
               {/* each audit's private report (never listed: noindex, robots.txt) */}
               <Route path="/report/:id" element={<ReportPage />} />
+              <Route path="/guides/how-much-does-a-website-cost" element={<WebsiteCostGuide />} />
               {/* a page per town (data/areas.ts) */}
               {AREAS.map((area) => (
                 <Route key={area.path} path={area.path} element={<AreaPage area={area} />} />

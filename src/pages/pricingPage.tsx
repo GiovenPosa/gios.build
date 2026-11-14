@@ -1,5 +1,6 @@
 import './page-styles/pricingPage.css';
 import { GoArrowUpRight } from 'react-icons/go';
+import { Link } from 'react-router-dom';
 import { PageMeta } from '../components/pageMeta';
 import { WhatsAppLink } from '../components/whatsappLink';
 import { Reveal } from '../components/reveal';
@@ -61,7 +62,8 @@ export function PricingPage() {
               <span>Questions?</span> <span>Just ask.</span>
             </Reveal>
             <Reveal as="p" className='home-faq-subtext' delay={60}>
-              The things people usually want to know before we start.
+              The things people usually want to know before we start. Comparing quotes?{' '}
+              <Link to='/guides/how-much-does-a-website-cost'>See what websites cost in the UK</Link>.
             </Reveal>
             <FaqThread />
           </section>

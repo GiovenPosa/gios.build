@@ -115,6 +115,13 @@
   padding-top: var(--space-256);
 }
 
+/* the link to the website cost guide */
+.pricing-faq .home-faq-subtext a {
+  color: var(--text-color-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 @media (max-width: 900px) {
   .pricing-page {
     padding: 0 var(--page-gutter);

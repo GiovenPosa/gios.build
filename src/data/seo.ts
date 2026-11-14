@@ -171,6 +171,19 @@ const STATIC_PAGES = {
     imageAlt: 'gios.build: Websites that bring in quote requests. The Prime Stock Central website on a phone.',
     crumb: 'Websites for local services',
   },
+  // the guides (data/guides.ts)
+  '/guides/how-much-does-a-website-cost': {
+    title: 'Website Cost UK 2026: What Small Businesses Pay | gios.build',
+    description:
+      'What a small business website costs in the UK in 2026: DIY, freelancer and agency prices, what changes the price, and the costs people forget. With sources.',
+    keywords:
+      'how much does a website cost uk, website cost uk, small business website cost, web design prices uk, website design cost, freelance web designer cost, website maintenance cost uk, gios.build',
+    shareTitle: 'How much does a website cost in the UK? | gios.build',
+    shareDescription: 'DIY, freelancer and agency prices for 2026, what changes the price, and the costs people forget. With a source for every figure.',
+    image: '/og/guide-website-cost.png',
+    imageAlt: 'gios.build guide: How much does a website cost for a small business in the UK?',
+    crumb: 'How much does a website cost?',
+  },
   '/privacy': {
     title: 'Privacy | gios.build',
     description:

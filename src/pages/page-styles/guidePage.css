@@ -1,0 +1,351 @@
+/* The guides (pages/guides/): an article in the privacy notice's reading
+   column. A centred poster headline, then left-aligned sections at a
+   comfortable reading width, the short answer in a soft card, the prices in
+   a table that scrolls sideways on phones, and the home page's FAQ thread. */
+.guide-page {
+  width: 100%;
+  max-width: calc(44rem + 2 * var(--page-gutter));
+  margin: 0 auto;
+  padding: var(--space-128) var(--page-gutter);
+  box-sizing: border-box;
+  color: var(--text-color-dark);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+}
+
+/* ---- the head ---- */
+
+.guide-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  text-align: center;
+}
+
+.guide-head .guide-kicker {
+  margin: 0;
+  padding: var(--gap-1) var(--gap-3);
+  --radius: 999px;
+  border-radius: var(--corner);
+  background: var(--btn-color-muted);
+  font-family: var(--font-family-Medium);
+  font-size: var(--compact-size);
+  line-height: var(--compact-leading);
+  color: var(--text-color-dark);
+}
+
+.guide-title {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--section-headline-size);
+  line-height: var(--section-headline-leading);
+  letter-spacing: var(--section-headline-tracking);
+  text-wrap: balance;
+}
+
+.guide-dek {
+  margin: 0;
+  max-width: 38rem;
+  font-family: var(--font-family-Regular);
+  font-size: var(--font-size-medium);
+  line-height: 1.4;
+  color: var(--text-color-secondary);
+  text-wrap: balance;
+}
+
+.guide-byline {
+  margin: 0;
+  text-wrap: balance;
+  font-family: var(--font-family-Medium);
+  font-size: var(--compact-size);
+  line-height: var(--compact-leading);
+  color: var(--text-color-secondary);
+}
+
+/* ---- shared text ---- */
+
+.guide-page h2 {
+  margin: 0;
+  font-family: var(--font-family-Headline);
+  font-weight: var(--headline-weight);
+  font-size: var(--title-3-size);
+  line-height: var(--title-3-leading);
+  letter-spacing: var(--title-3-tracking);
+}
+
+.guide-page p,
+.guide-page li,
+.guide-page td,
+.guide-page th {
+  font-family: var(--font-family-Regular);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text-color-secondary);
+  margin: 0;
+}
+
+/* the buttons keep their own colours */
+.guide-page .hero-action-button p {
+  color: inherit;
+  font-family: inherit;
+  letter-spacing: normal;
+}
+
+.guide-page strong {
+  font-family: var(--font-family-Medium);
+  font-weight: normal;
+  color: var(--text-color-dark);
+}
+
+.guide-section a:not(.hero-action-button),
+.guide-sources a,
+.guide-toc a {
+  color: var(--text-color-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.guide-section a:not(.hero-action-button):hover,
+.guide-sources a:hover,
+.guide-toc a:hover {
+  opacity: var(--opacity-hover);
+}
+
+/* the numbered source links */
+.guide-cite {
+  line-height: 0;
+  font-size: 0.7em;
+  margin-left: 1px;
+}
+
+.guide-cite a {
+  padding: 0 1px;
+  color: var(--text-color-dark);
+  text-decoration: none;
+  font-family: var(--font-family-Medium);
+}
+
+.guide-cite a:hover {
+  text-decoration: underline;
+}
+
+/* ---- the short answer ---- */
+
+.guide-answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3);
+  padding: var(--space-32);
+  --radius: var(--radius-card);
+  border-radius: var(--corner);
+  background: var(--bg-surface-color);
+}
+
+.guide-answer p {
+  font-size: var(--font-size-medium);
+  line-height: 1.5;
+  color: var(--text-color-dark);
+}
+
+/* ---- in this guide ---- */
+
+.guide-toc p {
+  font-family: var(--font-family-Medium);
+  color: var(--text-color-dark);
+}
+
+.guide-toc ol {
+  margin: var(--gap-2) 0 0;
+  padding-left: var(--space-16);
+  columns: 2;
+  column-gap: var(--space-32);
+}
+
+.guide-toc li {
+  break-inside: avoid;
+  padding: 2px 0;
+}
+
+/* ---- the sections ---- */
+
+.guide-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-4);
+  padding-top: var(--space-32);
+  border-top: 1px solid var(--btn-color-muted);
+  scroll-margin-top: var(--space-128);
+}
+
+.guide-section ul,
+.guide-section ol {
+  margin: 0;
+  padding-left: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+}
+
+/* the longer lists: a little more room between points */
+.guide-points {
+  gap: var(--gap-3) !important;
+}
+
+.guide-points.is-flags li::marker {
+  color: var(--accent-color);
+}
+
+/* ---- the prices table ---- */
+
+.guide-table {
+  overflow-x: auto;
+  border: 1px solid var(--btn-color-muted);
+  --radius: 20px;
+  border-radius: var(--corner);
+}
+
+.guide-table:focus-visible {
+  outline: 2px solid var(--text-color-dark);
+  outline-offset: 3px;
+}
+
+.guide-table table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: collapse;
+}
+
+.guide-table th,
+.guide-table td {
+  padding: var(--gap-3) var(--gap-4);
+  text-align: left;
+  vertical-align: top;
+  font-size: var(--compact-size);
+  line-height: var(--compact-leading);
+  border-bottom: 1px solid var(--btn-color-muted);
+}
+
+.guide-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.guide-table thead th {
+  font-family: var(--font-family-Medium);
+  color: var(--text-color-dark);
+  background: var(--bg-surface-color);
+}
+
+.guide-table tbody th {
+  font-family: var(--font-family-Medium);
+  color: var(--text-color-dark);
+  width: 26%;
+}
+
+/* ---- what gios.build charges ---- */
+
+.guide-packages {
+  list-style: none;
+  padding: 0 !important;
+  gap: 0 !important;
+  border: 1px solid var(--btn-color-muted);
+  --radius: 20px;
+  border-radius: var(--corner);
+}
+
+.guide-packages li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px var(--gap-4);
+  padding: var(--gap-4);
+  border-bottom: 1px solid var(--btn-color-muted);
+}
+
+.guide-packages li:last-child {
+  border-bottom: 0;
+}
+
+.guide-package-name {
+  font-family: var(--font-family-Medium);
+  color: var(--text-color-dark);
+}
+
+.guide-package-price {
+  font-family: var(--font-family-Medium);
+  color: var(--text-color-dark);
+  text-align: right;
+}
+
+.guide-package-for {
+  grid-column: 1 / -1;
+  font-size: var(--compact-size);
+  line-height: var(--compact-leading);
+}
+
+.guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-3);
+  margin-top: var(--gap-2);
+  font-family: var(--font-family-Medium);
+}
+
+/* ---- the FAQ and the sources ---- */
+
+.guide-faq {
+  margin-top: var(--space-64);
+}
+
+.guide-sources {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3);
+  padding-top: var(--space-32);
+  border-top: 1px solid var(--btn-color-muted);
+}
+
+.guide-sources h2 {
+  font-size: var(--title-5-size);
+  line-height: var(--title-5-leading);
+}
+
+.guide-sources p,
+.guide-sources li {
+  font-size: var(--compact-size);
+  line-height: var(--compact-leading);
+}
+
+.guide-sources ol {
+  margin: 0;
+  padding-left: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-1);
+}
+
+.guide-sources li {
+  scroll-margin-top: var(--space-128);
+}
+
+.guide-sources li:target {
+  background: var(--btn-color-muted);
+  --radius: 6px;
+  border-radius: var(--corner);
+}
+
+@media (max-width: 600px) {
+  .guide-page {
+    padding: var(--space-128) var(--page-gutter) var(--space-64);
+  }
+
+  .guide-answer {
+    padding: var(--gap-5);
+  }
+
+  .guide-toc ol {
+    columns: 1;
+  }
+}

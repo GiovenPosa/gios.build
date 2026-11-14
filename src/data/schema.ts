@@ -18,6 +18,7 @@ import { areaByPath, type Area } from './areas';
 import { industryByPath, type Industry } from './industries';
 import { AUDIT_FAQ, AUDIT_PATH } from './audit';
 import { WHATSAPP_NUMBER } from './contact';
+import { guideByPath, type Guide } from './guides';
 
 // the phone (WhatsApp) number, as Google wants it: +44 7443 560432
 const TELEPHONE = `+${WHATSAPP_NUMBER.slice(0, 2)} ${WHATSAPP_NUMBER.slice(2, 6)} ${WHATSAPP_NUMBER.slice(6)}`;
@@ -375,6 +376,25 @@ function auditService() {
   };
 }
 
+/** a guide: the article itself, written by Gio, published by the business */
+function article(guide: Guide) {
+  const url = `${SITE_URL}${guide.path}`;
+  return {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: guide.headline,
+    description: guide.description,
+    url,
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+    image: `${SITE_URL}${PAGES[guide.path].image}`,
+    datePublished: guide.published,
+    dateModified: guide.updated,
+    inLanguage: 'en-GB',
+    author: { '@id': PERSON },
+    publisher: { '@id': BUSINESS },
+  };
+}
+
 /** everything for one page, as a single JSON-LD graph */
 export function pageSchema(path: PagePath, asset: AssetUrl) {
   const graph: Record<string, unknown>[] = [...site(asset)];
@@ -394,8 +414,12 @@ export function pageSchema(path: PagePath, asset: AssetUrl) {
     default: {
       const area = areaByPath(path);
       const industry = industryByPath(path);
+      const guide = guideByPath(path);
       const work = path.startsWith('/work/') ? workBySlug(path.slice('/work/'.length)) : undefined;
-      if (work) {
+      if (guide) {
+        const url = `${SITE_URL}${guide.path}`;
+        graph.push(...webPage(path, 'WebPage', { mainEntity: { '@id': `${url}#article` } }), article(guide), faqPage(guide.faq, url));
+      } else if (work) {
         graph.push(...webPage(path, 'ItemPage', { mainEntity: { '@id': `${SITE_URL}${path}#project` } }), project(work, asset));
       } else if (industry) {
         const url = `${SITE_URL}${industry.path}`;
