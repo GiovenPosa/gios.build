@@ -141,7 +141,7 @@ const STATIC_PAGES = {
   '/websites-for-cafes': {
     title: 'Websites for Cafés & Coffee Shops | gios.build',
     description:
-      'Café websites with your menu, hours and photos clear on every phone, built to be found on Google. From £600, with a free homepage mockup first.',
+      'Websites for cafés and coffee shops: your menu, hours and photos clear on every phone, built to be found on Google. From £600, with a free mockup first.',
     keywords:
       'cafe website, coffee shop website, website for cafe, cafe website design, restaurant website uk, small cafe website, cafe menu website, gios.build',
     shareTitle: 'Websites for cafés that fill tables | gios.build',
@@ -153,7 +153,7 @@ const STATIC_PAGES = {
   '/websites-for-fitness-studios': {
     title: 'Websites for Fitness, Pilates & Yoga Studios | gios.build',
     description:
-      'Studio websites with your timetable, prices and a Book button on every screen, built to be found on Google. From £600, with a free homepage mockup first.',
+      'Websites for fitness, Pilates and yoga studios: your timetable, prices and a Book button on every screen, found on Google. From £600, free mockup first.',
     keywords:
       'fitness studio website, pilates studio website, yoga studio website, gym website design, personal trainer website, website for fitness business uk, gios.build',
     shareTitle: 'Websites for studios that fill classes | gios.build',
