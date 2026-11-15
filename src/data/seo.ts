@@ -104,7 +104,7 @@ const STATIC_PAGES = {
   '/web-design-bath': {
     title: 'Web Designer in Bath, Somerset | gios.build',
     description:
-      'Websites for Bath businesses, built so locals and visitors find you on Google. From £600, with a free homepage mockup first. Based in Bath, happy to meet.',
+      'Web design in Bath for small businesses: fast, hand-coded websites built so locals and visitors find you on Google. From £600, with a free mockup first.',
     keywords:
       'web designer bath, web design bath, website design bath, bath web designer, small business website bath, local seo bath, web design somerset, gios.build',
     shareTitle: 'Websites for Bath, made in Bath | gios.build',
@@ -116,7 +116,7 @@ const STATIC_PAGES = {
   '/web-design-bristol': {
     title: 'Web Designer in Bristol | Small Business Websites | gios.build',
     description:
-      'Websites for Bristol businesses: agency quality at small business prices, built to be found on Google. From £600, with a free homepage mockup first.',
+      'Web design in Bristol for small businesses: agency quality, hand-coded and built to be found on Google. From £600, with a free homepage mockup first.',
     keywords:
       'web designer bristol, web design bristol, website design bristol, freelance web designer bristol, small business website bristol, local seo bristol, gios.build',
     shareTitle: 'Websites for Bristol businesses | gios.build',
@@ -128,7 +128,7 @@ const STATIC_PAGES = {
   '/web-design-trowbridge': {
     title: 'Web Designer in Trowbridge, Wiltshire | gios.build',
     description:
-      'Websites for Trowbridge businesses, built to be found on Google. From £600, with a free homepage mockup first. Based in Bath and happy to meet in person.',
+      'Web design in Trowbridge for small businesses: fast, hand-coded websites built to be found on Google. From £600, with a free homepage mockup first.',
     keywords:
       'web designer trowbridge, web design trowbridge, website design wiltshire, web designer wiltshire, small business website trowbridge, local seo trowbridge, gios.build',
     shareTitle: 'Websites for Trowbridge businesses | gios.build',

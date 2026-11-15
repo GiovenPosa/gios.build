@@ -23,7 +23,9 @@ export function PackageStack() {
   useScrollFocus(listRef, '.pk-row', setActive);
 
   return (
-    <section className='pk' aria-label='Packages'>
+    // data-nosnippet: Google mustn't lift a package's lines as the page's
+    // search result text (it did, on the area pages)
+    <section className='pk' aria-label='Packages' data-nosnippet>
       <div className='pk-list' ref={listRef}>
         {packagesData.map((pkg, index) => {
           const isActive = active === index;
