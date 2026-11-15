@@ -289,8 +289,15 @@ export function Testimonials() {
     // reload, Safari's toolbar), so the height never goes stale
     const resized = new ResizeObserver(remeasure);
     resized.observe(frame);
-    panels.forEach((panel) => resized.observe(panel));
+    // the quotes too: their lines re-wrap when the headline font arrives
+    panels.forEach((panel) => {
+      resized.observe(panel);
+      const quote = panel.querySelector('.tst-text');
+      if (quote) resized.observe(quote);
+    });
     document.fonts?.ready.then(remeasure);
+    // a font that starts loading after "ready" has settled still re-wraps them
+    document.fonts?.addEventListener('loadingdone', remeasure);
     remeasure();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', remeasure);
@@ -300,6 +307,7 @@ export function Testimonials() {
       cancelAnimationFrame(loopId);
       seen.disconnect();
       resized.disconnect();
+      document.fonts?.removeEventListener('loadingdone', remeasure);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', remeasure);
       section.style.height = '';
