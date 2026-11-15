@@ -84,7 +84,11 @@
 }
 
 .tst-text {
-  margin: 0;
+  /* as wide as its lines, so the quote mark sits at the text's corner
+     rather than the panel's */
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
   font-family: var(--font-family-Headline);
   font-weight: var(--headline-weight);
   /* the section headline size, like every other section */
@@ -94,6 +98,18 @@
   text-wrap: balance;
   /* centred in its panel, so each quote sits in the middle of the screen */
   text-align: center;
+}
+
+/* the drawn quote mark, above the quote's first line at its left end
+   (--mark-left, set in testimonials.tsx) */
+.tst-mark {
+  --size: 32px;
+  position: absolute;
+  top: calc(var(--size) * -0.64 - var(--space-16));
+  left: var(--mark-left, 0);
+  width: var(--size);
+  height: auto;
+  fill: var(--tst-ink);
 }
 
 .tst-cite {
@@ -168,5 +184,9 @@
 
   .tst-cite {
     margin-top: var(--space-16);
+  }
+
+  .tst-mark {
+    --size: 24px;
   }
 }

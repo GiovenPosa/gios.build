@@ -8,6 +8,31 @@ const SCROLL_RATIO = 0.6;
 const reducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/** one tick of the quote mark: a stem whose top curves over to the right */
+const MARK_TICK = 'M0 18V8C0 3.6 3.6 0 8 0H12V6H9C7.3 6 6 7.3 6 9V18Z';
+
+/**
+ * Lines each quote's quote mark up with where its first line starts.
+ * The quote's box is as wide as its longest unbalanced line, but its lines
+ * are balanced (narrower) and centred, so the box's left edge sits short of
+ * the text. Measured in the quote's own pixels, so a panel's scroll-time
+ * scale doesn't skew it.
+ */
+function placeMarks(panels: HTMLElement[]) {
+  panels.forEach((panel) => {
+    const quote = panel.querySelector<HTMLElement>('.tst-text');
+    const text = [...(quote?.childNodes ?? [])].find((node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim());
+    if (!quote || !text) return;
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    const firstLine = range.getClientRects()[0];
+    const box = quote.getBoundingClientRect();
+    if (!firstLine || !box.width) return;
+    const scale = quote.offsetWidth / box.width;
+    quote.style.setProperty('--mark-left', `${(firstLine.left - box.left) * scale}px`);
+  });
+}
+
 type RGB = [number, number, number];
 const hex = (value: string): RGB => [1, 3, 5].map((i) => parseInt(value.slice(i, i + 2), 16)) as RGB;
 
@@ -211,6 +236,7 @@ export function Testimonials() {
     // screen plus the sideways travel, so the pin ends exactly as the last
     // quote centres.
     const measure = () => {
+      placeMarks(panels);
       // ~1/12 resolution: plenty for something this soft, and cheap to redraw
       canvas.width = layer.width = Math.max(48, Math.round(window.innerWidth / 12));
       canvas.height = layer.height = Math.max(32, Math.round(window.innerHeight / 12));
@@ -296,9 +322,12 @@ export function Testimonials() {
             {testimonialsData.map((item, index) => (
               <figure key={index} className='tst-panel'>
                 <blockquote className='tst-text'>
-                  <span className='tst-mark' aria-hidden>“</span>
+                  {/* the quote mark, drawn: two chunky ticks above the first line */}
+                  <svg className='tst-mark' viewBox='0 0 28 18' aria-hidden>
+                    <path d={MARK_TICK} />
+                    <path d={MARK_TICK} transform='translate(16 0)' />
+                  </svg>
                   {item.quote}
-                  <span className='tst-mark' aria-hidden>”</span>
                 </blockquote>
                 <figcaption className='tst-cite'>
                   {item.name}
